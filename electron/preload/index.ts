@@ -1,3 +1,14 @@
+// preload with contextIsolation enabled
+const { contextBridge } = require('electron');
+const { readdir } = require('fs/promises');
+
+contextBridge.exposeInMainWorld('sentinel', {
+  getFiles: () => {
+    return readdir(`${process.env.HOME}/Downloads`)
+        .then(items => items.map(val => `${process.env.HOME}/Downloads/${val}`))
+  }
+})
+
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
   return new Promise(resolve => {
     if (condition.includes(document.readyState)) {

@@ -1,45 +1,68 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+  main {
+    background-color: #b6b6b6;
+    width: 100vw;
+    min-height: 100vh;
   }
-  to {
-    transform: rotate(360deg);
+
+  div.viewer {
+
+    video {
+
+      height: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 7px;
+    }
+
+    width: 20vw;
+    aspect-ratio: 16/9;
+    position: fixed;
+    margin: 0.5rem;
+    border-radius: 7px;
+    z-index: 1;
+
+    &.front {
+      top: 0;
+      left: 0;
+    }
+
+    &.rear {
+      top: 0;
+      right: 0;
+    }
+
+    &.right {
+      bottom: 0;
+      right: 0;
+    }
+
+    &.left {
+      bottom: 0;
+      left: 0;
+    }
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .logo {
-    animation: logo-spin infinite 20s linear;
+  div.empty-video {
+    aspect-ratio: 16/9;
+    border-radius: 7px;
+    background-color: #d9d9d9;
+    opacity: 0.9;
   }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  #slider {
+    z-index: 1;
+    position: fixed;
+    bottom: 0.2rem;
+    right: 0;
+    width: 100vw;
+    margin: auto;
+    text-align: center;
+    .MuiSlider-root {
+      width: 50vw;
+    }
+  }
 }
