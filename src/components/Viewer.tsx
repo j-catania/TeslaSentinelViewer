@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {ReactEventHandler, useEffect} from 'react';
 
 interface IViewer {
     src: string,
@@ -6,18 +6,16 @@ interface IViewer {
     duration?: (data: number) => void,
     currentTime?: number,
     onClick?: React.MouseEventHandler<HTMLVideoElement>,
-    disable?: boolean
+    onEnded?: ReactEventHandler<HTMLVideoElement>
 }
 
-const Viewer = ({src, duration, currentTime, disable = false, onClick}: IViewer) => {
-
-    if (disable) {
-        return <div className="empty-video"></div>
-    }
+const Viewer = ({src, duration, currentTime, onClick, onEnded}: IViewer) => {
 
     return (
         <video autoPlay
+               key={src}
                muted
+               onEnded={onEnded}
                width="100%"
                onDurationChange={(event: any) => {
                    duration?.(event.target.duration)

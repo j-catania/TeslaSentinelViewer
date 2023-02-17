@@ -3,10 +3,11 @@ import {Stack} from '@mui/joy';
 import {useEffect, useState} from 'react';
 
 interface IClips {
-    path: string
+    path: string,
+    onSelection?: (param: string) => void,
 }
 
-const Clips = ({path}: IClips) => {
+const Clips = ({path, onSelection}: IClips) => {
     const [dirs, setDirs] = useState<string[]>();
 
     useEffect(() => {
@@ -15,7 +16,7 @@ const Clips = ({path}: IClips) => {
 
     return <Stack spacing={2} alignItems={'center'}>
         {dirs?.map(item =>
-            <Clip key={item} path={item}/>
+            <Clip key={item} path={item} onSelection={onSelection}/>
         )}
     </Stack>
 }

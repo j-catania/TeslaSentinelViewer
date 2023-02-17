@@ -7,9 +7,10 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 interface IClip {
     path: string,
+    onSelection?: (param: string) => void,
 }
 
-const Clip = ({path}: IClip) => {
+const Clip = ({path, onSelection}: IClip) => {
     const [thumb, setThumb] = useState<string>();
     const [event, setEvent] = useState<Event>();
 
@@ -23,7 +24,7 @@ const Clip = ({path}: IClip) => {
                 setEvent(parsed)
             })
     }, []);
-    return <Card sx={{height: 96, width: 128}}>
+    return <Card sx={{height: 96, width: 128}} onClick={() => onSelection?.(path)}>
         <CardCover>
             <img
                 src={`data:image/png;base64,${thumb}`}

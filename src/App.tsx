@@ -15,6 +15,7 @@ function App() {
     const [duration, setDuration] = useState<number>();
     const [openedModal, setOpenedModal] = useState<boolean>(true);
     const [source, setSource] = useState<string>();
+    const [clip, setClip] = useState<string>();
 
     useEffect(() => {
         for (let elementByTagNameElement of document.getElementsByTagName('video')) {
@@ -34,23 +35,28 @@ function App() {
                             <Select placeholder="Source" onChange={(e, val) => setSource(val)}>
                                 <Option value={ROOT_PATH}>{ROOT_PATH}</Option>
                             </Select>
-                            {source && <Clips path={source+SENTRY_PATH}/>}
+                            {source && <Clips path={source + SENTRY_PATH} onSelection={path => {
+                                setOpenedModal(false);
+                                setClip(path);
+                            }
+                            }/>}
                         </Stack>
                     </ModalDialog>
                 </Modal>
 
-                {/*<Viewers root="file:///Users/juu/Downloads" setDuration={setDuration} currentTime={currentTime}/>
-
-                <div id="slider">
-                    <Slider
-                        valueLabelDisplay="on"
-                        min={0}
-                        max={duration}
-                        step={0.1}
-                        defaultValue={0}
-                        value={currentTime}
-                        onChangeCommitted={(_, val) => setCurrentTime(val as number)}/>
-                </div>*/}
+                {clip && <>
+                    <Viewers root={clip} setDuration={setDuration} currentTime={currentTime}/>
+                    {/*<div id="slider">
+                        <Slider
+                            valueLabelDisplay="on"
+                            min={0}
+                            max={duration}
+                            step={0.1}
+                            defaultValue={0}
+                            value={currentTime}
+                            onChangeCommitted={(_, val) => setCurrentTime(val as number)}/>
+                    </div>*/}
+                </>}
             </main>
         </CssVarsProvider>
     )
