@@ -1,13 +1,12 @@
 import Clips from '@/components/Clips';
-import Viewer from '@/components/Viewer';
 import Viewers from '@/components/Viewers';
-import {FormControl, Modal, ModalClose, ModalDialog, Option, Select, Stack, Typography} from '@mui/joy';
-import {useEffect, useState} from 'react'
-import {CssVarsProvider} from '@mui/joy/styles'
-import './App.scss'
-import Slider from '@mui/joy/Slider';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import {Modal, ModalClose, ModalDialog, Option, Select, Stack} from '@mui/joy';
+import Slider from '@mui/joy/Slider';
+import {CssVarsProvider} from '@mui/joy/styles'
+import {useEffect, useState} from 'react'
+import './App.scss'
 
 const ROOT_PATH = '/Users/juu/Downloads/TESLADRIVE';
 const SENTRY_PATH = `/TeslaCam/SentryClips`;
@@ -30,12 +29,16 @@ function App() {
     return (
         <CssVarsProvider>
             <main>
-                <Modal open={openedModal} onClose={() => setOpenedModal(false)}>
-                    <ModalDialog size="lg">
+                <Modal open={openedModal}
+                       onClose={() => setOpenedModal(false)} disableScrollLock={true}
+                >
+                    <ModalDialog color="primary"
+                                 size="sm"
+                                 variant="soft">
                         <ModalClose/>
 
-                        <Stack spacing={2}>
-                            <Select placeholder="Source" onChange={(e, val) => setSource(val)}>
+                        <Stack spacing={1}>
+                            <Select placeholder="Source" onChange={(e, val) => setSource(val as string)}>
                                 <Option value={ROOT_PATH}>{ROOT_PATH}</Option>
                             </Select>
                             {source && <Clips path={source + SENTRY_PATH} onSelection={path => {
@@ -51,7 +54,8 @@ function App() {
                     <Viewers root={clip} setDuration={setDuration} currentTime={currentTime} paused={paused}/>
                     <div id="slider">
                         <Stack spacing={2} direction="row" alignItems="center" justifyContent="center">
-                            {paused ? <PlayArrowIcon onClick={() => setPaused(false)}/> : <PauseIcon onClick={() => setPaused(true)}/>}
+                            {paused ? <PlayArrowIcon onClick={() => setPaused(false)}/>
+                                : <PauseIcon onClick={() => setPaused(true)}/>}
                             <Slider
                                 valueLabelDisplay="on"
                                 min={0}

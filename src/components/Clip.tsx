@@ -1,8 +1,8 @@
 import {Event} from '@/types/Event';
-import {Card, CardContent, CardCover, Typography} from '@mui/joy';
-import {useEffect, useState} from 'react';
-import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
+import {AspectRatio, Card, CardOverflow, Typography} from '@mui/joy';
+import {useEffect, useState} from 'react';
 
 
 interface IClip {
@@ -24,35 +24,23 @@ const Clip = ({path, onSelection}: IClip) => {
                 setEvent(parsed)
             })
     }, []);
-    return <Card sx={{height: 96, width: 128}} onClick={() => onSelection?.(path)}>
-        <CardCover>
-            <img
-                src={`data:image/png;base64,${thumb}`}
-                loading="lazy"
-                alt=""
-            />
-        </CardCover>
-        <CardCover
-            sx={{
-                background:
-                    'linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0) 200px), linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0) 300px)',
-            }}
-        />
-        <CardContent sx={{justifyContent: 'flex-end'}}>
-            <Typography
-                startDecorator={<LocationOnRoundedIcon/>}
-                textColor="neutral.300"
-            >
-                {event?.city}
-            </Typography>
-            <Typography
-                startDecorator={<AccessTimeIcon/>}
-                textColor="neutral.300"
-            >
-                {event?.timestamp}
-            </Typography>
-        </CardContent>
-    </Card>
+    return (<Card variant="outlined" sx={{width: 320}} onClick={() => onSelection?.(path)}>
+        <CardOverflow>
+            <AspectRatio ratio="2">
+                <img
+                    src={`data:image/png;base64,${thumb}`}
+                    loading="lazy"
+                    alt=""
+                />
+            </AspectRatio>
+        </CardOverflow>
+        <Typography level="h2" sx={{fontSize: 'md', mt: 2}} startDecorator={<LocationOnRoundedIcon/>}>
+            {event?.city}
+        </Typography>
+        <Typography level="body2" sx={{mt: 0.5, mb: 2}} startDecorator={<AccessTimeIcon/>}>
+            {event?.timestamp}
+        </Typography>
+    </Card>)
 }
 
 export default Clip

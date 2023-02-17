@@ -27,11 +27,13 @@
       height: 100vh;
       width: 100vw;
     }
+
     video {
       height: 100%;
       aspect-ratio: 4/3;
       border-radius: 7px;
     }
+
     &.front {
       top: 0;
       left: 0;
@@ -62,14 +64,25 @@
   #slider {
     z-index: 3;
     position: fixed;
-    bottom: 0.2rem;
+    bottom: 0.3rem;
     right: 0;
     width: 100vw;
-    margin: auto;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+
+    .JoyStack-root {
+      padding: 0 1rem;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 25px;
+    }
 
     .MuiSlider-root {
       width: 50vw;
     }
   }
+
+}
+
+.MuiCard-root {
+  cursor: pointer;
 }

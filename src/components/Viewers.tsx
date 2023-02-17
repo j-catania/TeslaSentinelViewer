@@ -49,7 +49,7 @@ const Viewers = ({root, currentTime, setDuration, paused}: IViewers) => {
     }, []);
 
     useEffect(() => {
-        if(index > 0 && index < (videos?.backs.length ?? 0)) {
+        if (index > 0 && index < (videos?.backs.length ?? 0)) {
             setParts([{
                 area: 'left_repeater',
                 path: `file://${videos?.lefts[index]}`
@@ -69,12 +69,17 @@ const Viewers = ({root, currentTime, setDuration, paused}: IViewers) => {
 
     return (<>
         {parts?.map((part) => {
-            return <div key={part.area} className={'viewer ' + part.area + (part.area === activeArea ? ' active' : '')}>
-                <Viewer paused={paused} src={part.path} onClick={() => setActiveArea(part.area)} onEnded={() => {
-                    if(part.area === activeArea) {
-                        setIndex(prevState => prevState + 1)
-                    }
-                }}/>
+            return <div key={part.area}
+                        className={'viewer ' + part.area + (part.area === activeArea ? ' active' : '')}>
+                <Viewer currentTime={currentTime}
+                        paused={paused}
+                        src={part.path}
+                        onClick={() => setActiveArea(part.area)}
+                        onEnded={() => {
+                            if (part.area === activeArea) {
+                                setIndex(prevState => prevState + 1)
+                            }
+                        }}/>
             </div>
         })}
 
