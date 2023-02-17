@@ -1,4 +1,5 @@
 import Viewer from '@/components/Viewer';
+import {Areas} from '@/types/Areas';
 import {useState} from 'react';
 
 interface IViewers {
@@ -7,7 +8,6 @@ interface IViewers {
     currentTime: number,
 }
 
-type Areas = 'left' | 'right' | 'front' | 'rear';
 type Part = {area: Areas, path: string};
 
 const Viewers = ({root, currentTime, setDuration}: IViewers) => {
@@ -15,16 +15,16 @@ const Viewers = ({root, currentTime, setDuration}: IViewers) => {
     const [activeArea, setActiveArea] = useState<Areas>('front')
 
     const parts: Part[] = [{
-        area: 'left',
+        area: 'left_repeater',
         path: `${root}/PXL_20230128_061316490.mp4`
     }, {
-        area: 'right',
+        area: 'right_repeater',
         path: `${root}/PXL_20230128_061316490.mp4`
     }, {
         area: 'front',
         path: `${root}/PXL_20230128_061316490.mp4`
     }, {
-        area: 'rear',
+        area: 'back',
         path: `${root}/PXL_20230128_061316490.mp4`
     }];
 

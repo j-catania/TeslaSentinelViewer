@@ -1,6 +1,7 @@
 #root {
   width: 100vw;
   min-height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
 
@@ -31,17 +32,17 @@
       left: 0;
     }
 
-    &.rear {
+    &.back {
       top: 0;
       right: 0;
     }
 
-    &.right {
+    &.right_repeater {
       bottom: 0;
       right: 0;
     }
 
-    &.left {
+    &.left_repeater {
       bottom: 0;
       left: 0;
     }
