@@ -6,12 +6,13 @@ interface IViewers {
     root: string,
     setDuration: (data: number) => void,
     currentTime: number,
+    paused: boolean,
 }
 
 type Part = { area: Areas, path: string };
 type Videos = { backs: string[], rights: string[], lefts: string[], fronts: string[] };
 
-const Viewers = ({root, currentTime, setDuration}: IViewers) => {
+const Viewers = ({root, currentTime, setDuration, paused}: IViewers) => {
     const [activeArea, setActiveArea] = useState<Areas>('front')
     const [videos, setVideos] = useState<Videos>();
     const [parts, setParts] = useState<Part[]>();
@@ -69,7 +70,7 @@ const Viewers = ({root, currentTime, setDuration}: IViewers) => {
     return (<>
         {parts?.map((part) => {
             return <div key={part.area} className={'viewer ' + part.area + (part.area === activeArea ? ' active' : '')}>
-                <Viewer src={part.path} onClick={() => setActiveArea(part.area)} onEnded={() => {
+                <Viewer paused={paused} src={part.path} onClick={() => setActiveArea(part.area)} onEnded={() => {
                     if(part.area === activeArea) {
                         setIndex(prevState => prevState + 1)
                     }
