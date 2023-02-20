@@ -1,5 +1,5 @@
 import Clip from '@/components/Clip';
-import {Divider, Stack} from '@mui/joy';
+import {Grid} from '@mui/joy';
 import {useEffect, useState} from 'react';
 
 interface IClips {
@@ -12,13 +12,15 @@ const Clips = ({path, onSelection}: IClips) => {
 
     useEffect(() => {
         window.sentinel.getFiles(path).then(setDirs)
-    },[]);
+    }, [path]);
 
-    return <Stack spacing={2} direction="row" alignItems={'center'} divider={<Divider orientation="vertical"/>}>
+    return <Grid container spacing={2} justifyContent="center">
         {dirs?.map(item =>
-            <Clip key={item} path={item} onSelection={onSelection}/>
+            <Grid key={item}>
+                <Clip path={item} onSelection={onSelection}/>
+            </Grid>
         )}
-    </Stack>
+    </Grid>
 }
 
 export default Clips
