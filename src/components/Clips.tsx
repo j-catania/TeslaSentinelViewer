@@ -9,15 +9,18 @@ interface IClips {
 
 const Clips = ({path, onSelection}: IClips) => {
     const [dirs, setDirs] = useState<string[]>();
+    const [deleted, setDeleted] = useState<string>();
 
     useEffect(() => {
-        window.sentinel.getFiles(path).then(setDirs)
-    }, [path]);
+        window.sentinel.getFiles(path).then(setDirs);
+        console.log('effect')
+    }, [path, deleted]);
+
 
     return <Grid container spacing={2} justifyContent="center">
         {dirs?.map(item =>
             <Grid key={item}>
-                <Clip path={item} onSelection={onSelection}/>
+                <Clip path={item} onSelection={onSelection} onDeletion={setDeleted}/>
             </Grid>
         )}
     </Grid>

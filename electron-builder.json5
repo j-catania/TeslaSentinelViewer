@@ -2,7 +2,8 @@
  * @see https://www.electron.build/configuration/configuration
  */
 {
-  "appId": "YourAppID",
+  "appId": "io.jcatania.tesler",
+  "producName": "TesLEr",
   "asar": true,
   "directories": {
     "output": "release/${version}"

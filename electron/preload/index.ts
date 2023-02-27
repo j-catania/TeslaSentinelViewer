@@ -1,6 +1,6 @@
 // preload with contextIsolation enabled
 const {contextBridge} = require('electron');
-const {readdir, readFile} = require('fs/promises');
+const {readdir, readFile, rm} = require('fs/promises');
 
 contextBridge.exposeInMainWorld('sentinel', {
     getFiles: (path) => {
@@ -17,6 +17,9 @@ contextBridge.exposeInMainWorld('sentinel', {
     },
     readB64File: (path) => {
         return readFile(`${path}`).then(buff => buff.toString('base64'));
+    },
+    remove: (path) => {
+        return rm(`${path}`, {recursive: true})
     }
 })
 

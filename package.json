@@ -1,5 +1,6 @@
 {
   "name": "tesla-sentinel-viewer",
+  "productName": "TesLEr",
   "version": "0.1.0",
   "main": "dist-electron/main/index.js",
   "description": "",

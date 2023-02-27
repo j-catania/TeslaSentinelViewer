@@ -10,7 +10,7 @@ interface IViewer {
     paused: boolean,
 }
 
-const Viewer = ({src, duration, currentTime, onClick, onEnded, paused}: IViewer) => {
+const Viewer = ({src, currentTime, onClick, onEnded, paused}: IViewer) => {
     const video = useRef<HTMLVideoElement>();
 
     useEffect(() => {
@@ -25,9 +25,6 @@ const Viewer = ({src, duration, currentTime, onClick, onEnded, paused}: IViewer)
             video.current.currentTime = currentTime;
         }
     }, [currentTime])
-    useEffect(() => {
-        duration?.(video.current?.duration)
-    }, [])
 
     return (
         <video autoPlay
@@ -36,9 +33,6 @@ const Viewer = ({src, duration, currentTime, onClick, onEnded, paused}: IViewer)
                muted
                onEnded={onEnded}
                width="100%"
-               onDurationChange={(event: any) => {
-                   duration?.(event.target.duration)
-               }}
                onClick={onClick}
         >
             <source src={src}/>

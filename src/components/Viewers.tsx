@@ -4,19 +4,21 @@ import {useEffect, useState} from 'react';
 
 interface IViewers {
     root: string,
-    setDuration: (data: number) => void,
     currentTime: number,
     paused: boolean,
+    onProcessMaxElements?: (param: number) => void
 }
 
 type Part = { area: Areas, path: string };
 type Videos = { backs: string[], rights: string[], lefts: string[], fronts: string[] };
 
-const Viewers = ({root, currentTime, setDuration, paused}: IViewers) => {
+const Viewers = ({root, currentTime, paused, onProcessMaxElements}: IViewers) => {
     const [activeArea, setActiveArea] = useState<Areas>('front')
     const [videos, setVideos] = useState<Videos>();
     const [parts, setParts] = useState<Part[]>();
     const [index, setIndex] = useState<number>(0)
+    const [nbParts, setNbParts] = useState<number>(0)
+
 
     useEffect(() => {
         window.sentinel.getFiles(root)
@@ -32,6 +34,9 @@ const Viewers = ({root, currentTime, setDuration, paused}: IViewers) => {
                 return vids;
             })
             .then((vids: Videos) => {
+                onProcessMaxElements?.(vids?.lefts.length);
+                setNbParts(vids?.lefts.length);
+
                 setParts([{
                     area: 'left_repeater',
                     path: `file://${vids?.lefts[index]}`
@@ -65,6 +70,11 @@ const Viewers = ({root, currentTime, setDuration, paused}: IViewers) => {
             }])
         }
     }, [index])
+
+    useEffect(() => {
+        console.log(nbParts)
+        console.log(currentTime % nbParts);
+    }, [currentTime])
 
 
     return (<>
