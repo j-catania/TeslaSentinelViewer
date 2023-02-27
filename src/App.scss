@@ -14,23 +14,29 @@
       z-index: 4;
       position: fixed;
       top: 0;
-      left: 0;
-      width: 0;
+      left: -37.5rem;
+      width: 40rem;
       overflow: hidden;
-      background-color: white;
       height: 100%;
-      transition: width ease-out 250ms;
+      transition: left ease-out 250ms;
 
       &.opened {
-        width: 40rem;
-        transition: width ease-in 250ms;
-        padding: 1rem;
+        left: 0;
+        transition: left ease-in 250ms;
         overflow: auto;
       }
 
-      > div {
+      > .JoyStack-root {
+        background-color: white;
+        height: 100%;
         width: 100%;
+        padding: 1rem;
+
+        > div {
+          width: 100%;
+        }
       }
+
     }
 
   }
