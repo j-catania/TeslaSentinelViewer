@@ -39,7 +39,7 @@ const Clips = ({path, onSelection}: IClips) => {
             </IconButton>
         </Badge>
 
-        <Grid container spacing={1}>
+        <Grid container spacing={1} justifyContent="center">
             {dirs?.map(item =>
                 <Grid key={item}>
                     <Clip path={item}

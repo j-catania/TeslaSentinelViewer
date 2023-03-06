@@ -3,7 +3,7 @@
   "productName": "TesLEr",
   "version": "0.1.4",
   "main": "dist-electron/main/index.js",
-  "description": "An open source app for viewing all senty clips in your TeslaDrive",
+  "description": "An open source app for viewing all sentry clips in your TeslaDrive",
   "author": "Julien CATANIA <julien.catania@gmail.com>",
   "license": "MIT",
   "private": true,

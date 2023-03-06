@@ -69,8 +69,9 @@ const Drawer = ({onPathSelected}: IDrawer) => {
                         {name}
                     </Option>
                 })}
-
-                <Option value={ROOT_PATH}>{ROOT_PATH}</Option>
+                {volumes?.length === 0 &&
+                    <Option disabled={true}>Aucune clef USB trouvée</Option>}
+                {/*<Option value={ROOT_PATH}>{ROOT_PATH}</Option>*/}
 
             </Select>
             {source && <Clips path={source + SENTRY_PATH}
