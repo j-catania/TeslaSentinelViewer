@@ -16,7 +16,7 @@
     "artifactName": "${productName}_${version}.${ext}",
     "target": [
       "dmg",
-      "pkg"
+      "mas"
     ],
     "hardenedRuntime": true
   },
@@ -36,5 +36,10 @@
     "perMachine": false,
     "allowToChangeInstallationDirectory": true,
     "deleteAppDataOnUninstall": false
+  },
+  "mas": {
+    "entitlements": "./build/entitlements.mas.plist",
+    "entitlementsInherit": "./build/entitlements.mas.inherit.plist",
+    "hardenedRuntime": false
   }
 }
