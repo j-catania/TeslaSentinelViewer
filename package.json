@@ -1,7 +1,7 @@
 {
   "name": "tesler",
   "productName": "TesLEr",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "main": "dist-electron/main/index.js",
   "description": "An open source app for viewing all sentry clips in your TeslaDrive",
   "author": "Julien CATANIA <julien.catania@gmail.com>",
