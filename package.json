@@ -1,5 +1,5 @@
 {
-  "name": "tesla-sentinel-viewer",
+  "name": "tesler",
   "productName": "TesLEr",
   "version": "0.1.3",
   "main": "dist-electron/main/index.js",

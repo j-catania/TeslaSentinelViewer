@@ -5,6 +5,7 @@ on: push
 jobs:
   release:
     strategy:
+      fail-fast: false
       matrix:
         os: [ macos-latest, ubuntu-latest, windows-latest ]
 
