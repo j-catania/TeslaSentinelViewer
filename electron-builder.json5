@@ -7,6 +7,7 @@
   "directories": {
     "output": "release/${version}"
   },
+  "afterSign": "electron-builder-notarize",
   "files": [
     "dist-electron",
     "dist"
@@ -15,7 +16,8 @@
     "artifactName": "${productName}_${version}.${ext}",
     "target": [
       "dmg"
-    ]
+    ],
+    "hardenedRuntime": true
   },
   "win": {
     "target": [
