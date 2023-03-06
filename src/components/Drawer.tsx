@@ -49,37 +49,38 @@ const Drawer = ({onPathSelected}: IDrawer) => {
         <Stack spacing={1} alignItems="flex-start" className={open ? 'opened' : ''}>
             <Select placeholder="Source"
                     endDecorator={
-                        <RefreshIcon onMouseDown={(event) => {
-                            // don't open the popup when clicking on this button
-                            event.stopPropagation();
-                        }}
-                                     onClick={() => {
-                                         updateSources();
-                                     }}/>
+                        <RefreshIcon
+                            onMouseDown={(event: any) => {
+                                // don't open the popup when clicking on this button
+                                event.stopPropagation();
+                            }}
+                            onClick={() => {
+                                updateSources();
+                            }}/>
                     }
-                        onChange={(e, val) => setSource(val as string)}>
+                    onChange={(e, val) => setSource(val as string)}>
 
-                    {volumes?.map(vol => {
-                        const name = vol.split('/')[2];
-                        return <Option key={vol} value={vol}>
-                            <ListItemDecorator>
-                                <UsbIcon color={name === 'TESLADRIVE' ? 'success' : undefined}/>
-                            </ListItemDecorator>
-                            {name}
-                        </Option>
-                    })}
+                {volumes?.map(vol => {
+                    const name = vol.split('/')[2];
+                    return <Option key={vol} value={vol}>
+                        <ListItemDecorator>
+                            <UsbIcon color={name === 'TESLADRIVE' ? 'success' : undefined}/>
+                        </ListItemDecorator>
+                        {name}
+                    </Option>
+                })}
 
-                    <Option value={ROOT_PATH}>{ROOT_PATH}</Option>
+                <Option value={ROOT_PATH}>{ROOT_PATH}</Option>
 
-                </Select>
-                {source && <Clips path={source + SENTRY_PATH}
-                                  onSelection={path => {
-                                      setOpen(false);
-                                      onPathSelected(path);
-                                      setOpennable(true);
-                                  }
-                                  }/>}
-            </Stack>
+            </Select>
+            {source && <Clips path={source + SENTRY_PATH}
+                              onSelection={path => {
+                                  setOpen(false);
+                                  onPathSelected(path);
+                                  setOpennable(true);
+                              }
+                              }/>}
+        </Stack>
 
     </>
 }
