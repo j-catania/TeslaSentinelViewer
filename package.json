@@ -1,7 +1,7 @@
 {
   "name": "tesla-sentinel-viewer",
   "productName": "TesLEr",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "dist-electron/main/index.js",
   "description": "An open source app for viewing all senty clips in your TeslaDrive",
   "author": "Julien CATANIA <julien.catania@gmail.com>",
