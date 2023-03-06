@@ -4,11 +4,14 @@ on: push
 
 jobs:
   release:
-    runs-on: ${{ matrix.os }}
-
     strategy:
       matrix:
         os: [ macos-latest, ubuntu-latest, windows-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    env:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.snapcraft_token }}
 
     steps:
       - name: Check out Git repository
@@ -22,8 +25,6 @@ jobs:
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v1
         if: startsWith(matrix.os, 'ubuntu')
-        env:
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.snapcraft_token }}
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
@@ -32,3 +33,4 @@ jobs:
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
           mac_certs: ${{ secrets.mac_certs }}
           mac_certs_password: ${{ secrets.mac_certs_password }}
+
