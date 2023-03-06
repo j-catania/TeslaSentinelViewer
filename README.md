@@ -3,6 +3,7 @@
 [![Build/release](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/build.yml/badge.svg)](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/build.yml)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/j-catania/TeslaSentinelViewer)](https://github.com/j-catania/TeslaSentinelViewer/releases/latest)
 [![GitHub Release Date](https://img.shields.io/github/release-date/j-catania/TeslaSentinelViewer)](https://github.com/j-catania/TeslaSentinelViewer/releases/latest)
+[![tesler](https://snapcraft.io/tesler/badge.svg)](https://snapcraft.io/tesler)
 
 ## The app
 
