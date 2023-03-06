@@ -10,15 +10,37 @@
     width: calc(100% - 2rem);
     min-height: calc(100% - 2rem);
 
+    > button.toggle-drawer {
+      position: fixed;
+      left: 0.5rem;
+      top: 0.5rem;
+      z-index: 5;
+
+      &:hover {
+        background-color: unset;
+        border-color: unset;
+      }
+
+      &:focus {
+        outline: unset;
+      }
+    }
+
     > .JoyStack-root {
+      background-color: white;
       z-index: 4;
       position: fixed;
       top: 0;
-      left: -37.5rem;
+      left: -42rem;
       width: 40rem;
       overflow: hidden;
       height: 100%;
       transition: left ease-out 250ms;
+      padding: 3.5rem 1rem 1rem 1rem;
+
+      > div {
+        width: 100%;
+      }
 
       &.opened {
         left: 0;
@@ -26,19 +48,17 @@
         overflow: auto;
       }
 
-      > .JoyStack-root {
-        background-color: white;
-        height: 100%;
-        width: 100%;
-        padding: 1rem;
-
-        > div {
-          width: 100%;
-        }
-      }
 
     }
 
+    .MuiCard-root.clip {
+      .MuiCheckbox-root {
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        z-index: 4;
+      }
+    }
   }
 
   div.viewer {

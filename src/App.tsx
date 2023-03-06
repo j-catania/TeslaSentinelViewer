@@ -29,7 +29,11 @@ function App() {
     return (
         <CssVarsProvider>
             <main>
-                <Drawer onPathSelected={setClip}/>
+                <Drawer onPathSelected={path => {
+                    setClip(path);
+                    setCurrentTime(0);
+                    setSliderValue(0);
+                }}/>
 
                 {clip && <>
                     <Viewers root={clip}

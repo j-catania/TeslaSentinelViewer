@@ -1,26 +1,27 @@
 import Viewer from '@/components/Viewer';
-import {Areas} from '@/types/Areas';
-import {useEffect, useState} from 'react';
+import {Areas, Part, Videos} from '@/types';
+import {Fragment, useEffect, useState} from 'react';
 
 interface IViewers {
+    // folder path
     root: string,
+    // changed on slider click
     currentTime: number,
+    // changed on play/pause button action
     paused: boolean,
+    // fired when finding how many videos in folder
     onProcessMaxElements?: (param: number) => void
 }
-
-type Part = { area: Areas, path: string };
-type Videos = { backs: string[], rights: string[], lefts: string[], fronts: string[] };
 
 const Viewers = ({root, currentTime, paused, onProcessMaxElements}: IViewers) => {
     const [activeArea, setActiveArea] = useState<Areas>('front')
     const [videos, setVideos] = useState<Videos>();
     const [parts, setParts] = useState<Part[]>();
-    const [index, setIndex] = useState<number>(0)
-    const [nbParts, setNbParts] = useState<number>(0)
-
+    const [index, setIndex] = useState<number>(0);
+    const [videoTime, setVideoTime] = useState<number>(0);
 
     useEffect(() => {
+        // @ts-ignore
         window.sentinel.getFiles(root)
             .then((vals: string[]) => vals.sort())
             .then((paths: string[]) => ({
@@ -35,7 +36,6 @@ const Viewers = ({root, currentTime, paused, onProcessMaxElements}: IViewers) =>
             })
             .then((vids: Videos) => {
                 onProcessMaxElements?.(vids?.lefts.length);
-                setNbParts(vids?.lefts.length);
 
                 setParts([{
                     area: 'left_repeater',
@@ -51,7 +51,7 @@ const Viewers = ({root, currentTime, paused, onProcessMaxElements}: IViewers) =>
                     path: `file://${vids?.backs[index]}`
                 }])
             })
-    }, []);
+    }, [root]);
 
     useEffect(() => {
         if (index > 0 && index < (videos?.backs.length ?? 0)) {
@@ -72,16 +72,16 @@ const Viewers = ({root, currentTime, paused, onProcessMaxElements}: IViewers) =>
     }, [index])
 
     useEffect(() => {
-        console.log(nbParts)
-        console.log(currentTime % nbParts);
+        setIndex(Math.ceil(currentTime / 60));
+        setVideoTime(currentTime % 60);
     }, [currentTime])
 
 
-    return (<>
+    return (<Fragment>
         {parts?.map((part) => {
             return <div key={part.area}
                         className={'viewer ' + part.area + (part.area === activeArea ? ' active' : '')}>
-                <Viewer currentTime={currentTime}
+                <Viewer currentTime={videoTime}
                         paused={paused}
                         src={part.path}
                         onClick={() => setActiveArea(part.area)}
@@ -94,7 +94,7 @@ const Viewers = ({root, currentTime, paused, onProcessMaxElements}: IViewers) =>
         })}
 
         <div className={'viewer empty-video ' + activeArea}></div>
-    </>)
+    </Fragment>)
 }
 
 export default Viewers;
