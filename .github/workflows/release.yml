@@ -33,6 +33,4 @@ jobs:
 
       - name: Push changes
         run: git push
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
 
