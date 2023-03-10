@@ -9,7 +9,7 @@ on:
         required: true
 
 jobs:
-  release:
+  ask-release:
     runs-on: ubuntu-latest
     steps:
       - name: Check out Git repository
@@ -30,4 +30,10 @@ jobs:
 
       - name: Push changes
         run: git push --follow-tags
+
+    send-release:
+      need: ask-release
+      uses: ./.github/workflows/build.yml
+      with:
+        is-release: true
 
