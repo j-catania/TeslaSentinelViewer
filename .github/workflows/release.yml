@@ -28,9 +28,6 @@ jobs:
       - name: Release
         run: npm version ${{ github.event.inputs.version }}
 
-      - name: PreRelease
-        run: npm version prerelease --preid=alpha --no-git-tag-version
-
       - name: Push changes
-        run: git push
+        run: git push --follow-tags
 
