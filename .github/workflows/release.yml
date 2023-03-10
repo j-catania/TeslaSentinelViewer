@@ -1,0 +1,32 @@
+name: Build/release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: Version to release
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Release
+        run: npm version ${{ github.event.inputs.version }}
+
+      - name: npm version prerelease --preid=alpha --no-git-tag-version
+
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
