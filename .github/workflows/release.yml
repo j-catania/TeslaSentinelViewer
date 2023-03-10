@@ -23,7 +23,8 @@ jobs:
       - name: Release
         run: npm version ${{ github.event.inputs.version }}
 
-      - name: npm version prerelease --preid=alpha --no-git-tag-version
+      - name: PreRelease
+        run: npm version prerelease --preid=alpha --no-git-tag-version
 
       - name: Commit & Push changes
         uses: actions-js/push@master
