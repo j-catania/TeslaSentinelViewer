@@ -11,6 +11,9 @@ on:
       is-release:
         required: true
         type: boolean
+      version:
+        required: true
+        type: string
 
 jobs:
   release:
