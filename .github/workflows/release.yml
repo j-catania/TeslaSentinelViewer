@@ -31,9 +31,9 @@ jobs:
       - name: Push changes
         run: git push --follow-tags
 
-    send-release:
-      need: ask-release
-      uses: ./.github/workflows/build.yml
-      with:
-        is-release: true
+  send-release:
+    needs: ask-release
+    uses: ./.github/workflows/build.yml
+    with:
+      is-release: true
 
