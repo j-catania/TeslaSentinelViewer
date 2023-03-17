@@ -29,6 +29,7 @@ _An open source app for viewing all sentry clips in your TeslaDrive_
 ### Bugs
 
 - [#1](https://github.com/j-catania/TeslaSentinelViewer/issues/1) Moving time via slider
+- [#4](https://github.com/j-catania/TeslaSentinelViewer/issues/4) Reading USB drive for Windows
 
 ## Thanks
 
