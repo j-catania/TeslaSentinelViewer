@@ -31,16 +31,20 @@ jobs:
       - name: Push changes
         run: git push --follow-tags
         
-      - name: Get version to send to build job
+      - name: Create version file
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          echo "APP_VERSION=v$VERSION" >> $GITHUB_ENV
+          echo ${VERSION} >> version
+      - name: Upload version file
+        uses: actions/upload-artifact@v3
+        with:
+          name: version
+          path: version
 
   send-release:
     needs: ask-release
     uses: ./.github/workflows/build.yml
     with:
       is-release: true
-      version: ${{env.APP_VERSION}}
     secrets: inherit
 
