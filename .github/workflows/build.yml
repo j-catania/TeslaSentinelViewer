@@ -28,11 +28,23 @@ jobs:
       SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.snapcraft_token }}
       IS_RELEASE: ${{ inputs.is-release }}
 
-    steps:          
+    steps:
+    
+      - name: Download version file
+        uses: actions/download-artifact@v2
+        with:
+          name: version
+      - name: Set version to ENV_VAR
+        shell: bash
+        run: |
+          export VERSION=`cat version`
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+          rm version
+          
       - name: Check out Git repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.version }}
+          ref: ${{env.APP_VERSION}}
 
       - name: Install Node.js 16
         uses: actions/setup-node@v3
