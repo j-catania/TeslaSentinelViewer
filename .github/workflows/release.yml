@@ -30,6 +30,16 @@ jobs:
 
       - name: Push changes
         run: git push --follow-tags
+        
+      - name: Create version file
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo ${VERSION} >> version
+      - name: Upload version file
+        uses: actions/upload-artifact@v3
+        with:
+          name: version
+          path: version
 
   send-release:
     needs: ask-release
