@@ -34,7 +34,7 @@ jobs:
       - name: Create version file
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          echo ${VERSION} >> version
+          echo v${VERSION} >> version
       - name: Upload version file
         uses: actions/upload-artifact@v3
         with:
