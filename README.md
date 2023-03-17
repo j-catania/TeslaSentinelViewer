@@ -21,14 +21,14 @@ _An open source app for viewing all sentry clips in your TeslaDrive_
 
 ### Features
 
-- Add event time in slider #3
-- See other clips from drive #2
+- [#3](https://github.com/j-catania/TeslaSentinelViewer/issues/3) Add event time in slider
+- [#2](https://github.com/j-catania/TeslaSentinelViewer/issues/2) See other clips from drive #2
 - Deploy to Mac App Store
 - Deploy to Windows Store
 
 ### Bugs
 
-- Moving time via slider #1
+- [#1](https://github.com/j-catania/TeslaSentinelViewer/issues/1) Moving time via slider
 
 ## Thanks
 
