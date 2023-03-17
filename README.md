@@ -23,6 +23,8 @@ _An open source app for viewing all sentry clips in your TeslaDrive_
 
 - Add event time in slider #3
 - See other clips from drive #2
+- Deploy to Mac App Store
+- Deploy to Windows Store
 
 ### Bugs
 
