@@ -25,6 +25,7 @@ _An open source app for viewing all sentry clips in your TeslaDrive_
 - [#2](https://github.com/j-catania/TeslaSentinelViewer/issues/2) See other clips from drive #2
 - Deploy to Mac App Store
 - Deploy to Windows Store
+- Adding some tests (with Jest and playwright (e2e))
 
 ### Bugs
 
