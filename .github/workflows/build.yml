@@ -29,10 +29,12 @@ jobs:
     
       - name: Download version file
         uses: actions/download-artifact@v2
+        if: ${{ env.IS_RELEASE }}
         with:
           name: version
       - name: Set version to ENV_VAR
         shell: bash
+        if: ${{ env.IS_RELEASE }}
         run: |
           export VERSION=`cat version`
           echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
@@ -41,7 +43,7 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v3
         with:
-          ref: ${{env.APP_VERSION}}
+          ref: ${{ env.IS_RELEASE && env.APP_VERSION || '' }}
 
       - name: Install Node.js 16
         uses: actions/setup-node@v3
