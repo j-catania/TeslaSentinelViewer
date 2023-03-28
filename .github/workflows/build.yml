@@ -9,7 +9,7 @@ on:
   workflow_call:
     inputs:
       is-release:
-        required: true
+        default: false
         type: boolean
 
 jobs:
