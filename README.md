@@ -1,7 +1,7 @@
 # TesLEr - Tesla sentineL viewEr
 
 [![Build/release](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/build.yml/badge.svg)](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/build.yml)
-[![Ask a Release](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/release.yml/badge.svg)](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/release.yml)
+[![CodeQL](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/codeql.yml/badge.svg)](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/codeql.yml)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/j-catania/TeslaSentinelViewer)](https://github.com/j-catania/TeslaSentinelViewer/releases/latest)
 [![GitHub Release Date](https://img.shields.io/github/release-date/j-catania/TeslaSentinelViewer)](https://github.com/j-catania/TeslaSentinelViewer/releases/latest)
 [![tesler](https://snapcraft.io/tesler/badge.svg)](https://snapcraft.io/tesler)
