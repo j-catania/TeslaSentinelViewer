@@ -23,7 +23,7 @@ jobs:
 
     env:
       SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.snapcraft_token }}
-      IS_RELEASE: ${{ inputs.is-release }}
+      IS_RELEASE: ${{ inputs.is-release || false}}
 
     steps:
     
