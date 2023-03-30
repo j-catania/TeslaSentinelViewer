@@ -61,6 +61,7 @@ jobs:
           echo '${{ secrets.api_key }}' > ~/private_keys/AuthKey_${{ secrets.api_key_id }}.p8
 
       - name: Build/release Electron app
+        id: builder
         uses: samuelmeuli/action-electron-builder@v1
         with:
           github_token: ${{ secrets.github_token }}
@@ -73,6 +74,6 @@ jobs:
           API_KEY_ISSUER_ID: ${{ secrets.api_key_issuer_id }}
 
       - name: log notarizing log file
-        if: ${{ startsWith(matrix.os, 'macos') && failure() }}
+        if: ${{ startsWith(matrix.os, 'macos') && steps.builder.conclusion == 'failure' }}
         run: cat notarization-error.log
 
