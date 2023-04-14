@@ -19,7 +19,9 @@ const Viewers = ({event, currentTime, paused, onProcessMaxElements, onProcessSta
     const [activeArea, setActiveArea] = useState<Areas>('front')
     const [videos, setVideos] = useState<Videos>();
     const [parts, setParts] = useState<Part[]>();
+    // video index in the array
     const [index, setIndex] = useState<number>(0);
+    // wanted currentTime in the video
     const [videoTime, setVideoTime] = useState<number>(0);
 
     useEffect(() => {
@@ -64,7 +66,8 @@ const Viewers = ({event, currentTime, paused, onProcessMaxElements, onProcessSta
     }, [event]);
 
     useEffect(() => {
-        if (index > 0 && index < (videos?.backs.length ?? 0)) {
+        console.log({index})
+        if (index < (videos?.backs.length ?? 0)) {
             setParts([{
                 area: 'left_repeater',
                 path: `file://${videos?.lefts[index]}`
@@ -82,7 +85,7 @@ const Viewers = ({event, currentTime, paused, onProcessMaxElements, onProcessSta
     }, [index])
 
     useEffect(() => {
-        setIndex(Math.ceil(currentTime / 60));
+        setIndex(Math.trunc(currentTime / 60));
         setVideoTime(currentTime % 60);
     }, [currentTime])
 

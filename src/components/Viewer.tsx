@@ -22,7 +22,7 @@ const Viewer = ({src, currentTime, onClick, onEnded, paused}: IViewer) => {
     }, [paused])
 
     useEffect(() => {
-        console.log(video.current?.currentTime, currentTime);
+        console.log({current: video.current?.currentTime, wanted: currentTime});
         if (video.current) {
             video.current.currentTime = currentTime;
         }
