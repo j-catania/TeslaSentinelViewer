@@ -1,8 +1,9 @@
 export type Event = {
-    timestamp: string,
+    timestamp: Date,
     city: string,
     est_lat: number,
     est_lon: number,
     reason: string,
-    camera: number
+    camera: number,
+    root: string,
 }

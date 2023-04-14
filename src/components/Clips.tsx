@@ -4,10 +4,11 @@ import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import {Badge, Box, Button, Divider, Grid, Modal, ModalDialog, Stack, Typography} from '@mui/joy';
 import IconButton from '@mui/joy/IconButton';
 import {useEffect, useState} from 'react';
+import {Event} from "@/types";
 
 interface IClips {
     path: string,
-    onSelection?: (param: string) => void,
+    onSelection?: (event?: Event) => void,
 }
 
 const Clips = ({path, onSelection}: IClips) => {
@@ -44,9 +45,9 @@ const Clips = ({path, onSelection}: IClips) => {
                 <Grid key={item}>
                     <Clip path={item}
                           active={activeClip === item}
-                          onSelection={(param: string) => {
-                              onSelection?.(param)
-                              setActiveClip(param)
+                          onSelection={(event?: Event) => {
+                              onSelection?.(event)
+                              setActiveClip(event?.root)
                           }}
                           onSelectionChange={(seleted: boolean) => {
                               if (seleted) {

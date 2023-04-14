@@ -19,7 +19,7 @@ import {useEffect, useState} from 'react';
 
 interface IClip {
     path: string,
-    onSelection?: (param: string) => void,
+    onSelection?: (event?: Event) => void,
     onDeletion?: (path: string) => void,
     active?: boolean,
     onSelectionChange?: (selected: boolean) => void,
@@ -38,7 +38,8 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
         window.sentinel.readStringFile(`${path}/event.json`)
             .then((str: string) => {
                 const parsed: Event = JSON.parse(str);
-                parsed.timestamp = new Date(parsed.timestamp).toLocaleString();
+                parsed.timestamp = new Date(parsed.timestamp);
+                parsed.root = path;
                 setEvent(parsed)
             })
     }, []);
@@ -51,7 +52,7 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
                   width: '15rem',
                   backgroundColor: active ? 'var(--joy-palette-primary-softBg)' : ''
               }}
-              onClick={() => onSelection?.(path)}>
+              onClick={() => onSelection?.(event)}>
             <CardOverflow>
                 <Checkbox disabled={false}
                           onClick={e => {
@@ -73,7 +74,7 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
                         {event?.city}
                     </Typography>
                     <Typography level="body2" sx={{mt: 0.5, mb: 2}} startDecorator={<AccessTimeIcon/>}>
-                        {event?.timestamp}
+                        {event?.timestamp.toLocaleString()}
                     </Typography>
                 </div>
                 <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>

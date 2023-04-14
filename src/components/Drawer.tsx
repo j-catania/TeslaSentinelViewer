@@ -8,15 +8,16 @@ import {ListItemDecorator, Option, Select} from '@mui/joy';
 import IconButton from '@mui/joy/IconButton';
 import Stack from '@mui/joy/Stack';
 import {useEffect, useState} from 'react';
+import {Event} from "@/types";
 
 const ROOT_PATH = '/Users/juu/Downloads/TESLADRIVE';
 const SENTRY_PATH = `/TeslaCam/SentryClips`;
 
 interface IDrawer {
-    onPathSelected: (param: string) => void,
+    onEventSelected: (event?: Event) => void,
 }
 
-const Drawer = ({onPathSelected}: IDrawer) => {
+const Drawer = ({onEventSelected}: IDrawer) => {
     const [volumes, setVolumes] = useState<string[]>();
     const [source, setSource] = useState<string>();
     const [open, setOpen] = useState<boolean>(true);
@@ -71,13 +72,13 @@ const Drawer = ({onPathSelected}: IDrawer) => {
                 })}
                 {volumes?.length === 0 &&
                     <Option disabled={true}>Aucune clef USB trouvée</Option>}
-                {/*<Option value={ROOT_PATH}>{ROOT_PATH}</Option>*/}
+                <Option value={ROOT_PATH}>{ROOT_PATH}</Option>
 
             </Select>
             {source && <Clips path={source + SENTRY_PATH}
-                              onSelection={path => {
+                              onSelection={event => {
                                   setOpen(false);
-                                  onPathSelected(path);
+                                  onEventSelected(event);
                                   setOpennable(true);
                               }
                               }/>}

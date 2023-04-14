@@ -1,19 +1,21 @@
 import Viewer from '@/components/Viewer';
-import {Areas, Part, Videos} from '@/types';
+import {Areas, Event, Part, Videos} from '@/types';
 import {Fragment, useEffect, useState} from 'react';
 
 interface IViewers {
     // folder path
-    root: string,
+    event: Event,
     // changed on slider click
     currentTime: number,
     // changed on play/pause button action
     paused: boolean,
     // fired when finding how many videos in folder
     onProcessMaxElements?: (param: number) => void
+    // fired when finding the start date
+    onProcessStartDate?: (param: Date) => void
 }
 
-const Viewers = ({root, currentTime, paused, onProcessMaxElements}: IViewers) => {
+const Viewers = ({event, currentTime, paused, onProcessMaxElements, onProcessStartDate}: IViewers) => {
     const [activeArea, setActiveArea] = useState<Areas>('front')
     const [videos, setVideos] = useState<Videos>();
     const [parts, setParts] = useState<Part[]>();
@@ -22,7 +24,7 @@ const Viewers = ({root, currentTime, paused, onProcessMaxElements}: IViewers) =>
 
     useEffect(() => {
         // @ts-ignore
-        window.sentinel.getFiles(root)
+        window.sentinel.getFiles(event.root)
             .then((vals: string[]) => vals.sort())
             .then((paths: string[]) => ({
                 backs: paths.filter(item => item.indexOf('-back.mp4') > -1),
@@ -32,10 +34,18 @@ const Viewers = ({root, currentTime, paused, onProcessMaxElements}: IViewers) =>
             }))
             .then((vids: Videos) => {
                 setVideos(vids);
-                return vids;
-            })
-            .then((vids: Videos) => {
-                onProcessMaxElements?.(vids?.lefts.length);
+                let startedDateStr = vids.lefts[0]
+                    .split('/')
+                    .pop()
+                    ?.replace('-left_repeater.mp4', '')
+                    .replace('_', 'T') ?? '';
+                const explodedStartedDate = startedDateStr.split('T');
+                startedDateStr = explodedStartedDate[0] + 'T' + explodedStartedDate[1].replaceAll('-', ':');
+
+                const startedDate = new Date(startedDateStr ?? '');
+
+                onProcessStartDate?.(startedDate)
+                onProcessMaxElements?.(vids.lefts.length);
 
                 setParts([{
                     area: 'left_repeater',
@@ -51,7 +61,7 @@ const Viewers = ({root, currentTime, paused, onProcessMaxElements}: IViewers) =>
                     path: `file://${vids?.backs[index]}`
                 }])
             })
-    }, [root]);
+    }, [event]);
 
     useEffect(() => {
         if (index > 0 && index < (videos?.backs.length ?? 0)) {
