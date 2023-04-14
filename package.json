@@ -16,8 +16,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "package": "electron-builder",
-    "preview": "vite preview",
-    "e2e": "npx playwright test"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
