@@ -10,7 +10,7 @@ import Stack from '@mui/joy/Stack';
 import {useEffect, useState} from 'react';
 import {Event} from "@/types";
 
-const ROOT_PATH = '/Users/juu/Downloads/TESLADRIVE';
+const TEST_PATH = '/Users/juu/Downloads/TESLADRIVE';
 const SENTRY_PATH = `/TeslaCam/SentryClips`;
 
 interface IDrawer {
@@ -32,7 +32,7 @@ const Drawer = ({onEventSelected}: IDrawer) => {
         window.sentinel.getFiles('/Volumes')
             .then((vols: string[]) => vols.filter(vol => vol.indexOf('Macintosh HD') === -1
                 && vol.indexOf('com.apple.') === -1
-                && vol.indexOf('Time Machine') > -1))
+                && vol.indexOf('Time Machine') === -1))
             .then(setVolumes)
     }
     return <>
@@ -71,8 +71,8 @@ const Drawer = ({onEventSelected}: IDrawer) => {
                     </Option>
                 })}
                 {volumes?.length === 0 &&
-                    <Option disabled={true}>Aucune clef USB trouvée</Option>}
-                <Option value={ROOT_PATH}>{ROOT_PATH}</Option>
+                    <Option disabled={true}>Aucun périphérique USB trouvé</Option>}
+                {/*<Option value={TEST_PATH}>{TEST_PATH}</Option>*/}
 
             </Select>
             {source && <Clips path={source + SENTRY_PATH}
