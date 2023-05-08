@@ -45,6 +45,6 @@ jobs:
     needs: ask-release
     uses: ./.github/workflows/build.yml
     with:
-      is-release: true
+      is-release: 'true'
     secrets: inherit
 
