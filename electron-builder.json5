@@ -15,7 +15,8 @@
   "mac": {
     "artifactName": "${productName}_${version}.${ext}",
     "target": [
-      "mas"
+      "mas",
+      "dmg"
     ],
     "hardenedRuntime": true
   },
