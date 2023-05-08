@@ -9,8 +9,8 @@ on:
   workflow_call:
     inputs:
       is-release:
-        default: false
-        type: boolean
+        default: 'false'
+        type: string
 
 jobs:
   release:
@@ -23,18 +23,18 @@ jobs:
 
     env:
       SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.snapcraft_token }}
-      IS_RELEASE: ${{ inputs.is-release || false}}
+      IS_RELEASE: ${{ inputs.is-release }}
 
     steps:
     
       - name: Download version file
         uses: actions/download-artifact@v2
-        if: ${{ env.IS_RELEASE == true }}
+        if: ${{ env.IS_RELEASE == 'true' }}
         with:
           name: version
       - name: Set version to ENV_VAR
         shell: bash
-        if: ${{ env.IS_RELEASE == true }}
+        if: ${{ env.IS_RELEASE == 'true' }}
         run: |
           export VERSION=`cat version`
           echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
@@ -43,7 +43,7 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ env.IS_RELEASE == true && env.APP_VERSION || '' }}
+          ref: ${{ env.IS_RELEASE == 'true' && env.APP_VERSION || '' }}
 
       - name: Install Node.js 16
         uses: actions/setup-node@v3
@@ -52,10 +52,10 @@ jobs:
 
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v1
-        if: ${{ env.IS_RELEASE == true && startsWith(matrix.os, 'ubuntu') }}
+        if: ${{ env.IS_RELEASE == 'true' && startsWith(matrix.os, 'ubuntu') }}
 
       - name: Prepare for app notarization
-        if: ${{ env.IS_RELEASE == true && startsWith(matrix.os, 'macos') }}
+        if: ${{ env.IS_RELEASE == 'true' && startsWith(matrix.os, 'macos') }}
         run: |
           mkdir -p ~/private_keys/
           echo '${{ secrets.api_key }}' > ~/private_keys/AuthKey_${{ secrets.api_key_id }}.p8
@@ -65,7 +65,7 @@ jobs:
         uses: samuelmeuli/action-electron-builder@v1
         with:
           github_token: ${{ secrets.github_token }}
-          release: ${{ env.IS_RELEASE == true }}
+          release: ${{ env.IS_RELEASE == 'true' }}
           mac_certs: ${{ secrets.mac_certs }}
           mac_certs_password: ${{ secrets.mac_certs_password }}
         env:
