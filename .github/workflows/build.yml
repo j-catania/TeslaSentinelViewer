@@ -75,6 +75,6 @@ jobs:
           API_KEY_ISSUER_ID: ${{ secrets.api_key_issuer_id }}
 
       - name: log notarizing log file
-        if: ${{ startsWith(matrix.os, 'macos') && steps.builder.conclusion == 'failure' }}
+        if: ${{ startsWith(matrix.os, 'macos') && steps.builder.outcome == 'failure' }}
         run: cat notarization-error.log
 
