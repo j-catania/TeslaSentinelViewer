@@ -34,7 +34,7 @@
       left: calc(-40vw - 2rem);
       width: 40vw;
       overflow: hidden;
-      height: 100%;
+      height: calc(100vh - 4.5rem);
       transition: left ease-out 250ms;
       padding: 3.5rem 1rem 1rem 1rem;
 
