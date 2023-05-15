@@ -62,7 +62,7 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
                           }}/>
                 <AspectRatio ratio="2">
                     <img
-                        src={`data:image/png;base64,${thumb}`}
+                        src={thumb ? `data:image/png;base64,${thumb}` : ''}
                         loading="lazy"
                         alt=""
                     />
