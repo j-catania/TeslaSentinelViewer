@@ -62,7 +62,7 @@ jobs:
 
       - name: Build/release Electron app
         id: builder
-        uses: samuelmeuli/action-electron-builder@v1
+        uses: helpmii-team/action-electron-builder@stable
         continue-on-error: true
         with:
           github_token: ${{ secrets.github_token }}
