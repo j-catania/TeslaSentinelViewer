@@ -26,7 +26,7 @@
       }
     }
 
-    > .JoyStack-root {
+    > .MuiStack-root {
       background-color: white;
       z-index: 4;
       position: fixed;
@@ -119,7 +119,7 @@
     display: flex;
     justify-content: center;
 
-    .JoyStack-root {
+    .MuiStack-root {
       padding: 0 1rem;
       background-color: rgba(255, 255, 255, 0.95);
       border-radius: 25px;

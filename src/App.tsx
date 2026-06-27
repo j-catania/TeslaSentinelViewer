@@ -2,9 +2,8 @@ import Drawer from '@/components/Drawer';
 import Viewers from '@/components/Viewers';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import {Stack} from '@mui/joy';
-import Slider from '@mui/joy/Slider';
-import {CssVarsProvider} from '@mui/joy/styles'
+import Slider from '@mui/material/Slider';
+import Stack from '@mui/material/Stack';
 import {useEffect, useState} from 'react'
 import './App.scss'
 import {Event} from "@/types";
@@ -29,8 +28,7 @@ function App() {
 
 
     return (
-        <CssVarsProvider>
-            <main>
+        <main>
                 <Drawer onEventSelected={event => {
                     setEvent(event);
                     setCurrentTime(0);
@@ -65,14 +63,20 @@ function App() {
                                     setSliderValue(val as number)
                                 }}
                                 sx={{
-                                    "--Slider-mark-size": "10px",
-                                    "--Slider-mark-background": '#de0000'
+                                    '& .MuiSlider-mark': {
+                                        width: '10px',
+                                        height: '10px',
+                                        borderRadius: '50%',
+                                        backgroundColor: '#de0000',
+                                    },
+                                    '& .MuiSlider-markActive': {
+                                        backgroundColor: '#de0000',
+                                    }
                                 }}/>
                         </Stack>
                     </div>
                 </>}
             </main>
-        </CssVarsProvider>
     )
 }
 

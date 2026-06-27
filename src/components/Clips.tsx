@@ -3,8 +3,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import {Badge, Box, Button, Divider, Grid, Modal, ModalDialog, Stack, Typography} from '@mui/joy';
-import IconButton from '@mui/joy/IconButton';
+import Badge from '@mui/material/Badge';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import {useEffect, useState} from 'react';
 import {Event} from "@/types";
 
@@ -39,7 +50,7 @@ const Clips = ({path, onSelection}: IClips) => {
 
     return <Stack spacing={1} alignItems="flex-start">
         <Stack direction="row">
-            <Badge badgeContent={selectedClips.length}>
+            <Badge badgeContent={selectedClips.length} color="primary">
                 <IconButton
                     onClick={_ => {
                         setOpenDeletion(true)
@@ -51,26 +62,22 @@ const Clips = ({path, onSelection}: IClips) => {
             <Stack direction="column">
                 <Box sx={{display: "flex", gap: 1}}>
                     <IconButton
-                        size="sm"
-                        color="neutral"
-                        variant="outlined"
+                        size="small"
                         disabled={page === 0}
                         onClick={() => setPage(page - 1)}
-                        sx={{bgcolor: "background.surface"}}
+                        sx={{bgcolor: "background.paper"}}
                     >
                         <KeyboardArrowLeftIcon/>
                     </IconButton>
                     <IconButton
-                        size="sm"
-                        color="neutral"
-                        variant="outlined"
+                        size="small"
                         disabled={
                             dirsSize !== -1
                                 ? page >= Math.ceil((dirsSize ?? 0) / ITEM_PER_PAGE) - 1
                                 : false
                         }
                         onClick={() => setPage(page + 1)}
-                        sx={{bgcolor: "background.surface"}}
+                        sx={{bgcolor: "background.paper"}}
                     >
                         <KeyboardArrowRightIcon/>
                     </IconButton>
@@ -80,7 +87,7 @@ const Clips = ({path, onSelection}: IClips) => {
 
         <Grid container spacing={1} justifyContent="center">
             {dirs?.map(item =>
-                <Grid key={item}>
+                <Grid item key={item}>
                     <Clip path={item}
                           active={activeClip === item}
                           onSelection={(event?: Event) => {
@@ -98,50 +105,46 @@ const Clips = ({path, onSelection}: IClips) => {
                 </Grid>
             )}
         </Grid>
-        <Modal open={openDeletion}
-               onClose={() => setOpenDeletion(false)}>
-            <ModalDialog
-                variant="outlined"
-                role="alertdialog"
-                aria-labelledby="alert-dialog-modal-title"
-                aria-describedby="alert-dialog-modal-description"
-            >
-                <Typography
-                    id="alert-dialog-modal-title"
-                    component="h2"
-                    startDecorator={<WarningRoundedIcon/>}
-                >
-                    Confirmation
-                </Typography>
-                <Divider/>
-                <Typography id="alert-dialog-modal-description" textColor="text.tertiary">
+        <Dialog
+               open={openDeletion}
+               onClose={() => setOpenDeletion(false)}
+               aria-labelledby="alert-dialog-modal-title"
+               aria-describedby="alert-dialog-modal-description"
+        >
+            <DialogTitle id="alert-dialog-modal-title" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <WarningRoundedIcon/>
+                Confirmation
+            </DialogTitle>
+            <Divider/>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-modal-description">
                     Êtes vous sûr de vouloir supprimer {selectedClips.length} clips ?
-                </Typography>
-                <Box sx={{display: 'flex', gap: 1, justifyContent: 'flex-end', pt: 2}}>
-                    <Button variant="plain" color="neutral" onClick={(e) => {
-                        e.stopPropagation();
-                        setOpenDeletion(false);
-                    }}>
-                        Annuler
-                    </Button>
-                    <Button variant="solid" color="danger" onClick={(e) => {
-                        e.stopPropagation();
-                        const deletingProm = selectedClips.map(path => {
-                            // @ts-ignore
-                            return window.sentinel.remove(path)
-                        });
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button variant="text" color="inherit" onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenDeletion(false);
+                }}>
+                    Annuler
+                </Button>
+                <Button variant="contained" color="error" onClick={(e) => {
+                    e.stopPropagation();
+                    const deletingProm = selectedClips.map(path => {
+                        // @ts-ignore
+                        return window.sentinel.remove(path)
+                    });
 
-                        Promise.all(deletingProm).then(_ => {
-                            setSelectedClips([]);
-                            updateFiles();
-                        })
-                        setOpenDeletion(false);
-                    }}>
-                        Supprimer
-                    </Button>
-                </Box>
-            </ModalDialog>
-        </Modal>
+                    Promise.all(deletingProm).then(_ => {
+                        setSelectedClips([]);
+                        updateFiles();
+                    })
+                    setOpenDeletion(false);
+                }}>
+                    Supprimer
+                </Button>
+            </DialogActions>
+        </Dialog>
     </Stack>
 }
 
