@@ -1,4 +1,4 @@
-import {MutableRefObject, ReactEventHandler, useEffect, useRef} from 'react';
+import {ReactEventHandler, useEffect, useRef} from 'react';
 
 interface IViewer {
     src: string,
@@ -11,7 +11,7 @@ interface IViewer {
 }
 
 const Viewer = ({src, currentTime, onClick, onEnded, paused}: IViewer) => {
-    const video = useRef<HTMLVideoElement>();
+    const video = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         if (paused) {
@@ -31,7 +31,7 @@ const Viewer = ({src, currentTime, onClick, onEnded, paused}: IViewer) => {
     return (
         <video autoPlay
                key={src}
-               ref={video as MutableRefObject<HTMLVideoElement>}
+               ref={video}
                muted
                onEnded={onEnded}
                width="100%"
