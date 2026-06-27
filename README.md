@@ -1,4 +1,5 @@
 # TesLEr - Tesla sentineL viewEr
+> An open source app for viewing all sentry clips in your TeslaDrive
 
 [![Build/release](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/build.yml/badge.svg)](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/build.yml)
 [![CodeQL](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/codeql.yml/badge.svg)](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/codeql.yml)
@@ -7,7 +8,6 @@
 [![tesler](https://snapcraft.io/tesler/badge.svg)](https://snapcraft.io/tesler)
 [![HitCount](https://hits.dwyl.com/j-catania/TeslaSentinelViewer.svg)](https://hits.dwyl.com/j-catania/TeslaSentinelViewer)
 
-_An open source app for viewing all sentry clips in your TeslaDrive_
 <div align="center">
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/6V6hZbN5eiw/0.jpg)](https://www.youtube.com/watch?v=6V6hZbN5eiw)
