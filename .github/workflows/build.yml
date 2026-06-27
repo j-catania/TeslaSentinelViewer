@@ -76,5 +76,5 @@ jobs:
 
       - name: log notarizing log file
         if: ${{ startsWith(matrix.os, 'macos') && steps.builder.outcome == 'failure' }}
-        run: cat notarization-error.log
+        run: cat notarization-error.log || true
 
