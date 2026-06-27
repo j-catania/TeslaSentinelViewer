@@ -15,10 +15,16 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
       - name: Install Node.js 26
         uses: actions/setup-node@v4
         with:
           node-version: 26
+          cache: 'pnpm'
 
       - name: Configure GIT
         run: |
