@@ -1,86 +1,123 @@
-name: Build/release
+name: Build
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_call:
     inputs:
       is-release:
         default: 'false'
         type: string
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
-  release:
+  build:
+    name: Build (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-latest, ubuntu-latest, windows-latest ]
+        include:
+          - os: macos-latest
+            artifact: mac
+          - os: ubuntu-latest
+            artifact: linux
+          - os: windows-latest
+            artifact: windows
 
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+
+    permissions:
+      contents: write
 
     env:
-      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.snapcraft_token }}
-      IS_RELEASE: ${{ inputs.is-release }}
+      IS_RELEASE: ${{ inputs.is-release || 'false' }}
 
     steps:
-    
       - name: Download version file
-        uses: actions/download-artifact@v4
-        if: ${{ env.IS_RELEASE == 'true' }}
+        uses: actions/download-artifact@v6
+        if: env.IS_RELEASE == 'true'
         with:
           name: version
-      - name: Set version to ENV_VAR
+
+      - name: Set release version
+        if: env.IS_RELEASE == 'true'
         shell: bash
-        if: ${{ env.IS_RELEASE == 'true' }}
         run: |
-          export VERSION=`cat version`
+          VERSION=$(cat version)
           echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
           rm version
-          
-      - name: Check out Git repository
-        uses: actions/checkout@v4
+
+      - name: Checkout
+        uses: actions/checkout@v6
         with:
           ref: ${{ env.IS_RELEASE == 'true' && env.APP_VERSION || '' }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
         with:
           version: 11
 
-      - name: Install Node.js 26
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
           node-version: 26
-          cache: 'pnpm'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
 
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v2
-        if: ${{ env.IS_RELEASE == 'true' && startsWith(matrix.os, 'ubuntu') }}
-
-      - name: Prepare for app notarization
-        if: ${{ env.IS_RELEASE == 'true' && startsWith(matrix.os, 'macos') }}
-        run: |
-          mkdir -p ~/private_keys/
-          echo '${{ secrets.api_key }}' > ~/private_keys/AuthKey_${{ secrets.api_key_id }}.p8
-
-      - name: Build/release Electron app
-        id: builder
-        uses: helpmii-team/action-electron-builder@stable
-        continue-on-error: true
-        with:
-          github_token: ${{ secrets.github_token }}
-          release: ${{ env.IS_RELEASE == 'true' }}
-          mac_certs: ${{ secrets.mac_certs }}
-          mac_certs_password: ${{ secrets.mac_certs_password }}
+        if: startsWith(matrix.os, 'ubuntu') && env.IS_RELEASE == 'true'
         env:
-          # macOS notarization API key
-          API_KEY_ID: ${{ secrets.api_key_id }}
-          API_KEY_ISSUER_ID: ${{ secrets.api_key_issuer_id }}
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.snapcraft_token }}
 
-      - name: log notarizing log file
-        if: ${{ startsWith(matrix.os, 'macos') && steps.builder.outcome == 'failure' }}
+      - name: Prepare macOS notarization key
+        if: startsWith(matrix.os, 'macos') && env.IS_RELEASE == 'true'
+        run: |
+          mkdir -p "$HOME/private_keys/"
+          echo "$APPLE_API_KEY_CONTENT" > "$HOME/private_keys/AuthKey_${{ secrets.api_key_id }}.p8"
+          echo "APPLE_API_KEY=$HOME/private_keys/AuthKey_${{ secrets.api_key_id }}.p8" >> $GITHUB_ENV
+        env:
+          APPLE_API_KEY_CONTENT: ${{ secrets.api_key }}
+
+      - name: Package
+        if: github.event_name != 'pull_request'
+        run: pnpm run package -- --publish ${{ env.IS_RELEASE == 'true' && 'always' || 'never' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_LINK: ${{ secrets.mac_certs }}
+          CSC_KEY_PASSWORD: ${{ secrets.mac_certs_password }}
+          APPLE_API_KEY: ${{ env.APPLE_API_KEY }}
+          APPLE_API_KEY_ID: ${{ secrets.api_key_id }}
+          APPLE_API_KEY_ISSUER_ID: ${{ secrets.api_key_issuer_id }}
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.snapcraft_token }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v6
+        if: github.event_name != 'pull_request'
+        with:
+          name: ${{ matrix.artifact }}-${{ github.sha }}
+          path: |
+            release/**/*.dmg
+            release/**/*.pkg
+            release/**/*.exe
+            release/**/*.AppImage
+            release/**/*.snap
+            release/**/*.deb
+          if-no-files-found: ignore
+          compression-level: 0
+
+      - name: Print notarization error log
+        if: failure() && startsWith(matrix.os, 'macos')
         run: cat notarization-error.log || true
 

@@ -1,54 +1,61 @@
-name: Ask a Release
+name: Release
 
 on:
   workflow_dispatch:
     inputs:
       version:
         type: string
-        description: Version to release
+        description: Version to release (e.g. 1.0.0)
         required: true
 
 jobs:
-  ask-release:
+  prepare-release:
+    name: Prepare release
     runs-on: ubuntu-latest
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v4
+    timeout-minutes: 10
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
         with:
           version: 11
 
-      - name: Install Node.js 26
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
           node-version: 26
-          cache: 'pnpm'
 
-      - name: Configure GIT
+      - name: Configure Git
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
 
-      - name: Release
-        run: npm version ${{ github.event.inputs.version }}
+      - name: Bump version
+        run: pnpm version "${{ github.event.inputs.version }}"
 
-      - name: Push changes
+      - name: Push changes and tags
         run: git push --follow-tags
-        
+
       - name: Create version file
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          echo v${VERSION} >> version
+          echo "v${VERSION}" > version
+
       - name: Upload version file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: version
           path: version
 
-  send-release:
-    needs: ask-release
+  build-and-release:
+    name: Build & release
+    needs: prepare-release
     uses: ./.github/workflows/build.yml
     with:
       is-release: 'true'
