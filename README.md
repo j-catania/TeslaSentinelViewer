@@ -1,6 +1,11 @@
 # TesLEr - Tesla sentineL viewEr
 > An open source app for viewing all sentry clips in your TeslaDrive
 
+<div align="center">
+  <img src="public/icon.png" alt="TesLEr icon" width="128" />
+</div>
+
+
 [![Build/release](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/build.yml/badge.svg)](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/build.yml)
 [![CodeQL](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/codeql.yml/badge.svg)](https://github.com/j-catania/TeslaSentinelViewer/actions/workflows/codeql.yml)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/j-catania/TeslaSentinelViewer)](https://github.com/j-catania/TeslaSentinelViewer/releases/latest)
