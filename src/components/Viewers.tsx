@@ -36,18 +36,17 @@ const Viewers = ({event, currentTime, paused, onProcessMaxElements, onProcessSta
             }))
             .then((vids: Videos) => {
                 setVideos(vids);
-                let startedDateStr = vids.lefts[0]
-                    .split('/')
-                    .pop()
-                    ?.replace('-left_repeater.mp4', '')
-                    .replace('_', 'T') ?? '';
-                const explodedStartedDate = startedDateStr.split('T');
-                startedDateStr = explodedStartedDate[0] + 'T' + explodedStartedDate[1].replaceAll('-', ':');
-
-                const startedDate = new Date(startedDateStr ?? '');
-
-                onProcessStartDate?.(startedDate)
-                onProcessMaxElements?.(vids.lefts.length);
+                // Filename format: YYYY-MM-DD_HH-MM-SS-left_repeater.mp4
+                const filename = vids.lefts[0]?.split('/').pop() ?? '';
+                const match = filename.match(/^(\d{4}-\d{2}-\d{2})_(\d{2})-(\d{2})-(\d{2})/);
+                if (match) {
+                    const [, date, h, m, s] = match;
+                    onProcessStartDate?.(new Date(`${date}T${h}:${m}:${s}`));
+                }
+                onProcessMaxElements?.(Math.max(
+                    vids.fronts.length, vids.backs.length,
+                    vids.lefts.length, vids.rights.length
+                ));
 
                 setParts([{
                     area: 'left_repeater',

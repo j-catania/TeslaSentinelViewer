@@ -34,14 +34,18 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
         // @ts-ignore
         window.sentinel.readB64File(`${path}/thumb.png`)
             .then(setThumb)
+            .catch(() => { /* thumb missing — leave undefined */ });
         // @ts-ignore
         window.sentinel.readStringFile(`${path}/event.json`)
             .then((str: string) => {
-                const parsed: Event = JSON.parse(str);
-                parsed.timestamp = new Date(parsed.timestamp);
-                parsed.root = path;
-                setEvent(parsed)
+                const raw = JSON.parse(str);
+                setEvent({
+                    ...raw,
+                    timestamp: new Date(raw.timestamp),
+                    root: path,
+                } as Event);
             })
+            .catch(() => { /* event.json missing/corrupt — leave undefined */ });
     }, []);
 
 

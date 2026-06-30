@@ -71,11 +71,7 @@ const Clips = ({path, onSelection}: IClips) => {
                     </IconButton>
                     <IconButton
                         size="small"
-                        disabled={
-                            dirsSize !== -1
-                                ? page >= Math.ceil((dirsSize ?? 0) / ITEM_PER_PAGE) - 1
-                                : false
-                        }
+                        disabled={dirsSize === undefined || page >= Math.ceil(dirsSize / ITEM_PER_PAGE) - 1}
                         onClick={() => setPage(page + 1)}
                         sx={{bgcolor: "background.paper"}}
                     >

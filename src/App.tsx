@@ -18,13 +18,13 @@ function App() {
     const [mark, setMark] = useState<{ value: number }[]>([])
 
     useEffect(() => {
-
+        if (paused) return;
         const toID = setTimeout(() => {
             setSliderValue(prevState => prevState + 1);
         }, 1000);
 
         return () => clearTimeout(toID);
-    }, [sliderValue])
+    }, [sliderValue, paused])
 
 
     return (
