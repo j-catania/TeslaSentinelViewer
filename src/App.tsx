@@ -58,7 +58,6 @@ function App() {
                                 defaultValue={0}
                                 value={sliderValue}
                                 onChangeCommitted={(_, val) => {
-                                    console.log(val)
                                     setCurrentTime(val as number)
                                     setSliderValue(val as number)
                                 }}

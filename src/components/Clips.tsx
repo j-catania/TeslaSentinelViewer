@@ -27,7 +27,6 @@ interface IClips {
 const Clips = ({path, onSelection}: IClips) => {
     const [dirs, setDirs] = useState<string[]>();
     const [dirsSize, setDirsSize] = useState<number>();
-    const [deleted, setDeleted] = useState<string>();
     const [activeClip, setActiveClip] = useState<string>();
     const [selectedClips, setSelectedClips] = useState<string[]>([]);
     const [openDeletion, setOpenDeletion] = useState(false);
@@ -37,10 +36,9 @@ const Clips = ({path, onSelection}: IClips) => {
 
     useEffect(() => {
         updateFiles();
-    }, [path, deleted, page]);
+    }, [path, page]);
 
     const updateFiles = () => {
-        // @ts-ignore
         window.sentinel.getFiles(path).then(lst => {
             setDirs(lst.slice(page * ITEM_PER_PAGE, page * ITEM_PER_PAGE + ITEM_PER_PAGE));
             setDirsSize(lst.length);
@@ -97,7 +95,10 @@ const Clips = ({path, onSelection}: IClips) => {
                                   setSelectedClips(prevState => prevState.filter(path => path !== item));
                               }
                           }}
-                          onDeletion={setDeleted}/>
+                          onDeletion={(deletedPath: string) => {
+                              setDirs(prev => prev?.filter(d => d !== deletedPath));
+                              setDirsSize(prev => (prev ?? 1) - 1);
+                          }}/>
                 </Grid>
             )}
         </Grid>
@@ -114,7 +115,7 @@ const Clips = ({path, onSelection}: IClips) => {
             <Divider/>
             <DialogContent>
                 <DialogContentText id="alert-dialog-modal-description">
-                    Êtes vous sûr de vouloir supprimer {selectedClips.length} clips ?
+                    Are you sure you want to delete {selectedClips.length} clip(s)?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -122,13 +123,12 @@ const Clips = ({path, onSelection}: IClips) => {
                     e.stopPropagation();
                     setOpenDeletion(false);
                 }}>
-                    Annuler
+                    Cancel
                 </Button>
                 <Button variant="contained" color="error" onClick={(e) => {
                     e.stopPropagation();
                     const deletingProm = selectedClips.map(path => {
-                        // @ts-ignore
-                        return window.sentinel.remove(path)
+                        return window.sentinel.remove(path);
                     });
 
                     Promise.all(deletingProm).then(_ => {
@@ -137,7 +137,7 @@ const Clips = ({path, onSelection}: IClips) => {
                     })
                     setOpenDeletion(false);
                 }}>
-                    Supprimer
+                    Delete
                 </Button>
             </DialogActions>
         </Dialog>

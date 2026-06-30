@@ -14,7 +14,7 @@ import Stack from '@mui/material/Stack';
 import {useEffect, useState} from 'react';
 import {Event} from "@/types";
 
-const TEST_PATH = '/Users/juu/Downloads/TESLADRIVE';
+const TEST_PATH = import.meta.env.DEV ? '/Users/juu/Downloads/TESLADRIVE' : null;
 const SENTRY_PATH = `/TeslaCam/SentryClips`;
 
 interface IDrawer {
@@ -32,7 +32,6 @@ const Drawer = ({onEventSelected}: IDrawer) => {
     }, [])
 
     const updateSources = () => {
-        // @ts-ignore
         window.sentinel.getFiles('/Volumes')
             .then((vols: string[]) => vols.filter(vol => vol.indexOf('Macintosh HD') === -1
                 && vol.indexOf('com.apple.') === -1
@@ -70,10 +69,10 @@ const Drawer = ({onEventSelected}: IDrawer) => {
                             </MenuItem>
                         })}
                         {volumes?.length === 0 &&
-                            <MenuItem disabled>Aucun périphérique USB trouvé</MenuItem>}
-                            <MenuItem value={TEST_PATH}>
+                            <MenuItem disabled>No USB device found</MenuItem>}
+                            {TEST_PATH && <MenuItem value={TEST_PATH}>
                                 {TEST_PATH}
-                            </MenuItem>
+                            </MenuItem>}
                     </Select>
                 </FormControl>
                 <IconButton onClick={updateSources}>

@@ -31,11 +31,9 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
     const [openDeletion, setOpenDeletion] = useState(false);
 
     useEffect(() => {
-        // @ts-ignore
         window.sentinel.readB64File(`${path}/thumb.png`)
             .then(setThumb)
             .catch(() => { /* thumb missing — leave undefined */ });
-        // @ts-ignore
         window.sentinel.readStringFile(`${path}/event.json`)
             .then((str: string) => {
                 const raw = JSON.parse(str);
@@ -63,8 +61,7 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
                     sx={{ position: 'absolute', top: 0, left: 0, zIndex: 4 }}
                     onClick={e => {
                         e.stopPropagation();
-                        // @ts-ignore
-                        onSelectionChange?.(e.target.checked);
+                        onSelectionChange?.((e.target as HTMLInputElement).checked);
                     }}/>
                 <Box sx={{ position: 'relative', paddingTop: '50%', overflow: 'hidden' }}>
                     <img
@@ -113,7 +110,7 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
                 <Divider/>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-modal-description">
-                        Êtes vous sûr de vouloir supprimer ce clip ?
+                        Are you sure you want to delete this clip?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -121,16 +118,15 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
                         e.stopPropagation();
                         setOpenDeletion(false);
                     }}>
-                        Annuler
+                        Cancel
                     </Button>
                     <Button variant="contained" color="error" onClick={(e) => {
                         e.stopPropagation();
-                        // @ts-ignore
                         window.sentinel.remove(path).then(() =>
                             onDeletion?.(path))
                         setOpenDeletion(false);
                     }}>
-                        Supprimer
+                        Delete
                     </Button>
                 </DialogActions>
             </Dialog>

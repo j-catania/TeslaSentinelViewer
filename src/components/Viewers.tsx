@@ -15,6 +15,13 @@ interface IViewers {
     onProcessStartDate?: (param: Date) => void
 }
 
+const buildParts = (vids: Videos, idx: number): Part[] => [
+    {area: 'left_repeater', path: `file://${vids.lefts[idx]}`},
+    {area: 'right_repeater', path: `file://${vids.rights[idx]}`},
+    {area: 'front', path: `file://${vids.fronts[idx]}`},
+    {area: 'back', path: `file://${vids.backs[idx]}`},
+];
+
 const Viewers = ({event, currentTime, paused, onProcessMaxElements, onProcessStartDate}: IViewers) => {
     const [activeArea, setActiveArea] = useState<Areas>('front')
     const [videos, setVideos] = useState<Videos>();
@@ -25,7 +32,6 @@ const Viewers = ({event, currentTime, paused, onProcessMaxElements, onProcessSta
     const [videoTime, setVideoTime] = useState<number>(0);
 
     useEffect(() => {
-        // @ts-ignore
         window.sentinel.getFiles(event.root)
             .then((vals: string[]) => vals.sort())
             .then((paths: string[]) => ({
@@ -48,38 +54,13 @@ const Viewers = ({event, currentTime, paused, onProcessMaxElements, onProcessSta
                     vids.lefts.length, vids.rights.length
                 ));
 
-                setParts([{
-                    area: 'left_repeater',
-                    path: `file://${vids?.lefts[index]}`
-                }, {
-                    area: 'right_repeater',
-                    path: `file://${vids?.rights[index]}`
-                }, {
-                    area: 'front',
-                    path: `file://${vids?.fronts[index]}`
-                }, {
-                    area: 'back',
-                    path: `file://${vids?.backs[index]}`
-                }])
+                setParts(buildParts(vids, index));
             })
     }, [event]);
 
     useEffect(() => {
-        console.log({index})
-        if (index < (videos?.backs.length ?? 0)) {
-            setParts([{
-                area: 'left_repeater',
-                path: `file://${videos?.lefts[index]}`
-            }, {
-                area: 'right_repeater',
-                path: `file://${videos?.rights[index]}`
-            }, {
-                area: 'front',
-                path: `file://${videos?.fronts[index]}`
-            }, {
-                area: 'back',
-                path: `file://${videos?.backs[index]}`
-            }])
+        if (videos && index < videos.backs.length) {
+            setParts(buildParts(videos, index));
         }
     }, [index])
 

@@ -2,8 +2,6 @@ import {ReactEventHandler, useEffect, useRef} from 'react';
 
 interface IViewer {
     src: string,
-    size?: 'full' | 'small',
-    duration?: (data?: number) => void,
     currentTime: number,
     onClick?: React.MouseEventHandler<HTMLVideoElement>,
     onEnded?: ReactEventHandler<HTMLVideoElement>,
@@ -22,7 +20,6 @@ const Viewer = ({src, currentTime, onClick, onEnded, paused}: IViewer) => {
     }, [paused])
 
     useEffect(() => {
-        console.log({current: video.current?.currentTime, wanted: currentTime});
         if (video.current) {
             video.current.currentTime = currentTime;
         }
