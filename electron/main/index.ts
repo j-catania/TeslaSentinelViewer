@@ -53,6 +53,11 @@ async function createWindow() {
             preload,
             nodeIntegration: false,
             contextIsolation: true,
+            // sandbox: false is required so the preload script can use require()
+            // (fs/promises, path, os) to implement the contextBridge API.
+            // The renderer stays isolated: nodeIntegration is false and
+            // contextIsolation is true, so Node.js is not accessible there.
+            sandbox: false,
         },
     })
 
