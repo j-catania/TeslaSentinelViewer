@@ -1,4 +1,4 @@
-import {app, BrowserWindow, ipcMain, shell} from 'electron'
+import {app, BrowserWindow, shell} from 'electron'
 import {release} from 'node:os'
 import {join} from 'node:path'
 
@@ -47,14 +47,12 @@ async function createWindow() {
         width: 1800,
         height: 1600,
         webPreferences: {
-            webSecurity: false,
+            // Disable webSecurity only in dev (renderer loads from http://localhost,
+            // so file:// video sources are cross-origin in that context only)
+            webSecurity: !process.env.VITE_DEV_SERVER_URL,
             preload,
-            // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
-            // Consider using contextBridge.exposeInMainWorld
-            // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation
             nodeIntegration: false,
             contextIsolation: true,
-            sandbox: false,
         },
     })
 
@@ -98,19 +96,4 @@ app.on('activate', () => {
     }
 })
 
-// New window example arg: new windows url
-ipcMain.handle('open-win', (_, arg) => {
-    const childWindow = new BrowserWindow({
-        webPreferences: {
-            preload,
-            nodeIntegration: true,
-            contextIsolation: false,
-        },
-    })
 
-    if (process.env.VITE_DEV_SERVER_URL) {
-        childWindow.loadURL(`${url}#${arg}`)
-    } else {
-        childWindow.loadFile(indexHtml, {hash: arg})
-    }
-})

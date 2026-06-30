@@ -9,7 +9,7 @@
 
 The issues below are grouped by priority. Work through them in order.
 
-- [ ] **P0 — Security** — Fix before any public release
+- [x] **P0 — Security** — Fixed
 - [ ] **P1 — Correctness** — Bugs and logic errors that affect the running app
 - [ ] **P2 — Code quality** — Dead code, missing types, leaky debug artifacts
 - [ ] **P3 — Architecture** — Structural improvements for maintainability
@@ -439,10 +439,10 @@ Any new Apple system volume name will break through this filter. The preload alr
 
 | ID | Priority | File | Description |
 |----|----------|------|-------------|
-| S1 | P0 | `electron/main/index.ts` | Remove unsafe `open-win` IPC handler |
-| S2 | P0 | `electron/main/index.ts` | Remove `sandbox: false` and `webSecurity: false` |
-| S3 | P0 | `electron/preload/index.ts` | Add path validation to prevent traversal |
-| S4 | P0 | `vite.config.ts` | Disable renderer `nodeIntegration` |
+| S1 | P0 ✅ | `electron/main/index.ts` | Remove unsafe `open-win` IPC handler |
+| S2 | P0 ✅ | `electron/main/index.ts` | Remove `sandbox: false` and `webSecurity: false` |
+| S3 | P0 ✅ | `electron/preload/index.ts` | Add path validation to prevent traversal |
+| S4 | P0 ✅ | `vite.config.ts` | Disable renderer `nodeIntegration` |
 | C1 | P1 | `src/App.tsx` | Slider ticks while paused |
 | C2 | P1 | `src/components/Clips.tsx` | Dead `dirsSize !== -1` guard |
 | C3 | P1 | `src/components/Viewers.tsx` | `onProcessMaxElements` uses single camera count |

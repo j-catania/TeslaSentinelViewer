@@ -1,26 +1,46 @@
 // preload with contextIsolation enabled
 const {contextBridge} = require('electron');
 const {readdir, readFile, rm} = require('fs/promises');
+const {resolve: resolvePath} = require('node:path');
+const {homedir} = require('node:os');
+
+// Paths the renderer is allowed to read/delete.
+// On macOS external USB drives live under /Volumes; homedir() covers dev test paths.
+const ALLOWED_ROOTS: string[] = process.platform === 'win32'
+    ? ['C:\\', 'D:\\', 'E:\\', 'F:\\', 'G:\\', 'H:\\']
+    : ['/Volumes', homedir()];
+
+function assertSafePath(p: string): void {
+    const resolved = resolvePath(p);
+    if (!ALLOWED_ROOTS.some(root => resolved.startsWith(root))) {
+        throw new Error(`Access denied: ${resolved}`);
+    }
+}
 
 contextBridge.exposeInMainWorld('sentinel', {
-    getFiles: (path) => {
-        return readdir(`${path}`)
-            .then(items => items
-                .filter(val => val[0] !== '.')
-                .map(val => `${path}/${val}`))
+    getFiles: (path: string) => {
+        assertSafePath(path);
+        return readdir(resolvePath(path))
+            .then((items: string[]) => items
+                .filter((val: string) => val[0] !== '.')
+                .map((val: string) => `${resolvePath(path)}/${val}`));
     },
-    readStringFile: (path) => {
-        return readFile(`${path}`).then(buff => buff.toString());
+    readStringFile: (path: string) => {
+        assertSafePath(path);
+        return readFile(resolvePath(path)).then((buff: Buffer) => buff.toString());
     },
-    readBufferFile: (path) => {
-        return readFile(`${path}`);
+    readBufferFile: (path: string) => {
+        assertSafePath(path);
+        return readFile(resolvePath(path));
     },
-    readB64File: (path) => {
-        return readFile(`${path}`).then(buff => buff.toString('base64'));
+    readB64File: (path: string) => {
+        assertSafePath(path);
+        return readFile(resolvePath(path)).then((buff: Buffer) => buff.toString('base64'));
     },
-    remove: (path) => {
-        return rm(`${path}`, {recursive: true})
-    }
+    remove: (path: string) => {
+        assertSafePath(path);
+        return rm(resolvePath(path), {recursive: true});
+    },
 })
 
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
