@@ -1,4 +1,4 @@
-import {Event} from '@/types/Event';
+import {Event, TeslaEventJSON} from '@/types/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
@@ -14,6 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
+import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import {useEffect, useState} from 'react';
 
@@ -29,6 +30,7 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
     const [thumb, setThumb] = useState<string>();
     const [event, setEvent] = useState<Event>();
     const [openDeletion, setOpenDeletion] = useState(false);
+    const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
 
     useEffect(() => {
         window.sentinel.readB64File(`${path}/thumb.png`)
@@ -36,14 +38,15 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
             .catch(() => { /* thumb missing — leave undefined */ });
         window.sentinel.readStringFile(`${path}/event.json`)
             .then((str: string) => {
-                const raw = JSON.parse(str);
+                const raw = JSON.parse(str) as TeslaEventJSON;
                 setEvent({
                     ...raw,
                     timestamp: new Date(raw.timestamp),
                     root: path,
-                } as Event);
+                });
+                setStatus('ready');
             })
-            .catch(() => { /* event.json missing/corrupt — leave undefined */ });
+            .catch(() => setStatus('error'));
     }, []);
 
 
@@ -55,7 +58,7 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
                   backgroundColor: active ? 'action.selected' : 'transparent',
                   cursor: 'pointer',
               }}
-              onClick={() => onSelection?.(event)}>
+              onClick={() => status === 'ready' && onSelection?.(event)}>
             <Box sx={{ position: 'relative' }}>
                 <Checkbox
                     sx={{ position: 'absolute', top: 0, left: 0, zIndex: 4 }}
@@ -64,23 +67,39 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
                         onSelectionChange?.((e.target as HTMLInputElement).checked);
                     }}/>
                 <Box sx={{ position: 'relative', paddingTop: '50%', overflow: 'hidden' }}>
-                    <img
-                        src={thumb ? `data:image/png;base64,${thumb}` : ''}
-                        loading="lazy"
-                        alt=""
-                        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
+                    {status === 'loading'
+                        ? <Skeleton variant="rectangular" sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
+                        : <img
+                            src={thumb ? `data:image/png;base64,${thumb}` : ''}
+                            loading="lazy"
+                            alt=""
+                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                    }
                 </Box>
             </Box>
             <CardContent>
-                <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-                    <div>
-                        <Typography variant="subtitle1" sx={{fontSize: 'md', mt: 2, display: 'flex', alignItems: 'center', gap: 0.5}}>
-                            <LocationOnRoundedIcon fontSize="small"/> {event?.city}
-                        </Typography>
-                        <Typography variant="body2" sx={{mt: 0.5, mb: 2, display: 'flex', alignItems: 'center', gap: 0.5}}>
-                            <AccessTimeIcon fontSize="small"/> {event?.timestamp.toLocaleString()}
-                        </Typography>
+                <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
+                    <div style={{flex: 1}}>
+                        {status === 'loading' ? (
+                            <>
+                                <Skeleton variant="text" width="70%" sx={{ mt: 2 }} />
+                                <Skeleton variant="text" width="50%" />
+                            </>
+                        ) : status === 'error' ? (
+                            <Typography variant="body2" color="error" sx={{ mt: 2 }}>
+                                Failed to load clip
+                            </Typography>
+                        ) : (
+                            <>
+                                <Typography variant="subtitle1" sx={{fontSize: 'md', mt: 2, display: 'flex', alignItems: 'center', gap: 0.5}}>
+                                    <LocationOnRoundedIcon fontSize="small"/> {event?.city}
+                                </Typography>
+                                <Typography variant="body2" sx={{mt: 0.5, mb: 2, display: 'flex', alignItems: 'center', gap: 0.5}}>
+                                    <AccessTimeIcon fontSize="small"/> {event?.timestamp.toLocaleString()}
+                                </Typography>
+                            </>
+                        )}
                     </div>
                     <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                         <Button variant="contained"

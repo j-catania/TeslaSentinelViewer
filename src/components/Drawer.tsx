@@ -33,11 +33,17 @@ const Drawer = ({onEventSelected}: IDrawer) => {
 
     const updateSources = () => {
         window.sentinel.getFiles('/Volumes')
-            .then((vols: string[]) => vols.filter(vol => vol.indexOf('Macintosh HD') === -1
-                && vol.indexOf('com.apple.') === -1
-                && vol.indexOf('OS X') === -1
-                && vol.indexOf('Time Machine') === -1))
-            .then(setVolumes)
+            .then((vols: string[]) =>
+                Promise.all(
+                    vols.map(vol =>
+                        window.sentinel.getFiles(`${vol}/TeslaCam/SentryClips`)
+                            .then(() => vol)
+                            .catch(() => null)
+                    )
+                )
+            )
+            .then((results) => results.filter((v): v is string => v !== null))
+            .then(setVolumes);
     }
     return <>
 

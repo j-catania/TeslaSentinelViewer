@@ -25,8 +25,8 @@ interface IClips {
 }
 
 const Clips = ({path, onSelection}: IClips) => {
-    const [dirs, setDirs] = useState<string[]>();
-    const [dirsSize, setDirsSize] = useState<number>();
+    const [allDirs, setAllDirs] = useState<string[]>([]);
+    const [dirs, setDirs] = useState<string[]>([]);
     const [activeClip, setActiveClip] = useState<string>();
     const [selectedClips, setSelectedClips] = useState<string[]>([]);
     const [openDeletion, setOpenDeletion] = useState(false);
@@ -34,16 +34,16 @@ const Clips = ({path, onSelection}: IClips) => {
 
     const ITEM_PER_PAGE = 6;
 
+    // Fetch the full clip list once per path; reset page to avoid stale position
     useEffect(() => {
-        updateFiles();
-    }, [path, page]);
+        setPage(0);
+        window.sentinel.getFiles(path).then(setAllDirs);
+    }, [path]);
 
-    const updateFiles = () => {
-        window.sentinel.getFiles(path).then(lst => {
-            setDirs(lst.slice(page * ITEM_PER_PAGE, page * ITEM_PER_PAGE + ITEM_PER_PAGE));
-            setDirsSize(lst.length);
-        });
-    }
+    // Derive the visible page slice without re-fetching from disk
+    useEffect(() => {
+        setDirs(allDirs.slice(page * ITEM_PER_PAGE, page * ITEM_PER_PAGE + ITEM_PER_PAGE));
+    }, [allDirs, page]);
 
 
     return <Stack spacing={1} alignItems="flex-start">
@@ -69,7 +69,7 @@ const Clips = ({path, onSelection}: IClips) => {
                     </IconButton>
                     <IconButton
                         size="small"
-                        disabled={dirsSize === undefined || page >= Math.ceil(dirsSize / ITEM_PER_PAGE) - 1}
+                        disabled={page >= Math.ceil(allDirs.length / ITEM_PER_PAGE) - 1}
                         onClick={() => setPage(page + 1)}
                         sx={{bgcolor: "background.paper"}}
                     >
@@ -96,8 +96,7 @@ const Clips = ({path, onSelection}: IClips) => {
                               }
                           }}
                           onDeletion={(deletedPath: string) => {
-                              setDirs(prev => prev?.filter(d => d !== deletedPath));
-                              setDirsSize(prev => (prev ?? 1) - 1);
+                              setAllDirs(prev => prev.filter(d => d !== deletedPath));
                           }}/>
                 </Grid>
             )}
@@ -131,9 +130,10 @@ const Clips = ({path, onSelection}: IClips) => {
                         return window.sentinel.remove(path);
                     });
 
-                    Promise.all(deletingProm).then(_ => {
+                    Promise.all(deletingProm).then(() => {
+                        const toDelete = new Set(selectedClips);
+                        setAllDirs(prev => prev.filter(d => !toDelete.has(d)));
                         setSelectedClips([]);
-                        updateFiles();
                     })
                     setOpenDeletion(false);
                 }}>
