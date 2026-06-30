@@ -10,9 +10,9 @@
 The issues below are grouped by priority. Work through them in order.
 
 - [x] **P0 — Security** — Fixed
-- [ ] **P1 — Correctness** — Bugs and logic errors that affect the running app
-- [ ] **P2 — Code quality** — Dead code, missing types, leaky debug artifacts
-- [ ] **P3 — Architecture** — Structural improvements for maintainability
+- [x] **P1 — Correctness** — Fixed
+- [x] **P2 — Code quality** — Fixed
+- [x] **P3 — Architecture** — Fixed
 
 ---
 
@@ -443,21 +443,21 @@ Any new Apple system volume name will break through this filter. The preload alr
 | S2 | P0 ✅ | `electron/main/index.ts` | Remove `sandbox: false` and `webSecurity: false` |
 | S3 | P0 ✅ | `electron/preload/index.ts` | Add path validation to prevent traversal |
 | S4 | P0 ✅ | `vite.config.ts` | Disable renderer `nodeIntegration` |
-| C1 | P1 | `src/App.tsx` | Slider ticks while paused |
-| C2 | P1 | `src/components/Clips.tsx` | Dead `dirsSize !== -1` guard |
-| C3 | P1 | `src/components/Viewers.tsx` | `onProcessMaxElements` uses single camera count |
-| C4 | P1 | `src/components/Clip.tsx` | No error handling for missing clip files |
-| C5 | P1 | `src/components/Clip.tsx` | Mutating parsed JSON to inject `root` |
-| C6 | P1 | `src/components/Viewers.tsx` | Fragile filename date parser |
-| Q1 | P2 | multiple | Replace `// @ts-ignore` with `window.sentinel` type declaration |
-| Q2 | P2 | `src/components/Drawer.tsx` | Hardcoded personal dev path in source |
-| Q3 | P2 | multiple | Remove `console.log` statements |
-| Q4 | P2 | `src/components/Viewer.tsx` | Unused `size` and `duration` props |
-| Q5 | P2 | `src/components/Clips.tsx` | `deleted` state used as re-render hack |
-| Q6 | P2 | `src/components/Viewers.tsx` | Duplicated `setParts` logic |
-| Q7 | P2 | `electron/main/index.ts` | Placeholder window title `'Title'` |
-| Q8 | P2 | multiple | Mixed French/English UI strings |
-| A1 | P3 | `src/components/Clip.tsx` | No loading/error states for clip data |
-| A2 | P3 | `src/components/Clips.tsx` | Re-fetches full dir list on every page turn |
-| A3 | P3 | `src/types/Event.ts` | `Event.root` mixed with Tesla JSON schema |
-| A4 | P3 | `src/components/Drawer.tsx` | Fragile volume exclusion via string matching |
+| C1 | P1 ✅ | `src/App.tsx` | Slider ticks while paused |
+| C2 | P1 ✅ | `src/components/Clips.tsx` | Dead `dirsSize !== -1` guard |
+| C3 | P1 ✅ | `src/components/Viewers.tsx` | `onProcessMaxElements` uses single camera count |
+| C4 | P1 ✅ | `src/components/Clip.tsx` | No error handling for missing clip files |
+| C5 | P1 ✅ | `src/components/Clip.tsx` | Mutating parsed JSON to inject `root` |
+| C6 | P1 ✅ | `src/components/Viewers.tsx` | Fragile filename date parser |
+| Q1 | P2 ✅ | multiple | Replace `// @ts-ignore` with `window.sentinel` type declaration |
+| Q2 | P2 ✅ | `src/components/Drawer.tsx` | Hardcoded personal dev path in source |
+| Q3 | P2 ✅ | multiple | Remove `console.log` statements |
+| Q4 | P2 ✅ | `src/components/Viewer.tsx` | Unused `size` and `duration` props |
+| Q5 | P2 ✅ | `src/components/Clips.tsx` | `deleted` state used as re-render hack |
+| Q6 | P2 ✅ | `src/components/Viewers.tsx` | Duplicated `setParts` logic |
+| Q7 | P2 ✅ | `electron/main/index.ts` | Placeholder window title `'Title'` |
+| Q8 | P2 ✅ | multiple | Mixed French/English UI strings |
+| A1 | P3 ✅ | `src/components/Clip.tsx` | No loading/error states for clip data |
+| A2 | P3 ✅ | `src/components/Clips.tsx` | Re-fetches full dir list on every page turn |
+| A3 | P3 ✅ | `src/types/Event.ts` | `Event.root` mixed with Tesla JSON schema |
+| A4 | P3 ✅ | `src/components/Drawer.tsx` | Fragile volume exclusion via string matching |
