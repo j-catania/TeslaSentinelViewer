@@ -452,6 +452,13 @@
             justify-content: center;
         }
 
+        .dl-mac-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
         .release-meta {
             text-align: center;
             color: var(--muted);
@@ -581,7 +588,7 @@
         <div class="container nav-inner">
             <a href="#" class="nav-logo">
                 <img src="icon.png" alt="TesLEr" />
-                Tes<span class="acc">LE</span>r
+                <span>Tes<span class="acc">LE</span>r</span>
             </a>
             <nav class="nav-links">
                 <a href="#features" data-i18n="nav.features">Features</a>
@@ -739,20 +746,17 @@
                 <div class="dl-card">
                     <span class="os-icon">🍎</span>
                     <h3>macOS</h3>
-                    <p class="dl-note" data-i18n="dl.mac.arm.note">Apple Silicon — arm64</p>
-                    <a id="dl-mac-arm" href="https://github.com/j-catania/TeslaSentinelViewer/releases/latest"
-                        class="btn btn-primary" data-i18n="dl.dmg">
-                        Download .dmg
-                    </a>
-                </div>
-                <div class="dl-card">
-                    <span class="os-icon">🍎</span>
-                    <h3>macOS</h3>
-                    <p class="dl-note" data-i18n="dl.mac.x64.note">Intel — x64</p>
-                    <a id="dl-mac-x64" href="https://github.com/j-catania/TeslaSentinelViewer/releases/latest"
-                        class="btn btn-primary" data-i18n="dl.dmg">
-                        Download .dmg
-                    </a>
+                    <p class="dl-note">.dmg</p>
+                    <div class="dl-mac-btns">
+                        <a id="dl-mac-arm" href="https://github.com/j-catania/TeslaSentinelViewer/releases/latest"
+                            class="btn btn-primary" data-i18n="dl.mac.arm">
+                            Apple Silicon
+                        </a>
+                        <a id="dl-mac-x64" href="https://github.com/j-catania/TeslaSentinelViewer/releases/latest"
+                            class="btn btn-primary" data-i18n="dl.mac.x64">
+                            Intel — x64
+                        </a>
+                    </div>
                 </div>
                 <div class="dl-card">
                     <span class="os-icon">🪟</span>
@@ -784,7 +788,7 @@
             <div>
                 <div class="footer-brand">
                     <img src="icon.png" alt="TesLEr" />
-                    Tes<span class="acc">LE</span>r
+                    <span>Tes<span class="acc">LE</span>r</span>
                 </div>
                 <p data-i18n="footer.tagline">Open-source Tesla Sentry Mode viewer. Released under the MIT License.</p>
             </div>
@@ -835,8 +839,8 @@
                 'dl.title': "Get TesLEr — it's free",
                 'dl.desc': 'Open-source under the MIT license. Pick the package for your platform.',
                 'dl.loading': 'Loading latest release\u2026',
-                'dl.mac.arm.note': 'Apple Silicon — arm64',
-                'dl.mac.x64.note': 'Intel — x64',
+                'dl.mac.arm': 'Apple Silicon',
+                'dl.mac.x64': 'Intel — x64',
                 'dl.win.note': 'x64 installer',
                 'dl.linux.note': 'via Snap Store',
                 'dl.dmg': 'Download .dmg',
@@ -879,8 +883,8 @@
                 'dl.title': "T\u00e9l\u00e9charger TesLEr \u2014 c'est gratuit",
                 'dl.desc': 'Open-source sous licence MIT. Choisissez le package pour votre plateforme.',
                 'dl.loading': 'Chargement de la derni\u00e8re version\u2026',
-                'dl.mac.arm.note': 'Apple Silicon — arm64',
-                'dl.mac.x64.note': 'Intel — x64',
+                'dl.mac.arm': 'Apple Silicon',
+                'dl.mac.x64': 'Intel — x64',
                 'dl.win.note': 'Installeur x64',
                 'dl.linux.note': 'via le Snap Store',
                 'dl.dmg': 'T\u00e9l\u00e9charger .dmg',
