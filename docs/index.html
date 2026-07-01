@@ -125,6 +125,31 @@
             text-decoration: none;
         }
 
+        .lang-btn {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            padding: 4px 9px;
+            transition: border-color 0.18s, background 0.18s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--muted);
+            font-family: inherit;
+            white-space: nowrap;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .lang-btn:hover {
+            border-color: #3a3a3a;
+            background: var(--bg2);
+            color: var(--text);
+        }
+
         /* ── Buttons ── */
         .btn {
             display: inline-flex;
@@ -559,10 +584,12 @@
                 Tes<span class="acc">LE</span>r
             </a>
             <nav class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#tech">Tech</a>
-                <a href="#download">Download</a>
+                <a href="#features" data-i18n="nav.features">Features</a>
+                <a href="#tech" data-i18n="nav.tech">Tech</a>
+                <a href="#download" data-i18n="nav.download">Download</a>
                 <a href="https://github.com/j-catania/TeslaSentinelViewer" target="_blank" rel="noopener">GitHub ↗</a>
+                <button id="lang-toggle" class="lang-btn" title="Switch language" aria-label="Switch language">🇫🇷
+                    FR</button>
             </nav>
         </div>
     </nav>
@@ -572,16 +599,16 @@
         <div class="container">
             <img src="icon.png" alt="TesLEr" class="hero-logo" />
             <h1>Tes<span class="acc">LE</span>r</h1>
-            <p class="hero-sub">
+            <p class="hero-sub" data-i18n="hero.sub">
                 Open-source desktop app for browsing and reviewing your Tesla Sentry Mode clips
             </p>
             <div class="hero-badge">
-                Latest&nbsp;<span class="ver" id="hero-version">…</span>
+                <span data-i18n="hero.badge">Latest</span>&nbsp;<span class="ver" id="hero-version">…</span>
             </div>
             <div class="hero-actions">
-                <a href="#download" class="btn btn-primary">⬇&nbsp; Download</a>
+                <a href="#download" class="btn btn-primary" data-i18n="hero.btn.download">⬇&nbsp; Download</a>
                 <a href="https://github.com/j-catania/TeslaSentinelViewer" target="_blank" rel="noopener"
-                    class="btn btn-outline">★&nbsp; View on GitHub</a>
+                    class="btn btn-outline" data-i18n="hero.btn.github">★&nbsp; View on GitHub</a>
             </div>
         </div>
     </div>
@@ -590,8 +617,8 @@
     <section class="demo">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">Demo</div>
-                <h2 class="section-title">See it in action</h2>
+                <div class="section-label" data-i18n="demo.label">Demo</div>
+                <h2 class="section-title" data-i18n="demo.title">See it in action</h2>
             </div>
             <div class="video-wrapper">
                 <iframe src="https://www.youtube.com/embed/6V6hZbN5eiw" title="TesLEr — Tesla Sentry Mode Viewer demo"
@@ -606,45 +633,52 @@
     <section id="features">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">Features</div>
-                <h2 class="section-title">Everything you need to review your clips</h2>
-                <p class="section-desc">Browse, watch and manage all your Sentry Mode events from a single, focused
+                <div class="section-label" data-i18n="features.label">Features</div>
+                <h2 class="section-title" data-i18n="features.title">Everything you need to review your clips</h2>
+                <p class="section-desc" data-i18n="features.desc">Browse, watch and manage all your Sentry Mode events
+                    from a single, focused
                     interface.</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card">
                     <span class="feature-icon">📹</span>
-                    <h3>4-camera synchronized view</h3>
-                    <p>Watch front, back, left-repeater and right-repeater cameras simultaneously, perfectly synced in
+                    <h3 data-i18n="feature.cam.title">4-camera synchronized view</h3>
+                    <p data-i18n="feature.cam.desc">Watch front, back, left-repeater and right-repeater cameras
+                        simultaneously, perfectly synced in
                         real time.</p>
                 </div>
                 <div class="feature-card">
                     <span class="feature-icon">🔌</span>
-                    <h3>Automatic USB detection</h3>
-                    <p>Plug in your Tesla USB drive and TesLEr instantly discovers all available SentryClips volumes —
+                    <h3 data-i18n="feature.usb.title">Automatic USB detection</h3>
+                    <p data-i18n="feature.usb.desc">Plug in your Tesla USB drive and TesLEr instantly discovers all
+                        available SentryClips volumes —
                         no setup needed.</p>
                 </div>
                 <div class="feature-card">
                     <span class="feature-icon">📍</span>
-                    <h3>Location &amp; timestamp</h3>
-                    <p>Each event card shows the city, estimated coordinates and the exact date &amp; time the alert was
+                    <h3 data-i18n="feature.loc.title">Location &amp; timestamp</h3>
+                    <p data-i18n="feature.loc.desc">Each event card shows the city, estimated coordinates and the exact
+                        date &amp; time the alert was
                         triggered.</p>
                 </div>
                 <div class="feature-card">
                     <span class="feature-icon">⏩</span>
-                    <h3>Auto-advance playback</h3>
-                    <p>Automatically moves to the next clip when playback ends so you can review a full session
+                    <h3 data-i18n="feature.auto.title">Auto-advance playback</h3>
+                    <p data-i18n="feature.auto.desc">Automatically moves to the next clip when playback ends so you can
+                        review a full session
                         hands-free.</p>
                 </div>
                 <div class="feature-card">
                     <span class="feature-icon">🗑️</span>
-                    <h3>Batch delete</h3>
-                    <p>Select multiple clips at once and delete them in a single action to keep your drive tidy.</p>
+                    <h3 data-i18n="feature.del.title">Batch delete</h3>
+                    <p data-i18n="feature.del.desc">Select multiple clips at once and delete them in a single action to
+                        keep your drive tidy.</p>
                 </div>
                 <div class="feature-card">
                     <span class="feature-icon">💻</span>
-                    <h3>Cross-platform</h3>
-                    <p>Available on macOS (Apple Silicon &amp; Intel), Windows x64, and Linux via the Snap Store.</p>
+                    <h3 data-i18n="feature.cross.title">Cross-platform</h3>
+                    <p data-i18n="feature.cross.desc">Available on macOS (Apple Silicon &amp; Intel), Windows x64, and
+                        Linux via the Snap Store.</p>
                 </div>
             </div>
         </div>
@@ -654,9 +688,10 @@
     <section id="tech" class="tech">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">Built with</div>
-                <h2 class="section-title">Modern open-source stack</h2>
-                <p class="section-desc">Built on proven open-source foundations — a native desktop shell powered by a
+                <div class="section-label" data-i18n="tech.label">Built with</div>
+                <h2 class="section-title" data-i18n="tech.title">Modern open-source stack</h2>
+                <p class="section-desc" data-i18n="tech.desc">Built on proven open-source foundations — a native desktop
+                    shell powered by a
                     fast, modern web renderer.</p>
             </div>
             <div class="tech-grid">
@@ -692,56 +727,54 @@
     <section id="download">
         <div class="container">
             <div class="section-header">
-                <div class="section-label">Download</div>
-                <h2 class="section-title">Get TesLEr — it's free</h2>
-                <p class="section-desc">Open-source under the MIT license. Pick the package for your platform.</p>
+                <div class="section-label" data-i18n="dl.label">Download</div>
+                <h2 class="section-title" data-i18n="dl.title">Get TesLEr — it's free</h2>
+                <p class="section-desc" data-i18n="dl.desc">Open-source under the MIT license. Pick the package for your
+                    platform.</p>
             </div>
 
-            <div class="dl-loading" id="dl-loading">Loading latest release…</div>
+            <div class="dl-loading" id="dl-loading" data-i18n="dl.loading">Loading latest release…</div>
 
             <div class="dl-cards" id="dl-cards" style="display:none">
                 <div class="dl-card">
                     <span class="os-icon">🍎</span>
                     <h3>macOS</h3>
-                    <p class="dl-note">Apple Silicon — arm64</p>
+                    <p class="dl-note" data-i18n="dl.mac.arm.note">Apple Silicon — arm64</p>
                     <a id="dl-mac-arm" href="https://github.com/j-catania/TeslaSentinelViewer/releases/latest"
-                        class="btn btn-primary">
+                        class="btn btn-primary" data-i18n="dl.dmg">
                         Download .dmg
                     </a>
                 </div>
                 <div class="dl-card">
                     <span class="os-icon">🍎</span>
                     <h3>macOS</h3>
-                    <p class="dl-note">Intel — x64</p>
+                    <p class="dl-note" data-i18n="dl.mac.x64.note">Intel — x64</p>
                     <a id="dl-mac-x64" href="https://github.com/j-catania/TeslaSentinelViewer/releases/latest"
-                        class="btn btn-primary">
+                        class="btn btn-primary" data-i18n="dl.dmg">
                         Download .dmg
                     </a>
                 </div>
                 <div class="dl-card">
                     <span class="os-icon">🪟</span>
                     <h3>Windows</h3>
-                    <p class="dl-note">x64 installer</p>
+                    <p class="dl-note" data-i18n="dl.win.note">x64 installer</p>
                     <a id="dl-win" href="https://github.com/j-catania/TeslaSentinelViewer/releases/latest"
-                        class="btn btn-primary">
+                        class="btn btn-primary" data-i18n="dl.exe">
                         Download .exe
                     </a>
                 </div>
                 <div class="dl-card">
                     <span class="os-icon">🐧</span>
                     <h3>Linux</h3>
-                    <p class="dl-note">via Snap Store</p>
-                    <a href="https://snapcraft.io/tesler" target="_blank" rel="noopener" class="btn btn-outline">
+                    <p class="dl-note" data-i18n="dl.linux.note">via Snap Store</p>
+                    <a href="https://snapcraft.io/tesler" target="_blank" rel="noopener" class="btn btn-outline"
+                        data-i18n="dl.snap">
                         Get from Snap ↗
                     </a>
                 </div>
             </div>
 
-            <p class="release-meta" id="release-meta" style="display:none">
-                Released <span id="release-date">–</span> ·
-                <a href="https://github.com/j-catania/TeslaSentinelViewer/releases" target="_blank" rel="noopener">All
-                    releases on GitHub →</a>
-            </p>
+            <p class="release-meta" id="release-meta" style="display:none"></p>
         </div>
     </section>
 
@@ -753,7 +786,7 @@
                     <img src="icon.png" alt="TesLEr" />
                     Tes<span class="acc">LE</span>r
                 </div>
-                <p>Open-source Tesla Sentry Mode viewer. Released under the MIT License.</p>
+                <p data-i18n="footer.tagline">Open-source Tesla Sentry Mode viewer. Released under the MIT License.</p>
             </div>
             <div class="footer-links">
                 <a href="https://github.com/j-catania/TeslaSentinelViewer" target="_blank" rel="noopener">GitHub</a>
@@ -769,6 +802,146 @@
     <script>
         const REPO = 'j-catania/TeslaSentinelViewer';
 
+        const TRANSLATIONS = {
+            en: {
+                'nav.features': 'Features',
+                'nav.tech': 'Tech',
+                'nav.download': 'Download',
+                'hero.sub': 'Open-source desktop app for browsing and reviewing your Tesla Sentry Mode clips',
+                'hero.badge': 'Latest',
+                'hero.btn.download': '⬇&nbsp; Download',
+                'hero.btn.github': '★&nbsp; View on GitHub',
+                'demo.label': 'Demo',
+                'demo.title': 'See it in action',
+                'features.label': 'Features',
+                'features.title': 'Everything you need to review your clips',
+                'features.desc': 'Browse, watch and manage all your Sentry Mode events from a single, focused interface.',
+                'feature.cam.title': '4-camera synchronized view',
+                'feature.cam.desc': 'Watch front, back, left-repeater and right-repeater cameras simultaneously, perfectly synced in real time.',
+                'feature.usb.title': 'Automatic USB detection',
+                'feature.usb.desc': 'Plug in your Tesla USB drive and TesLEr instantly discovers all available SentryClips volumes — no setup needed.',
+                'feature.loc.title': 'Location &amp; timestamp',
+                'feature.loc.desc': 'Each event card shows the city, estimated coordinates and the exact date &amp; time the alert was triggered.',
+                'feature.auto.title': 'Auto-advance playback',
+                'feature.auto.desc': 'Automatically moves to the next clip when playback ends so you can review a full session hands-free.',
+                'feature.del.title': 'Batch delete',
+                'feature.del.desc': 'Select multiple clips at once and delete them in a single action to keep your drive tidy.',
+                'feature.cross.title': 'Cross-platform',
+                'feature.cross.desc': 'Available on macOS (Apple Silicon &amp; Intel), Windows x64, and Linux via the Snap Store.',
+                'tech.label': 'Built with',
+                'tech.title': 'Modern open-source stack',
+                'tech.desc': 'Built on proven open-source foundations — a native desktop shell powered by a fast, modern web renderer.',
+                'dl.label': 'Download',
+                'dl.title': "Get TesLEr — it's free",
+                'dl.desc': 'Open-source under the MIT license. Pick the package for your platform.',
+                'dl.loading': 'Loading latest release\u2026',
+                'dl.mac.arm.note': 'Apple Silicon — arm64',
+                'dl.mac.x64.note': 'Intel — x64',
+                'dl.win.note': 'x64 installer',
+                'dl.linux.note': 'via Snap Store',
+                'dl.dmg': 'Download .dmg',
+                'dl.exe': 'Download .exe',
+                'dl.snap': 'Get from Snap ↗',
+                'dl.released': 'Released',
+                'dl.all': 'All releases on GitHub →',
+                'dl.error': 'Could not load release info. <a href="https://github.com/j-catania/TeslaSentinelViewer/releases/latest" target="_blank" rel="noopener">Download from GitHub Releases →</a>',
+                'footer.tagline': 'Open-source Tesla Sentry Mode viewer. Released under the MIT License.',
+            },
+            fr: {
+                'nav.features': 'Fonctionnalit\u00e9s',
+                'nav.tech': 'Technologies',
+                'nav.download': 'T\u00e9l\u00e9charger',
+                'hero.sub': 'Application desktop open-source pour parcourir et revoir vos clips Tesla Sentry Mode',
+                'hero.badge': 'Derni\u00e8re version',
+                'hero.btn.download': '⬇&nbsp; T\u00e9l\u00e9charger',
+                'hero.btn.github': '★&nbsp; Voir sur GitHub',
+                'demo.label': 'D\u00e9mo',
+                'demo.title': 'Voir en action',
+                'features.label': 'Fonctionnalit\u00e9s',
+                'features.title': "Tout ce qu'il vous faut pour revoir vos clips",
+                'features.desc': 'Parcourez, regardez et g\u00e9rez tous vos \u00e9v\u00e9nements Sentry Mode depuis une interface unique et \u00e9pur\u00e9e.',
+                'feature.cam.title': 'Vue synchronis\u00e9e 4 cam\u00e9ras',
+                'feature.cam.desc': 'Regardez les cam\u00e9ras avant, arri\u00e8re, r\u00e9p\u00e9teur gauche et r\u00e9p\u00e9teur droit simultan\u00e9ment, parfaitement synchronis\u00e9es en temps r\u00e9el.',
+                'feature.usb.title': 'D\u00e9tection USB automatique',
+                'feature.usb.desc': 'Branchez votre cl\u00e9 USB Tesla et TesLEr d\u00e9couvre instantan\u00e9ment tous les volumes SentryClips disponibles \u2014 aucune configuration requise.',
+                'feature.loc.title': 'Localisation &amp; horodatage',
+                'feature.loc.desc': "Chaque carte d'\u00e9v\u00e9nement affiche la ville, les coordonn\u00e9es estim\u00e9es et la date &amp; l'heure exacte o\u00f9 l'alerte a \u00e9t\u00e9 d\u00e9clench\u00e9e.",
+                'feature.auto.title': 'Lecture automatique',
+                'feature.auto.desc': 'Passe automatiquement au clip suivant en fin de lecture pour revoir une session compl\u00e8te en mode mains libres.',
+                'feature.del.title': 'Suppression par lot',
+                'feature.del.desc': 'S\u00e9lectionnez plusieurs clips \u00e0 la fois et supprimez-les en une seule action pour garder votre cl\u00e9 propre.',
+                'feature.cross.title': 'Multi-plateforme',
+                'feature.cross.desc': 'Disponible sur macOS (Apple Silicon &amp; Intel), Windows x64, et Linux via le Snap Store.',
+                'tech.label': 'Construit avec',
+                'tech.title': 'Stack open-source moderne',
+                'tech.desc': 'Construit sur des bases open-source \u00e9prouv\u00e9es \u2014 une coque desktop native aliment\u00e9e par un moteur web rapide et moderne.',
+                'dl.label': 'T\u00e9l\u00e9chargement',
+                'dl.title': "T\u00e9l\u00e9charger TesLEr \u2014 c'est gratuit",
+                'dl.desc': 'Open-source sous licence MIT. Choisissez le package pour votre plateforme.',
+                'dl.loading': 'Chargement de la derni\u00e8re version\u2026',
+                'dl.mac.arm.note': 'Apple Silicon — arm64',
+                'dl.mac.x64.note': 'Intel — x64',
+                'dl.win.note': 'Installeur x64',
+                'dl.linux.note': 'via le Snap Store',
+                'dl.dmg': 'T\u00e9l\u00e9charger .dmg',
+                'dl.exe': 'T\u00e9l\u00e9charger .exe',
+                'dl.snap': 'Obtenir via Snap ↗',
+                'dl.released': 'Publi\u00e9 le',
+                'dl.all': 'Toutes les versions sur GitHub →',
+                'dl.error': 'Impossible de charger les infos de version. <a href="https://github.com/j-catania/TeslaSentinelViewer/releases/latest" target="_blank" rel="noopener">T\u00e9l\u00e9charger depuis GitHub Releases →</a>',
+                'footer.tagline': 'Visionneuse Tesla Sentry Mode open-source. Publi\u00e9e sous licence MIT.',
+            }
+        };
+
+        var _publishedAt = null;
+
+        function getCurrentLang() {
+            return localStorage.getItem('lang') || 'en';
+        }
+
+        function t(key) {
+            var lang = getCurrentLang();
+            return (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) || TRANSLATIONS['en'][key] || key;
+        }
+
+        function setLang(lang) {
+            localStorage.setItem('lang', lang);
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(function (el) {
+                var key = el.dataset.i18n;
+                var val = TRANSLATIONS[lang] && TRANSLATIONS[lang][key];
+                if (val !== undefined) el.innerHTML = val;
+            });
+            var btn = document.getElementById('lang-toggle');
+            if (btn) btn.innerHTML = lang === 'en' ? '🇫🇷 FR' : '🇬🇧 EN';
+            if (_publishedAt) updateReleaseMeta(_publishedAt, lang);
+        }
+
+        function updateReleaseMeta(publishedAt, lang) {
+            _publishedAt = publishedAt;
+            var releaseMeta = document.getElementById('release-meta');
+            if (!releaseMeta) return;
+            var d = new Date(publishedAt);
+            var locale = lang === 'fr' ? 'fr-FR' : 'en-US';
+            var dateStr = d.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
+            releaseMeta.innerHTML =
+                t('dl.released') + ' ' + dateStr + ' · ' +
+                '<a href="https://github.com/j-catania/TeslaSentinelViewer/releases" target="_blank" rel="noopener">' +
+                t('dl.all') + '</a>';
+        }
+
+        // Initialize language (script is at bottom of body so DOM is already available)
+        (function () {
+            var lang = getCurrentLang();
+            setLang(lang);
+            var btn = document.getElementById('lang-toggle');
+            if (btn) {
+                btn.addEventListener('click', function () {
+                    setLang(getCurrentLang() === 'en' ? 'fr' : 'en');
+                });
+            }
+        })();
+
         async function loadRelease() {
             const loadingEl = document.getElementById('dl-loading');
             try {
@@ -781,7 +954,7 @@
 
                 const { tag_name, assets, published_at } = release;
 
-                // Update version badges everywhere
+                // Update version badge
                 document.getElementById('hero-version').textContent = tag_name;
 
                 // Locate platform assets
@@ -793,20 +966,13 @@
                 if (macX64) document.getElementById('dl-mac-x64').href = macX64.browser_download_url;
                 if (winExe) document.getElementById('dl-win').href = winExe.browser_download_url;
 
-                // Release date
-                var d = new Date(published_at);
-                document.getElementById('release-date').textContent = d.toLocaleDateString('en-US', {
-                    year: 'numeric', month: 'long', day: 'numeric'
-                });
+                updateReleaseMeta(published_at, getCurrentLang());
 
                 loadingEl.style.display = 'none';
                 document.getElementById('dl-cards').style.display = 'grid';
                 document.getElementById('release-meta').style.display = 'block';
             } catch (err) {
-                loadingEl.innerHTML =
-                    'Could not load release info. ' +
-                    '<a href="https://github.com/' + REPO + '/releases/latest" target="_blank" rel="noopener">' +
-                    'Download from GitHub Releases →</a>';
+                loadingEl.innerHTML = t('dl.error');
             }
         }
 
