@@ -4,21 +4,28 @@
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #b6b6b6;
+  background-color: #0d0d0d;
 
   main {
-    width: calc(100% - 2rem);
-    min-height: calc(100% - 2rem);
+    width: 100%;
+    min-height: 100vh;
 
     >button.toggle-drawer {
       position: fixed;
-      left: 0.5rem;
-      top: 0.5rem;
+      left: 0.75rem;
+      top: 0.75rem;
       z-index: 5;
+      background: rgba(20, 20, 20, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      color: rgba(255, 255, 255, 0.85);
 
       &:hover {
-        background-color: unset;
-        border-color: unset;
+        background-color: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.2);
+        color: white;
       }
 
       &:focus {
@@ -27,16 +34,19 @@
     }
 
     >.MuiStack-root {
-      background-color: white;
+      background: rgba(12, 12, 12, 0.96);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-right: 1px solid rgba(255, 255, 255, 0.07);
       z-index: 4;
       position: fixed;
       top: 0;
       left: calc(-565px - 2rem);
       width: 565px;
       overflow: hidden;
-      height: calc(100vh - 4.5rem);
+      height: 100vh;
       transition: left ease-out 250ms;
-      padding: 3.5rem 1rem 1rem 1rem;
+      padding: 1rem;
 
       >div {
         width: 100%;
@@ -47,11 +57,7 @@
         transition: left ease-in 250ms;
         overflow: auto;
       }
-
-
     }
-
-    .MuiCard-root.clip {}
   }
 
   div.viewer {
@@ -59,8 +65,17 @@
     position: fixed;
     margin: 0.5rem;
     aspect-ratio: 4/3;
-    border-radius: 7px;
+    border-radius: 10px;
     z-index: 2;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    transition: box-shadow 0.2s, outline-color 0.2s;
+
+    &:hover:not(.active):not(.empty-video) {
+      outline: 2px solid rgba(227, 25, 55, 0.7);
+      box-shadow: 0 4px 24px rgba(227, 25, 55, 0.25);
+    }
 
     &.active {
       z-index: 1;
@@ -68,17 +83,18 @@
       position: relative;
       height: 100vh;
       width: 100vw;
+      border-radius: 0;
+      box-shadow: none;
     }
 
     video {
       height: 100%;
       aspect-ratio: 4/3;
-      border-radius: 7px;
     }
 
     &.front {
       top: 0;
-      left: 2rem;
+      left: 3.5rem;
     }
 
     &.back {
@@ -87,42 +103,44 @@
     }
 
     &.right_repeater {
-      bottom: 0;
+      bottom: 3.5rem;
       right: 0;
     }
 
     &.left_repeater {
-      bottom: 0;
-      left: 2rem;
+      bottom: 3.5rem;
+      left: 3.5rem;
     }
 
     &.empty-video {
       z-index: 2;
-      background-color: #d9d9d9;
-      opacity: 0.9;
+      background-color: #0d0d0d;
     }
   }
 
   #slider {
     z-index: 3;
     position: fixed;
-    bottom: 0.3rem;
-    right: 0;
+    bottom: 0.75rem;
+    left: 0;
     width: 100vw;
     display: flex;
     justify-content: center;
 
     .MuiStack-root {
-      padding: 0 1rem;
-      background-color: rgba(255, 255, 255, 0.95);
-      border-radius: 25px;
+      padding: 0.5rem 1.25rem;
+      background: rgba(12, 12, 12, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 40px;
+      box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5);
     }
 
     .MuiSlider-root {
       width: 50vw;
     }
   }
-
 }
 
 .MuiCard-root {

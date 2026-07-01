@@ -11,6 +11,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { Event } from "@/types";
 
@@ -60,6 +61,29 @@ const Drawer = ({ onEventSelected }: IDrawer) => {
         </IconButton>
 
         <Stack spacing={1} alignItems="flex-start" className={open ? 'opened' : ''}>
+            {/* App branding */}
+            <Box sx={{
+                display: 'flex', alignItems: 'center', gap: 1.5,
+                pt: 3.5, pb: 1.5, mb: 0.5, width: '100%',
+                borderBottom: '1px solid rgba(255,255,255,0.07)',
+            }}>
+                <Box sx={{
+                    width: 34, height: 34, borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #e31937 0%, #7a0000 100%)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontWeight: 800, fontSize: '1rem', color: 'white', flexShrink: 0,
+                    userSelect: 'none',
+                }}>T</Box>
+                <Box>
+                    <Typography variant="subtitle1" fontWeight={700} lineHeight={1.1}
+                        letterSpacing={1.5} sx={{ fontSize: '1.05rem' }}>
+                        TesLEr
+                    </Typography>
+                    <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.35)', lineHeight: 1, display: 'block' }}>
+                        Sentry Mode Viewer
+                    </Typography>
+                </Box>
+            </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
                 <FormControl sx={{ minWidth: 200 }}>
                     <Select size='small'

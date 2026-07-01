@@ -1,9 +1,13 @@
 import Drawer from '@/components/Drawer';
 import Viewers from '@/components/Viewers';
+import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react'
 import './App.scss'
 import { Event } from "@/types";
@@ -35,6 +39,31 @@ function App() {
                 setSliderValue(0);
             }} />
 
+            {!event && (
+                <Box sx={{
+                    position: 'fixed',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    textAlign: 'center',
+                    pointerEvents: 'none',
+                    userSelect: 'none',
+                }}>
+                    <Typography sx={{
+                        fontSize: '5rem',
+                        fontWeight: 900,
+                        letterSpacing: 8,
+                        color: 'rgba(255,255,255,0.04)',
+                        lineHeight: 1,
+                    }}>
+                        TesLEr
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.18)', mt: 1, letterSpacing: 1 }}>
+                        Select a clip from the sidebar
+                    </Typography>
+                </Box>
+            )}
+
             {event && <>
                 <Viewers event={event}
                     currentTime={currentTime}
@@ -46,9 +75,33 @@ function App() {
                     }} />
 
                 <div id="slider">
-                    <Stack spacing={2} direction="row" alignItems="center" justifyContent="center">
-                        {paused ? <PlayArrowIcon onClick={() => setPaused(false)} />
-                            : <PauseIcon onClick={() => setPaused(true)} />}
+                    <Stack spacing={1.5} direction="row" alignItems="center" justifyContent="center">
+                        {/* Event info */}
+                        <Box sx={{ display: 'flex', flexDirection: 'column', minWidth: 120, mr: 0.5 }}>
+                            <Typography variant="caption" sx={{
+                                display: 'flex', alignItems: 'center', gap: 0.5,
+                                color: 'rgba(255,255,255,0.75)', lineHeight: 1.3, fontWeight: 600,
+                            }}>
+                                <LocationOnRoundedIcon sx={{ fontSize: 12 }} />
+                                {event.city}
+                            </Typography>
+                            <Typography variant="caption" sx={{
+                                color: 'rgba(255,255,255,0.35)', fontSize: '0.65rem', lineHeight: 1.2,
+                            }}>
+                                {event.timestamp.toLocaleString()}
+                            </Typography>
+                        </Box>
+
+                        {/* Play / Pause */}
+                        <IconButton
+                            size="small"
+                            onClick={() => setPaused(p => !p)}
+                            sx={{ color: 'white', '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' } }}
+                        >
+                            {paused ? <PlayArrowIcon /> : <PauseIcon />}
+                        </IconButton>
+
+                        {/* Scrubber */}
                         <Slider
                             valueLabelDisplay="on"
                             valueLabelFormat={(v) => v < 60 ? `${v}s` : `${Math.floor(v / 60)}m${v % 60 > 0 ? `${v % 60}s` : ''}`}
@@ -67,11 +120,15 @@ function App() {
                                     width: '10px',
                                     height: '10px',
                                     borderRadius: '50%',
-                                    backgroundColor: '#de0000',
+                                    backgroundColor: '#e31937',
                                 },
                                 '& .MuiSlider-markActive': {
-                                    backgroundColor: '#de0000',
-                                }
+                                    backgroundColor: '#e31937',
+                                },
+                                '& .MuiSlider-thumb': {
+                                    width: 14,
+                                    height: 14,
+                                },
                             }} />
                     </Stack>
                 </div>

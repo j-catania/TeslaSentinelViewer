@@ -9,6 +9,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Checkbox from '@mui/material/Checkbox';
+import Chip from '@mui/material/Chip';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -19,6 +20,14 @@ import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
+
+const formatReason = (reason: string): string =>
+    reason
+        .replace(/^sentry_aware_/i, '')
+        .replace(/^user_interaction_/i, '')
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase())
+        .slice(0, 22);
 
 interface IClip {
     path: string,
@@ -54,72 +63,124 @@ const Clip = ({ path, onClick: onSelection, onDeletion, active = false, selected
 
 
     return (
-        <Card variant="outlined"
+        <Card
+            variant="outlined"
             className="clip"
             sx={{
-                width: '15rem',
+                width: '13rem',
                 display: 'flex',
                 flexDirection: 'column',
-                backgroundColor: active ? 'action.selected' : 'transparent',
+                backgroundColor: '#1a1a1a',
+                border: active
+                    ? '1.5px solid rgba(227,25,55,0.75)'
+                    : selected
+                        ? '1.5px solid rgba(227,25,55,0.35)'
+                        : '1px solid rgba(255,255,255,0.08)',
                 cursor: 'pointer',
+                transition: 'transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease',
+                boxShadow: active
+                    ? '0 0 0 1px rgba(227,25,55,0.3), 0 4px 20px rgba(227,25,55,0.15)'
+                    : 'none',
+                '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: active
+                        ? '0 0 0 1px rgba(227,25,55,0.5), 0 8px 28px rgba(227,25,55,0.2)'
+                        : '0 8px 24px rgba(0,0,0,0.5)',
+                    borderColor: active ? 'rgba(227,25,55,0.9)' : 'rgba(255,255,255,0.18)',
+                },
             }}
-            onClick={() => status === 'ready' && onSelection?.(event)}>
+            onClick={() => status === 'ready' && onSelection?.(event)}
+        >
 
             {/* Thumbnail */}
             <Box sx={{ position: 'relative' }}>
                 {status === 'loading'
-                    ? <Skeleton variant="rectangular" height={120} />
+                    ? <Skeleton variant="rectangular" height={100} sx={{ bgcolor: 'rgba(255,255,255,0.06)' }} />
                     : <Box
                         component="img"
                         src={thumb ? `data:image/png;base64,${thumb}` : ''}
                         loading="lazy"
                         alt=""
-                        sx={{ display: 'block', width: '100%', height: 120, objectFit: 'cover' }}
+                        sx={{ display: 'block', width: '100%', height: 100, objectFit: 'cover', backgroundColor: '#111' }}
                     />
                 }
+                {/* Reason badge */}
+                {status === 'ready' && event?.reason && (
+                    <Chip
+                        label={formatReason(event.reason)}
+                        size="small"
+                        sx={{
+                            position: 'absolute',
+                            top: 6,
+                            right: 6,
+                            fontSize: '0.6rem',
+                            height: 18,
+                            bgcolor: 'rgba(0,0,0,0.65)',
+                            color: 'rgba(255,255,255,0.85)',
+                            backdropFilter: 'blur(6px)',
+                            border: '1px solid rgba(255,255,255,0.12)',
+                            '& .MuiChip-label': { px: 0.75 },
+                        }}
+                    />
+                )}
             </Box>
 
             {/* Info */}
-            <CardContent sx={{ flex: 1, py: 1 }}>
+            <CardContent sx={{ flex: 1, py: 0.75, px: 1.25, pb: '6px !important' }}>
                 {status === 'loading' ? (
                     <>
-                        <Skeleton variant="text" width="70%" />
-                        <Skeleton variant="text" width="50%" />
+                        <Skeleton variant="text" width="70%" sx={{ bgcolor: 'rgba(255,255,255,0.06)' }} />
+                        <Skeleton variant="text" width="50%" sx={{ bgcolor: 'rgba(255,255,255,0.06)' }} />
                     </>
                 ) : status === 'error' ? (
-                    <Typography variant="body2" color="error">
-                        Failed to load clip
-                    </Typography>
+                    <Typography variant="body2" color="error">Failed to load clip</Typography>
                 ) : (
                     <>
-                        <Typography variant="subtitle2" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, fontWeight: 600 }}>
-                            <LocationOnRoundedIcon fontSize="small" color="action" /> {event?.city}
+                        <Typography variant="subtitle2" sx={{
+                            display: 'flex', alignItems: 'center', gap: 0.5,
+                            fontWeight: 600, fontSize: '0.8rem', lineHeight: 1.3,
+                            color: 'rgba(255,255,255,0.9)',
+                        }}>
+                            <LocationOnRoundedIcon sx={{ fontSize: 13, color: '#e31937', flexShrink: 0 }} />
+                            {event?.city}
                         </Typography>
-                        <Typography variant="caption" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <AccessTimeIcon fontSize="inherit" /> {event?.timestamp.toLocaleString()}
+                        <Typography variant="caption" sx={{
+                            display: 'flex', alignItems: 'center', gap: 0.5,
+                            color: 'rgba(255,255,255,0.4)', fontSize: '0.68rem',
+                        }}>
+                            <AccessTimeIcon sx={{ fontSize: 10 }} />
+                            {event?.timestamp.toLocaleString()}
                         </Typography>
                     </>
                 )}
             </CardContent>
 
             {/* Actions */}
-            <CardActions sx={{ justifyContent: 'space-between', pt: 0 }}>
+            <CardActions sx={{ justifyContent: 'space-between', pt: 0, px: 0.5, pb: 0.5 }}>
                 <Checkbox
                     size="small"
                     checked={selected}
+                    sx={{
+                        color: 'rgba(255,255,255,0.3)',
+                        '&.Mui-checked': { color: '#e31937' },
+                        padding: '4px',
+                    }}
                     onClick={e => {
                         e.stopPropagation();
                         onSelectionChange?.((e.target as HTMLInputElement).checked);
-                    }} />
+                    }}
+                />
                 <IconButton
                     size="small"
                     color="error"
                     aria-label="Remove clip"
+                    sx={{ opacity: 0.5, '&:hover': { opacity: 1 } }}
                     onClick={(e) => {
                         e.stopPropagation();
                         setOpenDeletion(true);
-                    }}>
-                    <DeleteForeverIcon fontSize="small" />
+                    }}
+                >
+                    <DeleteForeverIcon sx={{ fontSize: 16 }} />
                 </IconButton>
             </CardActions>
             <Dialog
