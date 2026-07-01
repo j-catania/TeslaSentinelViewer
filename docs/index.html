@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TesLEr — Tesla Sentry Mode Viewer</title>
+    <meta name="description"
+        content="Free, open-source desktop app for browsing and reviewing Tesla Sentry Mode clips on macOS, Windows and Linux." />
+    <meta property="og:title" content="TesLEr — Tesla Sentry Mode Viewer" />
+    <meta property="og:description"
+        content="Free, open-source desktop app for browsing and reviewing Tesla Sentry Mode clips." />
+    <meta property="og:image"
+        content="https://raw.githubusercontent.com/j-catania/TeslaSentinelViewer/main/public/icon.png" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" type="image/png" href="icon.png" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #090909;
+            --bg1: #111111;
+            --bg2: #181818;
+            --bg3: #222222;
+            --red: #cc1014;
+            --red-l: #f03033;
+            --text: #f0f0f0;
+            --muted: #808080;
+            --border: #252525;
+            --r: 12px;
+            --gutter: clamp(1.25rem, 5vw, 3rem);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+            font-size: 1rem;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: var(--red-l);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 var(--gutter);
+        }
+
+        /* ── Navigation ── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(9, 9, 9, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 62px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo:hover {
+            text-decoration: none;
+        }
+
+        .nav-logo img {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+        }
+
+        .nav-logo .acc {
+            color: var(--red-l);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.75rem;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            font-size: 0.875rem;
+            transition: color 0.18s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 0.6rem 1.4rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.18s;
+            border: none;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--red);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--red-l);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: #3a3a3a;
+            background: var(--bg2);
+        }
+
+        /* ── Hero ── */
+        .hero {
+            padding: 6rem 0 5.5rem;
+            text-align: center;
+            background:
+                radial-gradient(ellipse 90% 55% at 50% -5%, rgba(204, 16, 20, 0.13) 0%, transparent 65%),
+                var(--bg);
+        }
+
+        .hero-logo {
+            width: 96px;
+            height: 96px;
+            border-radius: 22px;
+            margin: 0 auto 1.75rem;
+            display: block;
+            box-shadow: 0 6px 40px rgba(204, 16, 20, 0.28), 0 2px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero h1 {
+            font-size: clamp(2.6rem, 7vw, 4.25rem);
+            font-weight: 800;
+            letter-spacing: -0.045em;
+            line-height: 1.05;
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 .acc {
+            color: var(--red-l);
+        }
+
+        .hero-sub {
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
+            color: var(--muted);
+            max-width: 520px;
+            margin: 0 auto 1.25rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--muted);
+            padding: 0.3rem 0.9rem;
+            margin-bottom: 2.25rem;
+        }
+
+        .hero-badge .ver {
+            color: var(--red-l);
+            font-weight: 600;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 0.875rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-actions .btn {
+            padding: 0.7rem 1.75rem;
+            font-size: 0.95rem;
+        }
+
+        /* ── Sections ── */
+        section {
+            padding: 5.5rem 0;
+        }
+
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--red-l);
+            margin-bottom: 0.6rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.65rem, 3vw, 2.25rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-desc {
+            color: var(--muted);
+            max-width: 560px;
+            font-size: 1rem;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        /* ── Demo ── */
+        .demo {
+            background: var(--bg1);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: var(--r);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ── Features ── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .feature-card {
+            background: var(--bg1);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 1.75rem;
+            transition: border-color 0.18s, transform 0.18s;
+        }
+
+        .feature-card:hover {
+            border-color: #383838;
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .feature-card p {
+            color: var(--muted);
+            font-size: 0.875rem;
+            line-height: 1.55;
+        }
+
+        /* ── Tech Stack ── */
+        .tech {
+            background: var(--bg1);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tech-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.875rem;
+        }
+
+        .tech-chip {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: border-color 0.18s;
+        }
+
+        .tech-chip:hover {
+            border-color: #3a3a3a;
+        }
+
+        .tech-chip .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .tech-chip .version {
+            color: var(--muted);
+            font-weight: 400;
+            font-size: 0.8rem;
+            margin-left: 2px;
+        }
+
+        /* ── Download ── */
+        #download {
+            background: var(--bg);
+        }
+
+        .dl-loading {
+            text-align: center;
+            color: var(--muted);
+            padding: 2.5rem;
+            font-size: 0.9rem;
+        }
+
+        .dl-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .dl-card {
+            background: var(--bg1);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: border-color 0.18s, transform 0.18s;
+        }
+
+        .dl-card:hover {
+            border-color: #383838;
+            transform: translateY(-2px);
+        }
+
+        .dl-card .os-icon {
+            font-size: 2.25rem;
+            margin-bottom: 0.875rem;
+            display: block;
+        }
+
+        .dl-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .dl-card .dl-note {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+            min-height: 1.2rem;
+        }
+
+        .dl-card .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .release-meta {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.825rem;
+            margin-top: 2rem;
+        }
+
+        .release-meta a {
+            color: var(--muted);
+            text-decoration: underline;
+        }
+
+        .release-meta a:hover {
+            color: var(--text);
+        }
+
+        /* ── Footer ── */
+        footer {
+            background: var(--bg1);
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 0;
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .footer-brand img {
+            width: 22px;
+            height: 22px;
+            border-radius: 5px;
+        }
+
+        .footer-brand .acc {
+            color: var(--red-l);
+        }
+
+        footer p {
+            font-size: 0.825rem;
+            color: var(--muted);
+            margin-top: 0.3rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.75rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            font-size: 0.825rem;
+            color: var(--muted);
+            transition: color 0.18s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 600px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links a:not(:last-child) {
+                display: none;
+            }
+        }
+
+        /* ── Entrance animation ── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero .container>* {
+            animation: fadeUp 0.55s ease both;
+        }
+
+        .hero .container>*:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .hero .container>*:nth-child(2) {
+            animation-delay: 0.07s;
+        }
+
+        .hero .container>*:nth-child(3) {
+            animation-delay: 0.13s;
+        }
+
+        .hero .container>*:nth-child(4) {
+            animation-delay: 0.19s;
+        }
+
+        .hero .container>*:nth-child(5) {
+            animation-delay: 0.25s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Navigation ── -->
+    <nav>
+        <div class="container nav-inner">
+            <a href="#" class="nav-logo">
+                <img src="icon.png" alt="TesLEr" />
+                Tes<span class="acc">LE</span>r
+            </a>
+            <nav class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#tech">Tech</a>
+                <a href="#download">Download</a>
+                <a href="https://github.com/j-catania/TeslaSentinelViewer" target="_blank" rel="noopener">GitHub ↗</a>
+            </nav>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <div class="hero">
+        <div class="container">
+            <img src="icon.png" alt="TesLEr" class="hero-logo" />
+            <h1>Tes<span class="acc">LE</span>r</h1>
+            <p class="hero-sub">
+                Open-source desktop app for browsing and reviewing your Tesla Sentry Mode clips
+            </p>
+            <div class="hero-badge">
+                Latest&nbsp;<span class="ver" id="hero-version">…</span>
+            </div>
+            <div class="hero-actions">
+                <a href="#download" class="btn btn-primary">⬇&nbsp; Download</a>
+                <a href="https://github.com/j-catania/TeslaSentinelViewer" target="_blank" rel="noopener"
+                    class="btn btn-outline">★&nbsp; View on GitHub</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Demo ── -->
+    <section class="demo">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Demo</div>
+                <h2 class="section-title">See it in action</h2>
+            </div>
+            <div class="video-wrapper">
+                <iframe src="https://www.youtube.com/embed/6V6hZbN5eiw" title="TesLEr — Tesla Sentry Mode Viewer demo"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Features ── -->
+    <section id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Features</div>
+                <h2 class="section-title">Everything you need to review your clips</h2>
+                <p class="section-desc">Browse, watch and manage all your Sentry Mode events from a single, focused
+                    interface.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">📹</span>
+                    <h3>4-camera synchronized view</h3>
+                    <p>Watch front, back, left-repeater and right-repeater cameras simultaneously, perfectly synced in
+                        real time.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔌</span>
+                    <h3>Automatic USB detection</h3>
+                    <p>Plug in your Tesla USB drive and TesLEr instantly discovers all available SentryClips volumes —
+                        no setup needed.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📍</span>
+                    <h3>Location &amp; timestamp</h3>
+                    <p>Each event card shows the city, estimated coordinates and the exact date &amp; time the alert was
+                        triggered.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">⏩</span>
+                    <h3>Auto-advance playback</h3>
+                    <p>Automatically moves to the next clip when playback ends so you can review a full session
+                        hands-free.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🗑️</span>
+                    <h3>Batch delete</h3>
+                    <p>Select multiple clips at once and delete them in a single action to keep your drive tidy.</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">💻</span>
+                    <h3>Cross-platform</h3>
+                    <p>Available on macOS (Apple Silicon &amp; Intel), Windows x64, and Linux via the Snap Store.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Tech Stack ── -->
+    <section id="tech" class="tech">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Built with</div>
+                <h2 class="section-title">Modern open-source stack</h2>
+                <p class="section-desc">Built on proven open-source foundations — a native desktop shell powered by a
+                    fast, modern web renderer.</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-chip">
+                    <span class="dot" style="background:#47848F"></span>
+                    Electron <span class="version">42</span>
+                </div>
+                <div class="tech-chip">
+                    <span class="dot" style="background:#61DAFB"></span>
+                    React <span class="version">19</span>
+                </div>
+                <div class="tech-chip">
+                    <span class="dot" style="background:#646CFF"></span>
+                    Vite <span class="version">6</span>
+                </div>
+                <div class="tech-chip">
+                    <span class="dot" style="background:#3178C6"></span>
+                    TypeScript <span class="version">6</span>
+                </div>
+                <div class="tech-chip">
+                    <span class="dot" style="background:#007FFF"></span>
+                    Material UI <span class="version">v5</span>
+                </div>
+                <div class="tech-chip">
+                    <span class="dot" style="background:#CC6699"></span>
+                    SCSS
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Download ── -->
+    <section id="download">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Download</div>
+                <h2 class="section-title">Get TesLEr — it's free</h2>
+                <p class="section-desc">Open-source under the MIT license. Pick the package for your platform.</p>
+            </div>
+
+            <div class="dl-loading" id="dl-loading">Loading latest release…</div>
+
+            <div class="dl-cards" id="dl-cards" style="display:none">
+                <div class="dl-card">
+                    <span class="os-icon">🍎</span>
+                    <h3>macOS</h3>
+                    <p class="dl-note">Apple Silicon — arm64</p>
+                    <a id="dl-mac-arm" href="https://github.com/j-catania/TeslaSentinelViewer/releases/latest"
+                        class="btn btn-primary">
+                        Download .dmg
+                    </a>
+                </div>
+                <div class="dl-card">
+                    <span class="os-icon">🍎</span>
+                    <h3>macOS</h3>
+                    <p class="dl-note">Intel — x64</p>
+                    <a id="dl-mac-x64" href="https://github.com/j-catania/TeslaSentinelViewer/releases/latest"
+                        class="btn btn-primary">
+                        Download .dmg
+                    </a>
+                </div>
+                <div class="dl-card">
+                    <span class="os-icon">🪟</span>
+                    <h3>Windows</h3>
+                    <p class="dl-note">x64 installer</p>
+                    <a id="dl-win" href="https://github.com/j-catania/TeslaSentinelViewer/releases/latest"
+                        class="btn btn-primary">
+                        Download .exe
+                    </a>
+                </div>
+                <div class="dl-card">
+                    <span class="os-icon">🐧</span>
+                    <h3>Linux</h3>
+                    <p class="dl-note">via Snap Store</p>
+                    <a href="https://snapcraft.io/tesler" target="_blank" rel="noopener" class="btn btn-outline">
+                        Get from Snap ↗
+                    </a>
+                </div>
+            </div>
+
+            <p class="release-meta" id="release-meta" style="display:none">
+                Released <span id="release-date">–</span> ·
+                <a href="https://github.com/j-catania/TeslaSentinelViewer/releases" target="_blank" rel="noopener">All
+                    releases on GitHub →</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer>
+        <div class="container footer-inner">
+            <div>
+                <div class="footer-brand">
+                    <img src="icon.png" alt="TesLEr" />
+                    Tes<span class="acc">LE</span>r
+                </div>
+                <p>Open-source Tesla Sentry Mode viewer. Released under the MIT License.</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://github.com/j-catania/TeslaSentinelViewer" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/j-catania/TeslaSentinelViewer/releases" target="_blank"
+                    rel="noopener">Releases</a>
+                <a href="https://github.com/j-catania/TeslaSentinelViewer/issues" target="_blank"
+                    rel="noopener">Issues</a>
+                <a href="https://snapcraft.io/tesler" target="_blank" rel="noopener">Snap Store</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const REPO = 'j-catania/TeslaSentinelViewer';
+
+        async function loadRelease() {
+            const loadingEl = document.getElementById('dl-loading');
+            try {
+                const res = await fetch(
+                    'https://api.github.com/repos/' + REPO + '/releases/latest',
+                    { headers: { Accept: 'application/vnd.github+json' } }
+                );
+                if (!res.ok) throw new Error('GitHub API returned ' + res.status);
+                const release = await res.json();
+
+                const { tag_name, assets, published_at } = release;
+
+                // Update version badges everywhere
+                document.getElementById('hero-version').textContent = tag_name;
+
+                // Locate platform assets
+                const macArm = assets.find(function (a) { return /arm64[^/]*\.dmg$/i.test(a.name); });
+                const macX64 = assets.find(function (a) { return /x64[^/]*\.dmg$/i.test(a.name); });
+                const winExe = assets.find(function (a) { return /\.exe$/i.test(a.name); });
+
+                if (macArm) document.getElementById('dl-mac-arm').href = macArm.browser_download_url;
+                if (macX64) document.getElementById('dl-mac-x64').href = macX64.browser_download_url;
+                if (winExe) document.getElementById('dl-win').href = winExe.browser_download_url;
+
+                // Release date
+                var d = new Date(published_at);
+                document.getElementById('release-date').textContent = d.toLocaleDateString('en-US', {
+                    year: 'numeric', month: 'long', day: 'numeric'
+                });
+
+                loadingEl.style.display = 'none';
+                document.getElementById('dl-cards').style.display = 'grid';
+                document.getElementById('release-meta').style.display = 'block';
+            } catch (err) {
+                loadingEl.innerHTML =
+                    'Could not load release info. ' +
+                    '<a href="https://github.com/' + REPO + '/releases/latest" target="_blank" rel="noopener">' +
+                    'Download from GitHub Releases →</a>';
+            }
+        }
+
+        loadRelease();
+    </script>
+</body>
+
+</html>
