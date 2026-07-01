@@ -1,4 +1,4 @@
-import {Event, TeslaEventJSON} from '@/types/Event';
+import { Event, TeslaEventJSON } from '@/types/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
@@ -6,6 +6,7 @@ import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Checkbox from '@mui/material/Checkbox';
 import Dialog from '@mui/material/Dialog';
@@ -14,19 +15,21 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
 interface IClip {
     path: string,
-    onSelection?: (event?: Event) => void,
+    onClick?: (event?: Event) => void,
     onDeletion?: (path: string) => void,
     active?: boolean,
+    selected?: boolean,
     onSelectionChange?: (selected: boolean) => void,
 }
 
-const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}: IClip) => {
+const Clip = ({ path, onClick: onSelection, onDeletion, active = false, selected = false, onSelectionChange }: IClip) => {
     const [thumb, setThumb] = useState<string>();
     const [event, setEvent] = useState<Event>();
     const [openDeletion, setOpenDeletion] = useState(false);
@@ -52,70 +55,73 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
 
     return (
         <Card variant="outlined"
-              className="clip"
-              sx={{
-                  width: '15rem',
-                  backgroundColor: active ? 'action.selected' : 'transparent',
-                  cursor: 'pointer',
-              }}
-              onClick={() => status === 'ready' && onSelection?.(event)}>
+            className="clip"
+            sx={{
+                width: '15rem',
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: active ? 'action.selected' : 'transparent',
+                cursor: 'pointer',
+            }}
+            onClick={() => status === 'ready' && onSelection?.(event)}>
+
+            {/* Thumbnail */}
             <Box sx={{ position: 'relative' }}>
+                {status === 'loading'
+                    ? <Skeleton variant="rectangular" height={120} />
+                    : <Box
+                        component="img"
+                        src={thumb ? `data:image/png;base64,${thumb}` : ''}
+                        loading="lazy"
+                        alt=""
+                        sx={{ display: 'block', width: '100%', height: 120, objectFit: 'cover' }}
+                    />
+                }
+            </Box>
+
+            {/* Info */}
+            <CardContent sx={{ flex: 1, py: 1 }}>
+                {status === 'loading' ? (
+                    <>
+                        <Skeleton variant="text" width="70%" />
+                        <Skeleton variant="text" width="50%" />
+                    </>
+                ) : status === 'error' ? (
+                    <Typography variant="body2" color="error">
+                        Failed to load clip
+                    </Typography>
+                ) : (
+                    <>
+                        <Typography variant="subtitle2" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, fontWeight: 600 }}>
+                            <LocationOnRoundedIcon fontSize="small" color="action" /> {event?.city}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <AccessTimeIcon fontSize="inherit" /> {event?.timestamp.toLocaleString()}
+                        </Typography>
+                    </>
+                )}
+            </CardContent>
+
+            {/* Actions */}
+            <CardActions sx={{ justifyContent: 'space-between', pt: 0 }}>
                 <Checkbox
-                    sx={{ position: 'absolute', top: 0, left: 0, zIndex: 4 }}
+                    size="small"
+                    checked={selected}
                     onClick={e => {
                         e.stopPropagation();
                         onSelectionChange?.((e.target as HTMLInputElement).checked);
-                    }}/>
-                <Box sx={{ position: 'relative', paddingTop: '50%', overflow: 'hidden' }}>
-                    {status === 'loading'
-                        ? <Skeleton variant="rectangular" sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
-                        : <img
-                            src={thumb ? `data:image/png;base64,${thumb}` : ''}
-                            loading="lazy"
-                            alt=""
-                            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                          />
-                    }
-                </Box>
-            </Box>
-            <CardContent>
-                <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start'}}>
-                    <div style={{flex: 1}}>
-                        {status === 'loading' ? (
-                            <>
-                                <Skeleton variant="text" width="70%" sx={{ mt: 2 }} />
-                                <Skeleton variant="text" width="50%" />
-                            </>
-                        ) : status === 'error' ? (
-                            <Typography variant="body2" color="error" sx={{ mt: 2 }}>
-                                Failed to load clip
-                            </Typography>
-                        ) : (
-                            <>
-                                <Typography variant="subtitle1" sx={{fontSize: 'md', mt: 2, display: 'flex', alignItems: 'center', gap: 0.5}}>
-                                    <LocationOnRoundedIcon fontSize="small"/> {event?.city}
-                                </Typography>
-                                <Typography variant="body2" sx={{mt: 0.5, mb: 2, display: 'flex', alignItems: 'center', gap: 0.5}}>
-                                    <AccessTimeIcon fontSize="small"/> {event?.timestamp.toLocaleString()}
-                                </Typography>
-                            </>
-                        )}
-                    </div>
-                    <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                        <Button variant="contained"
-                                size="small"
-                                color="primary"
-                                aria-label="Remove clip"
-                                sx={{ml: 'auto', fontWeight: 600, minWidth: 'auto', p: '4px'}}
-                                onClick={(e: any) => {
-                                    e.stopPropagation();
-                                    setOpenDeletion(true);
-                                }}>
-                            <DeleteForeverIcon/>
-                        </Button>
-                    </Box>
-                </Box>
-            </CardContent>
+                    }} />
+                <IconButton
+                    size="small"
+                    color="error"
+                    aria-label="Remove clip"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setOpenDeletion(true);
+                    }}>
+                    <DeleteForeverIcon fontSize="small" />
+                </IconButton>
+            </CardActions>
             <Dialog
                 open={openDeletion}
                 onClose={() => setOpenDeletion(false)}
@@ -123,10 +129,10 @@ const Clip = ({path, onSelection, onDeletion, active = false, onSelectionChange}
                 aria-describedby="alert-dialog-modal-description"
             >
                 <DialogTitle id="alert-dialog-modal-title" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <WarningRoundedIcon/>
+                    <WarningRoundedIcon />
                     Confirmation
                 </DialogTitle>
-                <Divider/>
+                <Divider />
                 <DialogContent>
                     <DialogContentText id="alert-dialog-modal-description">
                         Are you sure you want to delete this clip?

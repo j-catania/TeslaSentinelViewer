@@ -9,21 +9,24 @@ import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import MenuItem from '@mui/material/MenuItem';
-import Select, {SelectChangeEvent} from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
-import {useEffect, useState} from 'react';
-import {Event} from "@/types";
+import { useEffect, useState } from 'react';
+import { Event } from "@/types";
 
-const TEST_PATH = import.meta.env.DEV ? '/Users/juu/Downloads/TESLADRIVE' : null;
-const SENTRY_PATH = `/TeslaCam/SentryClips`;
+const TEST_PATH = import.meta.env.DEV ? '/Users/Juu/Downloads/TESLADRIVE' : null;
+
+const CLIP_TYPES = ['SentryClips', 'SavedClips'] as const;
+type ClipType = typeof CLIP_TYPES[number];
 
 interface IDrawer {
     onEventSelected: (event?: Event) => void,
 }
 
-const Drawer = ({onEventSelected}: IDrawer) => {
+const Drawer = ({ onEventSelected }: IDrawer) => {
     const [volumes, setVolumes] = useState<string[]>();
     const [source, setSource] = useState<string>('');
+    const [clipType, setClipType] = useState<ClipType>('SentryClips');
     const [open, setOpen] = useState<boolean>(true);
     const [opennable, setOpennable] = useState<boolean>(false);
 
@@ -36,7 +39,7 @@ const Drawer = ({onEventSelected}: IDrawer) => {
             .then((vols: string[]) =>
                 Promise.all(
                     vols.map(vol =>
-                        window.sentinel.getFiles(`${vol}/TeslaCam/SentryClips`)
+                        window.sentinel.getFiles(`${vol}/TeslaCam`)
                             .then(() => vol)
                             .catch(() => null)
                     )
@@ -48,18 +51,18 @@ const Drawer = ({onEventSelected}: IDrawer) => {
     return <>
 
         <IconButton className="toggle-drawer"
-                    disabled={!opennable}
-                    onClick={(e: any) => {
-                        e.stopPropagation();
-                        setOpen(prev => !prev);
-                    }}>
-            {open ? <MenuOpenIcon/> : <MenuIcon/>}
+            disabled={!opennable}
+            onClick={(e: any) => {
+                e.stopPropagation();
+                setOpen(prev => !prev);
+            }}>
+            {open ? <MenuOpenIcon /> : <MenuIcon />}
         </IconButton>
 
         <Stack spacing={1} alignItems="flex-start" className={open ? 'opened' : ''}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
                 <FormControl sx={{ minWidth: 200 }}>
-                    <Select
+                    <Select size='small'
                         displayEmpty
                         renderValue={(val) => (val as string) ? (val as string).split('/')[2] : 'Source'}
                         value={source}
@@ -69,29 +72,38 @@ const Drawer = ({onEventSelected}: IDrawer) => {
                             const name = vol.split('/')[2];
                             return <MenuItem key={vol} value={vol}>
                                 <ListItemIcon>
-                                    <UsbIcon color={name === 'TESLADRIVE' ? 'success' : undefined}/>
+                                    <UsbIcon color={name === 'TESLADRIVE' ? 'success' : undefined} />
                                 </ListItemIcon>
                                 {name}
                             </MenuItem>
                         })}
                         {volumes?.length === 0 &&
                             <MenuItem disabled>No USB device found</MenuItem>}
-                            {TEST_PATH && <MenuItem value={TEST_PATH}>
-                                {TEST_PATH}
-                            </MenuItem>}
+                        {TEST_PATH && <MenuItem value={TEST_PATH}>
+                            {TEST_PATH}
+                        </MenuItem>}
+                    </Select>
+                </FormControl>
+                <FormControl sx={{ minWidth: 140 }}>
+                    <Select size='small'
+                        value={clipType}
+                        onChange={(e: SelectChangeEvent) => setClipType(e.target.value as ClipType)}>
+                        {CLIP_TYPES.map(type => (
+                            <MenuItem key={type} value={type}>{type}</MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
                 <IconButton onClick={updateSources}>
-                    <RefreshIcon/>
+                    <RefreshIcon />
                 </IconButton>
             </Box>
-            {source && <Clips path={source + SENTRY_PATH}
-                              onSelection={event => {
-                                  setOpen(false);
-                                  onEventSelected(event);
-                                  setOpennable(true);
-                              }
-                              }/>}
+            {source && <Clips path={`${source}/TeslaCam/${clipType}`}
+                onSelection={event => {
+                    setOpen(false);
+                    onEventSelected(event);
+                    setOpennable(true);
+                }
+                } />}
         </Stack>
 
     </>
