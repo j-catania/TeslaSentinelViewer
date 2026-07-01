@@ -1,6 +1,6 @@
 import Viewer from '@/components/Viewer';
-import {Areas, Event, Part, Videos} from '@/types';
-import {Fragment, useEffect, useState} from 'react';
+import { Areas, Event, Part, Videos } from '@/types';
+import { Fragment, useEffect, useState } from 'react';
 
 interface IViewers {
     // folder path
@@ -16,13 +16,13 @@ interface IViewers {
 }
 
 const buildParts = (vids: Videos, idx: number): Part[] => [
-    {area: 'left_repeater', path: `file://${vids.lefts[idx]}`},
-    {area: 'right_repeater', path: `file://${vids.rights[idx]}`},
-    {area: 'front', path: `file://${vids.fronts[idx]}`},
-    {area: 'back', path: `file://${vids.backs[idx]}`},
+    { area: 'left_repeater', path: `file://${vids.lefts[idx]}` },
+    { area: 'right_repeater', path: `file://${vids.rights[idx]}` },
+    { area: 'front', path: `file://${vids.fronts[idx]}` },
+    { area: 'back', path: `file://${vids.backs[idx]}` },
 ];
 
-const Viewers = ({event, currentTime, paused, onProcessMaxElements, onProcessStartDate}: IViewers) => {
+const Viewers = ({ event, currentTime, paused, onProcessMaxElements, onProcessStartDate }: IViewers) => {
     const [activeArea, setActiveArea] = useState<Areas>('front')
     const [videos, setVideos] = useState<Videos>();
     const [parts, setParts] = useState<Part[]>();
@@ -32,6 +32,9 @@ const Viewers = ({event, currentTime, paused, onProcessMaxElements, onProcessSta
     const [videoTime, setVideoTime] = useState<number>(0);
 
     useEffect(() => {
+        setIndex(0);
+        setVideoTime(0);
+
         window.sentinel.getFiles(event.root)
             .then((vals: string[]) => vals.sort())
             .then((paths: string[]) => ({
@@ -54,7 +57,7 @@ const Viewers = ({event, currentTime, paused, onProcessMaxElements, onProcessSta
                     vids.lefts.length, vids.rights.length
                 ));
 
-                setParts(buildParts(vids, index));
+                setParts(buildParts(vids, 0));
             })
     }, [event]);
 
@@ -73,16 +76,16 @@ const Viewers = ({event, currentTime, paused, onProcessMaxElements, onProcessSta
     return (<Fragment>
         {parts?.map((part) => {
             return <div key={part.area}
-                        className={'viewer ' + part.area + (part.area === activeArea ? ' active' : '')}>
+                className={'viewer ' + part.area + (part.area === activeArea ? ' active' : '')}>
                 <Viewer currentTime={videoTime}
-                        paused={paused}
-                        src={part.path}
-                        onClick={() => setActiveArea(part.area)}
-                        onEnded={() => {
-                            if (part.area === activeArea) {
-                                setIndex(prevState => prevState + 1)
-                            }
-                        }}/>
+                    paused={paused}
+                    src={part.path}
+                    onClick={() => setActiveArea(part.area)}
+                    onEnded={() => {
+                        if (part.area === activeArea) {
+                            setIndex(prevState => prevState + 1)
+                        }
+                    }} />
             </div>
         })}
 

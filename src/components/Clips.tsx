@@ -57,7 +57,10 @@ const Clips = ({ path, onSelection }: IClips) => {
                     page={page + 1}
                     onChange={(_, value) => setPage(value - 1)}
                     size="small"
-                    siblingCount={2}
+                    siblingCount={1}
+                    boundaryCount={0}
+                    showFirstButton
+                    showLastButton
                 />
                 <FormControl size="small">
                     <Select
@@ -82,7 +85,7 @@ const Clips = ({ path, onSelection }: IClips) => {
             </Badge>
         </Stack>
 
-        <Grid container spacing={1} justifyContent="center">
+        <Grid container spacing={1}>
             {dirs?.map(item =>
                 <Grid item key={item}>
                     <Clip path={item}
