@@ -1,6 +1,5 @@
 import Clips from '@/components/Clips';
 import MenuIcon from '@mui/icons-material/Menu';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import UsbIcon from '@mui/icons-material/Usb';
 
@@ -51,20 +50,27 @@ const Drawer = ({ onEventSelected }: IDrawer) => {
     }
     return <>
 
-        <IconButton className="toggle-drawer"
-            disabled={!opennable}
-            onClick={(e: any) => {
-                e.stopPropagation();
-                setOpen(prev => !prev);
-            }}>
-            {open ? <MenuOpenIcon /> : <MenuIcon />}
-        </IconButton>
+        {/* Toggle button — only visible when drawer is closed */}
+        {!open && (
+            <IconButton className="toggle-drawer"
+                onClick={(e: React.MouseEvent) => {
+                    e.stopPropagation();
+                    setOpen(true);
+                }}>
+                <MenuIcon />
+            </IconButton>
+        )}
+
+        {/* Backdrop — closes drawer on outside click, only when a clip has been selected */}
+        {open && opennable && (
+            <div className="drawer-backdrop" onClick={() => setOpen(false)} />
+        )}
 
         <Stack spacing={1} alignItems="flex-start" className={open ? 'opened' : ''}>
             {/* App branding */}
             <Box sx={{
                 display: 'flex', alignItems: 'center', gap: 1.5,
-                pt: 3.5, pb: 1.5, mb: 0.5, width: '100%',
+                pt: 1.5, pb: 1.5, mb: 0.5, width: '100%',
                 borderBottom: '1px solid rgba(255,255,255,0.07)',
             }}>
                 <Box sx={{

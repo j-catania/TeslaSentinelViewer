@@ -121,7 +121,7 @@ const Clips = ({ path, onSelection }: IClips) => {
             <Divider />
             <DialogContent>
                 <DialogContentText id="alert-dialog-modal-description">
-                    Are you sure you want to delete {selectedClips.length} clip(s)?
+                    Are you sure you want to delete {selectedClips.length} clip{selectedClips.length !== 1 ? 's' : ''}?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
