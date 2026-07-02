@@ -1,23 +1,71 @@
-name: Build
+name: Build & Release
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-  workflow_call:
+  workflow_dispatch:
     inputs:
-      is-release:
-        default: 'false'
+      version:
         type: string
+        description: Version to release (e.g. 1.0.0)
+        required: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  prepare-release:
+    name: Prepare release
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26
+
+      - name: Configure Git
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+      - name: Bump version
+        run: pnpm version "${{ github.event.inputs.version }}"
+
+      - name: Push changes and tags
+        run: git push --follow-tags
+
+      - name: Create version file
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "v${VERSION}" > version
+
+      - name: Upload version file
+        uses: actions/upload-artifact@v6
+        with:
+          name: version
+          path: version
+
   build:
     name: Build (${{ matrix.os }})
+    needs: [prepare-release]
+    if: always() && (needs.prepare-release.result == 'success' || needs.prepare-release.result == 'skipped')
     strategy:
       fail-fast: false
       matrix:
@@ -36,7 +84,7 @@ jobs:
       contents: write
 
     env:
-      IS_RELEASE: ${{ inputs.is-release || 'false' }}
+      IS_RELEASE: ${{ github.event_name == 'workflow_dispatch' }}
 
     steps:
       - name: Download version file
