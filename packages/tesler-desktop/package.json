@@ -22,7 +22,8 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.18.0",
-    "@mui/material": "^5.18.0"
+    "@mui/material": "^5.18.0",
+    "tesler-core": "workspace:*"
   },
   "devDependencies": {
     "@playwright/test": "^1.29.2",

@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react'
 import './App.scss'
-import { Event } from "@/types";
+import { Event } from 'tesler-core';
 
 
 function App() {

@@ -28,6 +28,9 @@ importers:
       '@mui/material':
         specifier: ^5.18.0
         version: 5.18.0(@emotion/react@11.10.5(@babel/core@7.29.7)(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.10.5(@babel/core@7.29.7)(@emotion/react@11.10.5(@babel/core@7.29.7)(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      tesler-core:
+        specifier: workspace:*
+        version: link:../tesler-core
     devDependencies:
       '@playwright/test':
         specifier: ^1.29.2
