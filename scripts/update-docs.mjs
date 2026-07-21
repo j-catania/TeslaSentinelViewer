@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
- * Syncs the tech-stack version chips in docs/index.html from package.json.
- * Invoked automatically via the `version` npm lifecycle hook (pnpm version X.Y.Z).
+ * Syncs tesler-desktop's package.json version with the workspace root version,
+ * and syncs the tech-stack version chips in docs/index.html from tesler-desktop's package.json.
+ * Invoked automatically via the `version` npm lifecycle hook (pnpm version X.Y.Z) at the workspace root.
  */
 
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -9,7 +10,16 @@ import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const pkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'));
+const rootPkg = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'));
+const desktopPkgPath = resolve(root, 'packages/tesler-desktop/package.json');
+const pkg = JSON.parse(readFileSync(desktopPkgPath, 'utf8'));
+
+if (pkg.version !== rootPkg.version) {
+    pkg.version = rootPkg.version;
+    writeFileSync(desktopPkgPath, JSON.stringify(pkg, null, 2) + '\n');
+    console.log(`packages/tesler-desktop/package.json version synced to ${rootPkg.version}.`);
+}
+
 const htmlPath = resolve(root, 'docs', 'index.html');
 let html = readFileSync(htmlPath, 'utf8');
 

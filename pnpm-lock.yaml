@@ -6,7 +6,9 @@ settings:
 
 importers:
 
-  .:
+  .: {}
+
+  packages/tesler-desktop:
     dependencies:
       '@emotion/react':
         specifier: ^11.10.5
