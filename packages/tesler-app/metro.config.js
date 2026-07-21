@@ -13,8 +13,8 @@ config.watchFolders = [workspaceRoot];
 
 // Let Metro resolve packages hoisted to the workspace root node_modules
 config.resolver.nodeModulesPaths = [
-  path.resolve(projectRoot, 'node_modules'),
-  path.resolve(workspaceRoot, 'node_modules'),
+    path.resolve(projectRoot, 'node_modules'),
+    path.resolve(workspaceRoot, 'node_modules'),
 ];
 
 // pnpm links workspace packages (e.g. tesler-core) via symlinks

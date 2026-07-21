@@ -61,7 +61,7 @@ export default function App() {
         <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
           <Appbar.Header>
             <Appbar.Content title="TesLEr" subtitle="Sentry Mode Viewer" />
-            <Appbar.Action icon="refresh" onPress={() => {}} />
+            <Appbar.Action icon="refresh" onPress={() => { }} />
           </Appbar.Header>
           <FlatList
             data={MOCK_CLIPS}

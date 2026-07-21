@@ -1,20 +1,20 @@
 {
-  "name": "tesler-workspace",
-  "private": true,
-  "license": "MIT",
-  "scripts": {
-    "dev": "pnpm --filter tesler-desktop run dev",
-    "build": "pnpm --filter tesler-desktop run build",
-    "package": "pnpm --filter tesler-desktop run package --",
-    "preview": "pnpm --filter tesler-desktop run preview",
-    "core:build": "pnpm --filter tesler-core run build",
-    "app:start": "pnpm --filter tesler-app run start",
-    "app:ios": "pnpm --filter tesler-app run ios",
-    "app:android": "pnpm --filter tesler-app run android",
-    "version": "node scripts/update-docs.mjs && git add docs/index.html packages/tesler-desktop/package.json"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "pnpm": ">=11.0.0"
-  }
+    "name": "tesler-workspace",
+    "private": true,
+    "license": "MIT",
+    "scripts": {
+        "dev": "pnpm --filter tesler-desktop run dev",
+        "build": "pnpm --filter tesler-desktop run build",
+        "package": "pnpm --filter tesler-desktop run package --",
+        "preview": "pnpm --filter tesler-desktop run preview",
+        "core:build": "pnpm --filter tesler-core run build",
+        "app:start": "pnpm --filter tesler-app run start",
+        "app:ios": "pnpm --filter tesler-app run ios",
+        "app:android": "pnpm --filter tesler-app run android",
+        "version": "node scripts/update-docs.mjs && git add docs/index.html packages/tesler-desktop/package.json"
+    },
+    "engines": {
+        "node": ">=18.0.0",
+        "pnpm": ">=11.0.0"
+    }
 }
