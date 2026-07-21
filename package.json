@@ -7,6 +7,10 @@
     "build": "pnpm --filter tesler-desktop run build",
     "package": "pnpm --filter tesler-desktop run package --",
     "preview": "pnpm --filter tesler-desktop run preview",
+    "core:build": "pnpm --filter tesler-core run build",
+    "app:start": "pnpm --filter tesler-app run start",
+    "app:ios": "pnpm --filter tesler-app run ios",
+    "app:android": "pnpm --filter tesler-app run android",
     "version": "node scripts/update-docs.mjs && git add docs/index.html packages/tesler-desktop/package.json"
   },
   "engines": {
