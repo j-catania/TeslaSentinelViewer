@@ -53,9 +53,5 @@ This repository uses [Conventional Commits](https://www.conventionalcommits.org/
 
 ## Publishing
 
-Publishing to npm is handled by maintainers only, from the repository root:
-
-```sh
-pnpm --filter tesler-core build
-pnpm --filter tesler-core publish --access public
-```
+Publishing to npm is handled by maintainers only. See [PUBLISHING.md](./PUBLISHING.md) for the full
+step-by-step release checklist.
