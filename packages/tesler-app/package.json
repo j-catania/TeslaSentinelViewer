@@ -1,0 +1,31 @@
+{
+  "name": "tesler-app",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "dependencies": {
+    "@expo/vector-icons": "^15.1.1",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "expo": "~57.0.7",
+    "expo-file-system": "~57.0.1",
+    "expo-status-bar": "~57.0.1",
+    "expo-video": "~57.0.1",
+    "react": "19.2.3",
+    "react-native": "0.86.0",
+    "react-native-paper": "^5.15.3",
+    "react-native-safe-area-context": "^5.7.0",
+    "tesler-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.2",
+    "eas-cli": "^21.0.2",
+    "typescript": "~6.0.3"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "build:apk": "eas build --platform android --profile preview"
+  },
+  "private": true
+}

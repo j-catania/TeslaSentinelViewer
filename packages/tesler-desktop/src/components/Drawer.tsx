@@ -12,7 +12,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { Event } from "@/types";
+import { Event } from 'tesler-core';
 
 const TEST_PATH = import.meta.env.DEV ? '/Users/Juu/Downloads/TESLADRIVE' : null;
 

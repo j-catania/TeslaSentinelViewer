@@ -1,3 +1,10 @@
+packages:
+  - 'packages/*'
+
 allowBuilds:
+  dtrace-provider: true
   electron-winstaller: true
   esbuild: true
+
+minimumReleaseAgeExclude:
+  - tsdown@0.22.13

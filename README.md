@@ -2,7 +2,7 @@
 > An open source app for viewing all sentry clips in your TeslaDrive
 
 <div align="center">
-  <img src="public/icon.png" alt="TesLEr icon" width="128" />
+  <img src="packages/tesler-desktop/public/icon.png" alt="TesLEr icon" width="128" />
 </div>
 
 
@@ -27,6 +27,8 @@
 - Deploy to Mac App Store
 - Deploy to Windows Store
 - Adding some tests (with Jest and playwright (e2e))
+- Read the TeslaCam USB drive from `tesler-app` (mobile) — see [packages/tesler-app/docs/USB_FILE_ACCESS.md](packages/tesler-app/docs/USB_FILE_ACCESS.md)
+- Publish `tesler-core` to npm — see [packages/tesler-core/PUBLISHING.md](packages/tesler-core/PUBLISHING.md)
 
 ### Bugs
 - [#1](https://github.com/j-catania/TeslaSentinelViewer/issues/1) Moving time via slider

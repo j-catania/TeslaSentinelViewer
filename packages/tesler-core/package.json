@@ -1,0 +1,45 @@
+{
+    "name": "tesler-core",
+    "version": "0.1.0",
+    "description": "Shared types and utilities for TesLEr Tesla Sentry/Saved clip viewers (desktop & mobile)",
+    "author": "Julien CATANIA <julien.catania@gmail.com>",
+    "license": "MIT",
+    "type": "module",
+    "main": "./dist/index.mjs",
+    "types": "./dist/index.d.mts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.mts",
+            "import": "./dist/index.mjs"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/j-catania/TeslaSentinelViewer.git",
+        "directory": "packages/tesler-core"
+    },
+    "keywords": [
+        "tesla",
+        "sentry-mode",
+        "dashcam",
+        "teslacam"
+    ],
+    "scripts": {
+        "build": "tsdown",
+        "clean": "rm -rf dist"
+    },
+    "devDependencies": {
+        "tsdown": "^0.22.13",
+        "typescript": "^6.0.3"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

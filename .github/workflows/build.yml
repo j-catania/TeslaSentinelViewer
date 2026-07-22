@@ -156,12 +156,12 @@ jobs:
         with:
           name: ${{ matrix.artifact }}-${{ github.sha }}
           path: |
-            release/**/*.dmg
-            release/**/*.pkg
-            release/**/*.exe
-            release/**/*.AppImage
-            release/**/*.snap
-            release/**/*.deb
+            packages/tesler-desktop/release/**/*.dmg
+            packages/tesler-desktop/release/**/*.pkg
+            packages/tesler-desktop/release/**/*.exe
+            packages/tesler-desktop/release/**/*.AppImage
+            packages/tesler-desktop/release/**/*.snap
+            packages/tesler-desktop/release/**/*.deb
           if-no-files-found: ignore
           compression-level: 0
 

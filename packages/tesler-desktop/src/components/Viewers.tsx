@@ -1,5 +1,5 @@
 import Viewer from '@/components/Viewer';
-import { Areas, Event, Part, Videos } from '@/types';
+import { Areas, Event, Part, Videos } from 'tesler-core';
 import { Fragment, useEffect, useState } from 'react';
 
 interface IViewers {

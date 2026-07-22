@@ -1,4 +1,4 @@
-import { Event, TeslaEventJSON } from '@/types/Event';
+import { Event, TeslaEventJSON, formatReason } from 'tesler-core';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
@@ -20,14 +20,6 @@ import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-
-const formatReason = (reason: string): string =>
-    reason
-        .replace(/^sentry_aware_/i, '')
-        .replace(/^user_interaction_/i, '')
-        .replace(/_/g, ' ')
-        .replace(/\b\w/g, c => c.toUpperCase())
-        .slice(0, 22);
 
 interface IClip {
     path: string,
