@@ -141,6 +141,7 @@ jobs:
       - name: Package
         if: github.event_name != 'pull_request'
         run: pnpm run package -- --publish ${{ env.IS_RELEASE == 'true' && 'always' || 'never' }}
+        working-directory: packages/tesler-desktop
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_LINK: ${{ secrets.mac_certs }}
