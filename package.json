@@ -4,7 +4,7 @@
     "license": "MIT",
     "scripts": {
         "dev": "pnpm --filter tesler-desktop run dev",
-        "build": "pnpm --filter tesler-desktop run build",
+        "build": "pnpm run core:build && pnpm --filter tesler-desktop run build",
         "package": "pnpm --filter tesler-desktop run package --",
         "preview": "pnpm --filter tesler-desktop run preview",
         "core:build": "pnpm --filter tesler-core run build",
