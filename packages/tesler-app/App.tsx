@@ -1,9 +1,11 @@
+import { useCallback, useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { FlatList, StyleSheet } from 'react-native';
-import { MD3DarkTheme, PaperProvider, Appbar, Card, Avatar, Chip } from 'react-native-paper';
+import { Platform, StyleSheet, View } from 'react-native';
+import { MD3DarkTheme, PaperProvider, Appbar, Button, Text } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import type { Event } from 'tesler-core';
-import { formatReason } from 'tesler-core';
+import ClipDetail from './src/components/ClipDetail';
+import ClipList from './src/components/ClipList';
+import { clearPersistedTreeUri, getPersistedTreeUri, pickTeslaCamFolder } from './src/sentinel';
 
 // TesLEr brand colors, matching the desktop app (see tesler-desktop/src/App.scss)
 const theme = {
@@ -17,58 +19,75 @@ const theme = {
   },
 };
 
-// Placeholder data until a native TeslaCam file-system reader lands (see tesler-desktop's window.sentinel).
-const MOCK_CLIPS: Event[] = [
-  {
-    root: '/TeslaCam/SentryClips/2026-07-20_18-42-11',
-    timestamp: new Date('2026-07-20T18:42:11'),
-    city: 'San Francisco',
-    est_lat: 37.7749,
-    est_lon: -122.4194,
-    reason: 'sentry_aware_object_detection',
-    camera: 0,
-  },
-  {
-    root: '/TeslaCam/SentryClips/2026-07-20_09-15-03',
-    timestamp: new Date('2026-07-20T09:15:03'),
-    city: 'Oakland',
-    est_lat: 37.8044,
-    est_lon: -122.2712,
-    reason: 'user_interaction_honk',
-    camera: 0,
-  },
-];
-
-const ClipCard = ({ event }: { event: Event }) => (
-  <Card style={styles.card} mode="outlined">
-    <Card.Title
-      title={event.city}
-      subtitle={event.timestamp.toLocaleString()}
-      left={(props) => <Avatar.Icon {...props} icon="car-side" style={styles.avatar} />}
-    />
-    <Card.Content>
-      <Chip icon="alert-circle-outline" compact>
-        {formatReason(event.reason)}
-      </Chip>
-    </Card.Content>
-  </Card>
-);
+// SAF-based TeslaCam access is Android-only for now (see docs/USB_FILE_ACCESS.md, Phase 2 covers iOS).
+const SAF_SUPPORTED = Platform.OS === 'android';
 
 export default function App() {
+  // undefined = still checking for a persisted folder, null = none picked yet
+  const [treeUri, setTreeUri] = useState<string | null>();
+  const [selectedClip, setSelectedClip] = useState<string>();
+
+  useEffect(() => {
+    if (!SAF_SUPPORTED) {
+      setTreeUri(null);
+      return;
+    }
+    getPersistedTreeUri().then(setTreeUri);
+  }, []);
+
+  const pickFolder = useCallback(() => {
+    pickTeslaCamFolder().then(setTreeUri);
+  }, []);
+
+  const changeFolder = useCallback(() => {
+    clearPersistedTreeUri().then(() => setTreeUri(null));
+  }, []);
+
+  if (treeUri && selectedClip) {
+    return (
+      <SafeAreaProvider>
+        <PaperProvider theme={theme}>
+          <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+            <ClipDetail
+              clipUri={selectedClip}
+              onBack={() => setSelectedClip(undefined)}
+              onDeleted={() => setSelectedClip(undefined)}
+            />
+            <StatusBar style="light" />
+          </SafeAreaView>
+        </PaperProvider>
+      </SafeAreaProvider>
+    );
+  }
+
   return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
         <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
           <Appbar.Header>
             <Appbar.Content title="TesLEr" subtitle="Sentry Mode Viewer" />
-            <Appbar.Action icon="refresh" onPress={() => { }} />
+            {SAF_SUPPORTED && treeUri && <Appbar.Action icon="usb" onPress={changeFolder} />}
           </Appbar.Header>
-          <FlatList
-            data={MOCK_CLIPS}
-            keyExtractor={(item) => item.root}
-            renderItem={({ item }) => <ClipCard event={item} />}
-            contentContainerStyle={styles.list}
-          />
+
+          {!SAF_SUPPORTED ? (
+            <View style={styles.empty}>
+              <Text variant="bodyLarge" style={styles.emptyText}>
+                TeslaCam USB access isn't available on this platform yet. It currently works on Android only
+                (see docs/USB_FILE_ACCESS.md).
+              </Text>
+            </View>
+          ) : treeUri === undefined ? null : treeUri === null ? (
+            <View style={styles.empty}>
+              <Text variant="bodyLarge" style={styles.emptyText}>
+                Connect the Tesla USB drive and select its TeslaCam folder to view Sentry clips.
+              </Text>
+              <Button mode="contained" icon="folder-open-outline" onPress={pickFolder}>
+                Select TeslaCam folder
+              </Button>
+            </View>
+          ) : (
+            <ClipList treeUri={treeUri} onOpenClip={setSelectedClip} onPermissionLost={() => setTreeUri(null)} />
+          )}
           <StatusBar style="light" />
         </SafeAreaView>
       </PaperProvider>
@@ -81,15 +100,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#121212',
   },
-  list: {
-    padding: 12,
-    gap: 12,
+  empty: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 16,
+    padding: 24,
   },
-  card: {
-    backgroundColor: '#1a1a1a',
-  },
-  avatar: {
-    backgroundColor: '#e31937',
+  emptyText: {
+    textAlign: 'center',
+    opacity: 0.8,
   },
 });
 
