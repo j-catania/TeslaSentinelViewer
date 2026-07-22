@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "TesLEr",
-    "slug": "tesler-app",
+    "slug": "tesler",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -10,6 +10,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "io.jcatania.tesler",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -23,6 +24,12 @@
     },
     "plugins": [
       "expo-video"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "3bfec434-3954-40c7-9f76-00090c1e9f91"
+      }
+    },
+    "owner": "jcatanias-team"
   }
 }

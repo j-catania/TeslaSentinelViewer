@@ -2,6 +2,7 @@ packages:
   - 'packages/*'
 
 allowBuilds:
+  dtrace-provider: true
   electron-winstaller: true
   esbuild: true
 
