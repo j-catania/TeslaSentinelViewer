@@ -11,7 +11,6 @@
         "app:start": "pnpm --filter tesler-app run start",
         "app:ios": "pnpm --filter tesler-app run ios",
         "app:android": "pnpm --filter tesler-app run android",
-        "version": "node scripts/update-docs.mjs && git add docs/index.html packages/tesler-desktop/package.json"
     },
     "engines": {
         "node": ">=18.0.0",
