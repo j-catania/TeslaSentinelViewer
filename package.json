@@ -10,7 +10,7 @@
         "core:build": "pnpm --filter tesler-core run build",
         "app:start": "pnpm --filter tesler-app run start",
         "app:ios": "pnpm --filter tesler-app run ios",
-        "app:android": "pnpm --filter tesler-app run android",
+        "app:android": "pnpm --filter tesler-app run android"
     },
     "engines": {
         "node": ">=18.0.0",
