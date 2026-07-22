@@ -16,8 +16,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "package": "electron-builder",
-    "preview": "vite preview",
-    "version": "node scripts/update-docs.mjs && git add docs/index.html"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
