@@ -41,10 +41,10 @@ jobs:
           queries: security-extended,security-and-quality
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build
-        run: pnpm build
+        run: pnpm build:core
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
