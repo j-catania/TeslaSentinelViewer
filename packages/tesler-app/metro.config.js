@@ -1,24 +1,14 @@
 // Metro config for a pnpm workspace monorepo.
 // See https://docs.expo.dev/guides/monorepos/
+//
+// SDK 57's getDefaultConfig() already auto-detects the pnpm workspace and
+// sets watchFolders (workspace root node_modules + every sibling package,
+// e.g. tesler-core) and resolver.nodeModulesPaths accordingly, and modern
+// Metro follows pnpm's symlinks without needing `unstable_enableSymlinks`.
+// Don't override these - doing so previously clobbered the auto-detected
+// watchFolders and tripped expo-doctor's Metro config check.
 const { getDefaultConfig } = require('expo/metro-config');
-const path = require('path');
 
-const projectRoot = __dirname;
-const workspaceRoot = path.resolve(projectRoot, '../..');
-
-const config = getDefaultConfig(projectRoot);
-
-// Watch all files within the monorepo (so changes to tesler-core are picked up)
-config.watchFolders = [workspaceRoot];
-
-// Let Metro resolve packages hoisted to the workspace root node_modules
-config.resolver.nodeModulesPaths = [
-    path.resolve(projectRoot, 'node_modules'),
-    path.resolve(workspaceRoot, 'node_modules'),
-];
-
-// pnpm links workspace packages (e.g. tesler-core) via symlinks
-config.resolver.unstable_enableSymlinks = true;
-config.resolver.disableHierarchicalLookup = false;
+const config = getDefaultConfig(__dirname);
 
 module.exports = config;

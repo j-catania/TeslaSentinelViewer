@@ -5,10 +5,11 @@
   "dependencies": {
     "@expo/vector-icons": "^15.1.1",
     "@react-native-async-storage/async-storage": "2.2.0",
-    "expo": "~57.0.7",
+    "expo": "~57.0.8",
     "expo-file-system": "~57.0.1",
+    "expo-font": "~57.0.1",
     "expo-status-bar": "~57.0.1",
-    "expo-video": "~57.0.1",
+    "expo-video": "~57.0.2",
     "react": "19.2.3",
     "react-native": "0.86.0",
     "react-native-paper": "^5.15.3",
@@ -17,7 +18,6 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
-    "eas-cli": "^21.0.2",
     "typescript": "~6.0.3"
   },
   "scripts": {
@@ -25,7 +25,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build:apk": "eas build --platform android --profile preview --local --non-interactive --output ./tesler.apk"
+    "build:apk": "npx eas-cli build --platform android --profile preview --local --non-interactive --output ./tesler.apk",
+    "eas-build-post-install": "pnpm --filter tesler-core run build"
   },
   "private": true
 }
