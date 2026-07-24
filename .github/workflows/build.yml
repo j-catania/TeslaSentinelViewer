@@ -142,7 +142,7 @@ jobs:
         uses: actions/upload-artifact@v6
         if: github.event_name != 'pull_request'
         with:
-          name: ${{ matrix.artifact }}-${{ needs.prepare-release.outputs.version }}
+          name: ${{ needs.prepare-release.outputs.version == '' && matrix.artifact || format('{0}-{1}', matrix.artifact,needs.prepare-release.outputs.version) }}
           path: |
             packages/tesler-desktop/release/**/*.dmg
             packages/tesler-desktop/release/**/*.pkg
@@ -216,7 +216,7 @@ jobs:
         uses: actions/upload-artifact@v6
         if: github.event_name != 'pull_request'
         with:
-          name: android-${{ needs.prepare-release.outputs.version }}
+          name: ${{ needs.prepare-release.outputs.version == '' && 'android' || format('android-{0}', needs.prepare-release.outputs.version) }}
           path: packages/tesler-app/*.apk
           if-no-files-found: ignore
           compression-level: 0
