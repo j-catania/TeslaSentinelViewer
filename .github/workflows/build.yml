@@ -22,6 +22,8 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    outputs:
+      version: ${{ steps.bump-version.outputs.version }}
 
     permissions:
       contents: write
@@ -46,24 +48,15 @@ jobs:
           git config user.name "github-actions[bot]"
 
       - name: Bump version
-        run: pnpm version "${{ github.event.inputs.version }}"
+        id: bump-version
+        run: |
+          echo "version=$(pnpm version "${{ github.event.inputs.version }}")" >> $GITHUB_OUTPUT
 
       - name: Push changes and tags
         run: git push --follow-tags
 
-      - name: Create version file
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "v${VERSION}" > version
-
-      - name: Upload version file
-        uses: actions/upload-artifact@v6
-        with:
-          name: version
-          path: version
-
-  build:
-    name: Build (${{ matrix.os }})
+  desktop-build:
+    name: ${{ matrix.artifact }}
     needs: [prepare-release]
     if: always() && (needs.prepare-release.result == 'success' || needs.prepare-release.result == 'skipped')
     strategy:
@@ -87,19 +80,13 @@ jobs:
       IS_RELEASE: ${{ github.event_name == 'workflow_dispatch' }}
 
     steps:
-      - name: Download version file
-        uses: actions/download-artifact@v6
-        if: env.IS_RELEASE == 'true'
-        with:
-          name: version
 
       - name: Set release version
         if: env.IS_RELEASE == 'true'
         shell: bash
         run: |
-          VERSION=$(cat version)
+          VERSION=${{ needs.prepare-release.outputs.version }}
           echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
-          rm version
 
       - name: Checkout
         uses: actions/checkout@v6
@@ -118,10 +105,10 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build
-        run: pnpm build
+        run: pnpm build:desktop
 
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v2
@@ -155,7 +142,7 @@ jobs:
         uses: actions/upload-artifact@v6
         if: github.event_name != 'pull_request'
         with:
-          name: ${{ matrix.artifact }}-${{ github.sha }}
+          name: ${{ matrix.artifact }}-${{ needs.prepare-release.outputs.version }}
           path: |
             packages/tesler-desktop/release/**/*.dmg
             packages/tesler-desktop/release/**/*.pkg
@@ -169,4 +156,22 @@ jobs:
       - name: Print notarization error log
         if: failure() && startsWith(matrix.os, 'macos')
         run: cat notarization-error.log || true
+        
+  post-release:
+    name: Post release
+    needs: [desktop-build, prepare-release]
+    if: always() && (needs.desktop-build.result == 'success' || needs.desktop-build.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          generateReleaseNotes: true
+          tag: v${{ needs.prepare-release.outputs.version }}
+          artifacts: |
+            mac-${{ needs.prepare-release.outputs.version }}
+            linux-${{ needs.prepare-release.outputs.version }}
+            windows-${{ needs.prepare-release.outputs.version }}
 
