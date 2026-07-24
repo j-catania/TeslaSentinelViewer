@@ -156,11 +156,75 @@ jobs:
       - name: Print notarization error log
         if: failure() && startsWith(matrix.os, 'macos')
         run: cat notarization-error.log || true
-        
+
+  mobile-build:
+    name: android-apk
+    needs: [prepare-release]
+    if: always() && (needs.prepare-release.result == 'success' || needs.prepare-release.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    permissions:
+      contents: write
+
+    env:
+      IS_RELEASE: ${{ github.event_name == 'workflow_dispatch' }}
+      # eas build --local needs this in CI: actions/checkout is a shallow clone,
+      # which breaks eas-cli's git integration otherwise.
+      EAS_NO_VCS: 1
+
+    steps:
+      - name: Set release version
+        if: env.IS_RELEASE == 'true'
+        shell: bash
+        run: |
+          VERSION=${{ needs.prepare-release.outputs.version }}
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ env.IS_RELEASE == 'true' && env.APP_VERSION || '' }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26
+          cache: pnpm
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Android APK
+        if: github.event_name != 'pull_request'
+        run: pnpm build:android
+        env:
+          EXPO_TOKEN: ${{ secrets.expo_token }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        if: github.event_name != 'pull_request'
+        with:
+          name: android-${{ needs.prepare-release.outputs.version }}
+          path: packages/tesler-app/*.apk
+          if-no-files-found: ignore
+          compression-level: 0
+
   post-release:
     name: Post release
-    needs: [desktop-build, prepare-release]
-    if: always() && (needs.desktop-build.result == 'success' || needs.desktop-build.result == 'skipped')
+    needs: [desktop-build, mobile-build, prepare-release]
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -174,4 +238,5 @@ jobs:
             mac-${{ needs.prepare-release.outputs.version }}
             linux-${{ needs.prepare-release.outputs.version }}
             windows-${{ needs.prepare-release.outputs.version }}
+            android-${{ needs.prepare-release.outputs.version }}
 

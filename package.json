@@ -4,11 +4,11 @@
     "license": "MIT",
     "scripts": {
         "dev": "pnpm --filter tesler-desktop run dev",
-        "build:desktop": "pnpm run core:build && pnpm --filter tesler-desktop run build",
-        "build:android": "pnpm --filter tesler-app run build:apk",
+        "build:core": "pnpm --filter tesler-core run build",
+        "build:desktop": "pnpm run build:core && pnpm --filter tesler-desktop run build",
+        "build:android": "pnpm run build:core && pnpm --filter tesler-app run build:apk",
         "package": "pnpm --filter tesler-desktop run package --",
         "preview": "pnpm --filter tesler-desktop run preview",
-        "core:build": "pnpm --filter tesler-core run build",
         "app:start": "pnpm --filter tesler-app run start",
         "app:ios": "pnpm --filter tesler-app run ios",
         "app:android": "pnpm --filter tesler-app run android"

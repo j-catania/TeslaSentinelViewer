@@ -25,7 +25,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "build:apk": "eas build --platform android --profile preview"
+    "build:apk": "eas build --platform android --profile preview --local --non-interactive --output ./tesler.apk"
   },
   "private": true
 }
