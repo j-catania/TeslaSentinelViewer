@@ -206,6 +206,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Restore Android signing credentials
+        if: github.event_name != 'pull_request'
+        working-directory: packages/tesler-app
+        run: |
+          mkdir -p credentials
+          echo "$ANDROID_CREDENTIALS_JSON_BASE64" | base64 -d > credentials.json
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > credentials/android-release.jks
+        env:
+          ANDROID_CREDENTIALS_JSON_BASE64: ${{ secrets.android_credentials_json_base64 }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.android_keystore_base64 }}
+
       - name: Build Android APK
         if: github.event_name != 'pull_request'
         run: pnpm build:android
