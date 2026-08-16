@@ -7,6 +7,7 @@
         "build:core": "pnpm --filter tesler-core run build",
         "build:desktop": "pnpm run build:core && pnpm --filter tesler-desktop run build",
         "build:android": "pnpm run build:core && pnpm --filter tesler-app run build:apk",
+        "build:android:aab": "pnpm run build:core && pnpm --filter tesler-app run build:aab",
         "package": "pnpm --filter tesler-desktop run package --",
         "preview": "pnpm --filter tesler-desktop run preview",
         "app:start": "pnpm --filter tesler-app run start",

@@ -26,6 +26,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build:apk": "npx eas-cli build --platform android --profile preview --local --non-interactive --output ./tesler.apk",
+    "build:aab": "npx eas-cli build --platform android --profile production --local --non-interactive --output ./tesler.aab",
+    "submit:android": "npx eas-cli submit --platform android --non-interactive --path ./tesler.aab --profile",
     "eas-build-post-install": "pnpm --filter tesler-core run build"
   },
   "private": true

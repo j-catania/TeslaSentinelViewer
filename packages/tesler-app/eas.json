@@ -19,10 +19,27 @@
             }
         },
         "production": {
-            "autoIncrement": true
+            "autoIncrement": true,
+            "credentialsSource": "local",
+            "android": {
+                "buildType": "app-bundle"
+            }
         }
     },
     "submit": {
-        "production": {}
+        "internal": {
+            "android": {
+                "serviceAccountKeyPath": "./credentials/google-service-account.json",
+                "track": "internal",
+                "releaseStatus": "completed"
+            }
+        },
+        "production": {
+            "android": {
+                "serviceAccountKeyPath": "./credentials/google-service-account.json",
+                "track": "production",
+                "releaseStatus": "completed"
+            }
+        }
     }
 }
