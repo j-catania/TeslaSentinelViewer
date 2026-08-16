@@ -158,7 +158,7 @@ jobs:
         run: cat notarization-error.log || true
 
   mobile-build:
-    name: android-apk
+    name: android-aab
     needs: [prepare-release]
     if: always() && (needs.prepare-release.result == 'success' || needs.prepare-release.result == 'skipped')
     runs-on: ubuntu-latest
@@ -219,12 +219,6 @@ jobs:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.android_keystore_base64 }}
           GOOGLE_PLAY_SERVICE_ACCOUNT_JSON_BASE64: ${{ secrets.google_play_service_account_json_base64 }}
 
-      - name: Build Android APK
-        if: github.event_name != 'pull_request'
-        run: pnpm build:android
-        env:
-          EXPO_TOKEN: ${{ secrets.expo_token }}
-
       - name: Build Android AAB
         if: github.event_name != 'pull_request'
         working-directory: packages/tesler-app
@@ -237,9 +231,7 @@ jobs:
         if: github.event_name != 'pull_request'
         with:
           name: ${{ needs.prepare-release.outputs.version == '' && 'android' || format('android-{0}', needs.prepare-release.outputs.version) }}
-          path: | 
-            packages/tesler-app/*.apk 
-            packages/tesler-app/*.aab
+          path: packages/tesler-app/*.aab
           if-no-files-found: ignore
           compression-level: 0
 
