@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy — TesLEr</title>
+    <meta name="description" content="Privacy policy for TesLEr, the open-source Tesla Sentry Mode viewer." />
+    <link rel="icon" type="image/png" href="icon.png" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #090909;
+            --bg1: #111111;
+            --bg2: #181818;
+            --red: #cc1014;
+            --red-l: #f03033;
+            --text: #f0f0f0;
+            --muted: #808080;
+            --border: #252525;
+            --gutter: clamp(1.25rem, 5vw, 3rem);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+            font-size: 1rem;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            color: var(--red-l);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 var(--gutter);
+        }
+
+        /* ── Navigation ── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(9, 9, 9, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 var(--gutter);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 62px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo:hover {
+            text-decoration: none;
+        }
+
+        .nav-logo img {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+        }
+
+        .nav-logo .acc {
+            color: var(--red-l);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.75rem;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            font-size: 0.875rem;
+            transition: color 0.18s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .lang-btn {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            padding: 4px 9px;
+            transition: border-color 0.18s, background 0.18s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--muted);
+            font-family: inherit;
+            white-space: nowrap;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .lang-btn:hover {
+            border-color: #3a3a3a;
+            background: var(--bg2);
+            color: var(--text);
+        }
+
+        /* ── Content ── */
+        .policy {
+            padding: 4rem 0 5rem;
+        }
+
+        .policy h1 {
+            font-size: clamp(1.9rem, 4vw, 2.5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+        }
+
+        .policy .updated {
+            color: var(--muted);
+            font-size: 0.875rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .policy h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin: 2.25rem 0 0.75rem;
+        }
+
+        .policy p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .policy ul {
+            margin: 0 0 1rem 1.25rem;
+        }
+
+        .policy li {
+            margin-bottom: 0.4rem;
+        }
+
+        .policy strong {
+            color: var(--text);
+        }
+
+        /* ── Footer ── */
+        footer {
+            background: var(--bg1);
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 0;
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 var(--gutter);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .footer-brand img {
+            width: 22px;
+            height: 22px;
+            border-radius: 5px;
+        }
+
+        .footer-brand .acc {
+            color: var(--red-l);
+        }
+
+        footer p {
+            font-size: 0.825rem;
+            color: var(--muted);
+            margin-top: 0.3rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.75rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            font-size: 0.825rem;
+            color: var(--muted);
+            transition: color 0.18s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links a:not(:last-child) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Navigation ── -->
+    <nav>
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <img src="icon.png" alt="TesLEr" />
+                <span>Tes<span class="acc">LE</span>r</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" data-i18n="nav.home">Home</a>
+                <a href="https://github.com/j-catania/TeslaSentinelViewer" target="_blank" rel="noopener">GitHub ↗</a>
+                <button id="lang-toggle" class="lang-btn" title="Switch language" aria-label="Switch language">🇫🇷
+                    FR</button>
+            </nav>
+        </div>
+    </nav>
+
+    <!-- ── Policy content ── -->
+    <section class="policy">
+        <div class="container">
+            <h1 data-i18n="policy.title">Privacy Policy</h1>
+            <p class="updated" data-i18n="policy.updated">Last updated: August 31, 2026</p>
+
+            <p data-i18n="policy.intro">
+                TesLEr ("the app") is an open-source viewer for Tesla Sentry Mode and Dashcam clips, available as
+                a desktop application and a mobile application. This policy explains what data the app accesses
+                and, more importantly, what it does <strong>not</strong> collect.
+            </p>
+
+            <h2 data-i18n="policy.summary.title">Summary</h2>
+            <p data-i18n="policy.summary.body">
+                TesLEr does not collect, store, transmit or sell any personal data. It has no user accounts, no
+                analytics and no advertising. All it does is read video and metadata files that you explicitly
+                select from a USB drive or your device's storage, so you can view and manage them locally.
+            </p>
+
+            <h2 data-i18n="policy.data.title">Data the app accesses</h2>
+            <p data-i18n="policy.data.body">
+                To display your Sentry Mode clips, the app reads, directly from the storage you choose (a USB
+                drive on desktop, or a folder you pick on mobile):
+            </p>
+            <ul>
+                <li data-i18n="policy.data.item1">Video clip files (.mp4) recorded by your Tesla's cameras.</li>
+                <li data-i18n="policy.data.item2">The accompanying <code>event.json</code> metadata (timestamp,
+                    city, estimated coordinates, and trigger reason) generated by your Tesla.</li>
+            </ul>
+            <p data-i18n="policy.data.body2">
+                This data never leaves your device. It is not uploaded, copied to any server, or shared with the
+                developer or any third party. The app does not require and does not create any account.
+            </p>
+
+            <h2 data-i18n="policy.permissions.title">Permissions</h2>
+            <ul>
+                <li data-i18n="policy.permissions.item1"><strong>Storage access</strong> — used only to let you
+                    pick a folder or drive and read/delete the clip files it contains, at your request.</li>
+                <li data-i18n="policy.permissions.item2">No location, camera, microphone, contacts or other
+                    sensitive permissions are requested or used by the app itself.</li>
+            </ul>
+
+            <h2 data-i18n="policy.network.title">Network requests</h2>
+            <ul>
+                <li data-i18n="policy.network.item1">The desktop app and this website query GitHub's public API
+                    to display the latest available app version. This is a read-only request; no personal data
+                    is sent.</li>
+                <li data-i18n="policy.network.item2">No analytics, tracking or advertising SDKs are included in
+                    the app.</li>
+            </ul>
+
+            <h2 data-i18n="policy.sharing.title">Data sharing</h2>
+            <p data-i18n="policy.sharing.body">
+                TesLEr does not share, sell or transmit any data to third parties, because it does not collect
+                any in the first place.
+            </p>
+
+            <h2 data-i18n="policy.retention.title">Data retention &amp; deletion</h2>
+            <p data-i18n="policy.retention.body">
+                Your Sentry Mode clips remain solely on your own device or USB drive. Using the app's delete
+                feature permanently removes the selected clip from that storage. The app keeps no separate copy
+                anywhere.
+            </p>
+
+            <h2 data-i18n="policy.children.title">Children's privacy</h2>
+            <p data-i18n="policy.children.body">
+                The app is not directed at children and does not knowingly collect any information from anyone,
+                regardless of age, since it collects no personal data at all.
+            </p>
+
+            <h2 data-i18n="policy.oss.title">Open source</h2>
+            <p data-i18n="policy.oss.body">
+                TesLEr is free and open-source. Its full source code is publicly available for review on
+                <a href="https://github.com/j-catania/TeslaSentinelViewer" target="_blank" rel="noopener">GitHub</a>.
+            </p>
+
+            <h2 data-i18n="policy.changes.title">Changes to this policy</h2>
+            <p data-i18n="policy.changes.body">
+                This policy may be updated from time to time. The latest version is always available at this
+                page.
+            </p>
+
+            <h2 data-i18n="policy.contact.title">Contact</h2>
+            <p data-i18n="policy.contact.body">
+                Questions about this policy can be raised as an issue on
+                <a href="https://github.com/j-catania/TeslaSentinelViewer/issues" target="_blank"
+                    rel="noopener">GitHub</a>.
+            </p>
+        </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <div class="footer-brand">
+                    <img src="icon.png" alt="TesLEr" />
+                    <span>Tes<span class="acc">LE</span>r</span>
+                </div>
+                <p data-i18n="footer.tagline">Open-source Tesla Sentry Mode viewer. Released under the MIT License.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html" data-i18n="nav.home">Home</a>
+                <a href="https://github.com/j-catania/TeslaSentinelViewer" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/j-catania/TeslaSentinelViewer/issues" target="_blank"
+                    rel="noopener">Issues</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const TRANSLATIONS = {
+            en: {
+                'nav.home': 'Home',
+                'policy.title': 'Privacy Policy',
+                'policy.updated': 'Last updated: August 31, 2026',
+                'policy.intro': 'TesLEr ("the app") is an open-source viewer for Tesla Sentry Mode and Dashcam clips, available as a desktop application and a mobile application. This policy explains what data the app accesses and, more importantly, what it does <strong>not</strong> collect.',
+                'policy.summary.title': 'Summary',
+                'policy.summary.body': "TesLEr does not collect, store, transmit or sell any personal data. It has no user accounts, no analytics and no advertising. All it does is read video and metadata files that you explicitly select from a USB drive or your device's storage, so you can view and manage them locally.",
+                'policy.data.title': 'Data the app accesses',
+                'policy.data.body': "To display your Sentry Mode clips, the app reads, directly from the storage you choose (a USB drive on desktop, or a folder you pick on mobile):",
+                'policy.data.item1': "Video clip files (.mp4) recorded by your Tesla's cameras.",
+                'policy.data.item2': 'The accompanying <code>event.json</code> metadata (timestamp, city, estimated coordinates, and trigger reason) generated by your Tesla.',
+                'policy.data.body2': 'This data never leaves your device. It is not uploaded, copied to any server, or shared with the developer or any third party. The app does not require and does not create any account.',
+                'policy.permissions.title': 'Permissions',
+                'policy.permissions.item1': '<strong>Storage access</strong> — used only to let you pick a folder or drive and read/delete the clip files it contains, at your request.',
+                'policy.permissions.item2': 'No location, camera, microphone, contacts or other sensitive permissions are requested or used by the app itself.',
+                'policy.network.title': 'Network requests',
+                'policy.network.item1': "The desktop app and this website query GitHub's public API to display the latest available app version. This is a read-only request; no personal data is sent.",
+                'policy.network.item2': 'No analytics, tracking or advertising SDKs are included in the app.',
+                'policy.sharing.title': 'Data sharing',
+                'policy.sharing.body': 'TesLEr does not share, sell or transmit any data to third parties, because it does not collect any in the first place.',
+                'policy.retention.title': 'Data retention &amp; deletion',
+                'policy.retention.body': "Your Sentry Mode clips remain solely on your own device or USB drive. Using the app's delete feature permanently removes the selected clip from that storage. The app keeps no separate copy anywhere.",
+                'policy.children.title': "Children's privacy",
+                'policy.children.body': 'The app is not directed at children and does not knowingly collect any information from anyone, regardless of age, since it collects no personal data at all.',
+                'policy.oss.title': 'Open source',
+                'policy.oss.body': 'TesLEr is free and open-source. Its full source code is publicly available for review on <a href="https://github.com/j-catania/TeslaSentinelViewer" target="_blank" rel="noopener">GitHub</a>.',
+                'policy.changes.title': 'Changes to this policy',
+                'policy.changes.body': 'This policy may be updated from time to time. The latest version is always available at this page.',
+                'policy.contact.title': 'Contact',
+                'policy.contact.body': 'Questions about this policy can be raised as an issue on <a href="https://github.com/j-catania/TeslaSentinelViewer/issues" target="_blank" rel="noopener">GitHub</a>.',
+                'footer.tagline': 'Open-source Tesla Sentry Mode viewer. Released under the MIT License.',
+            },
+            fr: {
+                'nav.home': 'Accueil',
+                'policy.title': 'Politique de confidentialit\u00e9',
+                'policy.updated': 'Derni\u00e8re mise \u00e0 jour\u00a0: 31 ao\u00fbt 2026',
+                'policy.intro': 'TesLEr (\u00ab\u00a0l\'application\u00a0\u00bb) est une visionneuse open-source pour les clips Tesla Sentry Mode et Dashcam, disponible en application de bureau et en application mobile. Cette politique explique quelles donn\u00e9es l\'application consulte et, surtout, ce qu\'elle ne <strong>collecte pas</strong>.',
+                'policy.summary.title': 'R\u00e9sum\u00e9',
+                'policy.summary.body': "TesLEr ne collecte, ne stocke, ne transmet ni ne vend aucune donn\u00e9e personnelle. Il n'y a ni compte utilisateur, ni analytique, ni publicit\u00e9. L'application se contente de lire les fichiers vid\u00e9o et de m\u00e9tadonn\u00e9es que vous s\u00e9lectionnez explicitement depuis une cl\u00e9 USB ou le stockage de votre appareil, afin de vous permettre de les visionner et de les g\u00e9rer localement.",
+                'policy.data.title': "Donn\u00e9es consult\u00e9es par l'application",
+                'policy.data.body': 'Pour afficher vos clips Sentry Mode, l\'application lit, directement depuis le support que vous choisissez (une cl\u00e9 USB sur bureau, ou un dossier que vous s\u00e9lectionnez sur mobile)\u00a0:',
+                'policy.data.item1': 'Les fichiers vid\u00e9o (.mp4) enregistr\u00e9s par les cam\u00e9ras de votre Tesla.',
+                'policy.data.item2': 'Les m\u00e9tadonn\u00e9es <code>event.json</code> associ\u00e9es (horodatage, ville, coordonn\u00e9es estim\u00e9es et motif de d\u00e9clenchement) g\u00e9n\u00e9r\u00e9es par votre Tesla.',
+                'policy.data.body2': "Ces donn\u00e9es ne quittent jamais votre appareil. Elles ne sont ni t\u00e9l\u00e9vers\u00e9es, ni copi\u00e9es sur un serveur, ni partag\u00e9es avec le d\u00e9veloppeur ou un tiers quelconque. L'application ne n\u00e9cessite ni ne cr\u00e9e aucun compte.",
+                'policy.permissions.title': 'Autorisations',
+                'policy.permissions.item1': "<strong>Acc\u00e8s au stockage</strong> \u2014 utilis\u00e9 uniquement pour vous permettre de choisir un dossier ou une cl\u00e9 et de lire/supprimer les fichiers de clips qu'il contient, \u00e0 votre demande.",
+                'policy.permissions.item2': "Aucune autorisation de localisation, cam\u00e9ra, microphone, contacts ou autre donn\u00e9e sensible n'est demand\u00e9e ni utilis\u00e9e par l'application.",
+                'policy.network.title': 'Requ\u00eates r\u00e9seau',
+                'policy.network.item1': "L'application de bureau et ce site interrogent l'API publique de GitHub pour afficher la derni\u00e8re version disponible. Il s'agit d'une requ\u00eate en lecture seule\u00a0; aucune donn\u00e9e personnelle n'est envoy\u00e9e.",
+                'policy.network.item2': "Aucun outil d'analytique, de suivi ou de publicit\u00e9 n'est int\u00e9gr\u00e9 \u00e0 l'application.",
+                'policy.sharing.title': 'Partage des donn\u00e9es',
+                'policy.sharing.body': "TesLEr ne partage, ne vend ni ne transmet aucune donn\u00e9e \u00e0 des tiers, puisqu'il n'en collecte aucune.",
+                'policy.retention.title': 'Conservation et suppression des donn\u00e9es',
+                'policy.retention.body': "Vos clips Sentry Mode restent uniquement sur votre appareil ou votre cl\u00e9 USB. La fonction de suppression de l'application retire d\u00e9finitivement le clip s\u00e9lectionn\u00e9 de ce support. L'application n'en conserve aucune copie s\u00e9par\u00e9e.",
+                'policy.children.title': 'Confidentialit\u00e9 des enfants',
+                'policy.children.body': "L'application ne s'adresse pas aux enfants et ne collecte sciemment aucune information, quel que soit l'\u00e2ge de l'utilisateur, puisqu'elle ne collecte aucune donn\u00e9e personnelle.",
+                'policy.oss.title': 'Open source',
+                'policy.oss.body': 'TesLEr est gratuit et open-source. Son code source complet est disponible publiquement sur <a href="https://github.com/j-catania/TeslaSentinelViewer" target="_blank" rel="noopener">GitHub</a>.',
+                'policy.changes.title': 'Modifications de cette politique',
+                'policy.changes.body': "Cette politique peut \u00eatre mise \u00e0 jour de temps \u00e0 autre. La derni\u00e8re version est toujours disponible sur cette page.",
+                'policy.contact.title': 'Contact',
+                'policy.contact.body': 'Pour toute question sur cette politique, ouvrez une issue sur <a href="https://github.com/j-catania/TeslaSentinelViewer/issues" target="_blank" rel="noopener">GitHub</a>.',
+                'footer.tagline': 'Visionneuse Tesla Sentry Mode open-source. Publi\u00e9e sous licence MIT.',
+            }
+        };
+
+        function getCurrentLang() {
+            return localStorage.getItem('lang') || 'en';
+        }
+
+        function setLang(lang) {
+            localStorage.setItem('lang', lang);
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(function (el) {
+                var key = el.dataset.i18n;
+                var val = TRANSLATIONS[lang] && TRANSLATIONS[lang][key];
+                if (val !== undefined) el.innerHTML = val;
+            });
+            var btn = document.getElementById('lang-toggle');
+            if (btn) btn.innerHTML = lang === 'en' ? '🇫🇷 FR' : '🇬🇧 EN';
+        }
+
+        (function () {
+            var lang = getCurrentLang();
+            setLang(lang);
+            var btn = document.getElementById('lang-toggle');
+            if (btn) {
+                btn.addEventListener('click', function () {
+                    setLang(getCurrentLang() === 'en' ? 'fr' : 'en');
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>
